@@ -41,6 +41,7 @@
 
     const route = useRoute();
     const router = useRouter()
+    const user = ref({})
 
     onMounted(()=>{
         let id = route.params.leave_id
@@ -49,11 +50,18 @@
              getLeaveId(id)
              btnCap.value ="Save Changes"
         }
-     
+
+        getAuthUser();
         getLeave()
         getInitial()
         getFinal()
     })
+
+    const getAuthUser = ()=>{
+        axios.get('/api/user').then((res)=>{
+            user.value = res.data
+        })
+    }
 
     const getLeave = () => {
          axios.get('/api/source-leave').then((res)=>{
@@ -226,6 +234,33 @@
         }
     }
 
+    const changeFile = ()=>{
+        
+        let data = document.querySelector('.fileupload').files
+        signatureUpload(data)
+    }
+    const sig_image = ref("")
+    const sigfile = ref({})
+    const signatureUpload = (data)=>{
+        sigfile.value = data[0]
+        sig_image.value = URL.createObjectURL(data[0])
+
+    }
+    const formData = new FormData();
+
+    const uplaodSignature = ()=>{
+        
+        formData.append("id", user.value.id)
+        formData.append("sigfile", sigfile.value)
+        axios.post("api/upload-signature", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+        }).then((res)=>{
+
+        })
+    }
+
 
 </script>
 
@@ -345,8 +380,38 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title">
-                            Attachment
+                          <small class="text-muted">Attachment</small>
                         </div>
+                        <div class="form-group">
+                            <label>DIGITAL SIGNATURE</label>
+                            <div class="img mb-3">
+                                <input type="file" @change="changeFile" class="d-none fileupload" id="filesig" accept=".jpeg, .jpg, .png"/>
+                                <img class="img-responsive digital-img"  :src="sig_image">
+                            </div>
+                           
+                        </div>
+                        <div class="btn-group">
+                            <label for="filesig" class="btn btn-secondary btn-sm">
+                                <i class="bi bi-upload"></i>
+                                upload
+                            </label>
+                            <button type="button" @click="uplaodSignature" class="btn btn-success btn-sm">
+                                <i class="bi bi-floppy"></i>
+                                save
+                            </button>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label>MEDICAL CERTIFICATE</label>
+                            <div class="img mb-3">
+                                 <img class="img-responsive digital-img"  src="https://www.familyeducation.com/sites/default/files/styles/max_920w/public/2021-07/100%20Beautiful%20Girl%20Names_Featured.jpg.webp?itok=K_rgPBcE">
+                            </div>
+                           
+                        </div>
+                         <button type="button" class="btn btn-secondary btn-sm">
+                             <i class="bi bi-paperclip"></i>
+                             Attach
+                        </button>
                     </div>
                 </div>
             </div>
@@ -354,3 +419,9 @@
 
     </div>
 </template>
+<style lang="scss" scoped>
+    .digital-img{
+        width: 150px;
+        height: 150px;
+    }
+</style>

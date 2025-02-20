@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/upload-signature', [AuthController::class,"uploadSignature"]);
 Route::resource('/users', AuthController::class);
 
 Route::get('/position-list', [PositionController::class, 'positionList']);

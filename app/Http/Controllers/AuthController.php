@@ -108,4 +108,21 @@ class AuthController extends Controller
         ];
         return response()->json($response);
     }
+
+
+    public function uploadSignature(Request $request){
+        $file = $request->file('sigfile');
+        $image = base64_encode(file_get_contents($file));
+        $mimeType = $file->getClientMimeType();
+        $size = $file->getSize();
+        $name = $file->getClientOriginalName();
+
+        $data = User::find($request->id);
+        $data->digital_signature = $mage;
+        $data->ds_size = $size;
+        $data->ds_type = $mimeType;
+        $data->save();
+
+        return response()->json($data, 200);
+    }
 }

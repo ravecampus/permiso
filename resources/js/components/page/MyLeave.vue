@@ -157,7 +157,7 @@
                                         <button type="button" v-if="list.status == 0" @click="editLeave(list)" class="btn btn-success btn-sm">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
-                                        <button type="button" @click="viewLeave(list)" class="btn btn-light btn-sm">
+                                        <button type="button" @click="viewLeave(list)" class="btn btn-success btn-sm">
                                             <i class="bi bi-eye"></i>
                                         </button>
                                         <button type="button"  v-if="list.status == 0" class="btn btn-secondary btn-sm" @click="deleteLeave(list)">

@@ -20,6 +20,9 @@ return new class extends Migration
             $table->integer('position_id')->nullable();
             $table->integer('emp_class_id')->nullable();
             $table->longText('digital_signature')->nullable();
+            $table->string('ds_size')->nullable();
+            $table->string('ds_type')->nullable();
+            $table->string('ds_orig_name')->nullable();
             $table->date('date_of_employment')->nullable();
             $table->string('school_id')->unique();
             $table->string('email')->unique();
