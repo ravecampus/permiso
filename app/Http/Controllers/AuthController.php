@@ -80,7 +80,7 @@ class AuthController extends Controller
 
         if(!Auth::attempt($credentials)):
             $request->session()->regenerate();
-            $errors = ['errors'=>['main' => ['Wrong School ID or Password!']]];
+            $errors = ['errors'=>['main' => ['Invalid School ID or Password!']]];
             return response()->json($errors,401);
         endif;
 
@@ -118,9 +118,10 @@ class AuthController extends Controller
         $name = $file->getClientOriginalName();
 
         $data = User::find($request->id);
-        $data->digital_signature = $mage;
+        $data->digital_signature = $image;
         $data->ds_size = $size;
         $data->ds_type = $mimeType;
+        $data->ds_orig_name = $name;
         $data->save();
 
         return response()->json($data, 200);

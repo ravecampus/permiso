@@ -6,6 +6,10 @@
     const initials = ref([])
     const finals = ref([])
     const errors = ref([])
+    const attachment_ = ref("")
+    const sig_image = ref(null)
+    const formData = new FormData();  
+    const formData2 = new FormData();
 
     const weekend = ref("")
 
@@ -34,7 +38,8 @@
         until:"",
         until_extension:"",
         initial_approval:"",
-        final_approval:""
+        final_approval:"",
+        attachment:"",
     })
     const form = reactive(formdata())
     const resetform = () => Object.assign(form, formdata())
@@ -59,8 +64,35 @@
 
     const getAuthUser = ()=>{
         axios.get('/api/user').then((res)=>{
+            let data = res.data
             user.value = res.data
+
+            if(data.digital_signature != null && data.digital_signature != ''){
+                 const blob = b64toBlob(data.digital_signature, data.ds_type);
+                 sig_image.value = URL.createObjectURL(blob)
+            }else{
+                sig_image.value = null
+            }
         })
+    }
+
+    const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+            const byteCharacters = atob(b64Data);
+            const byteArrays = [];
+            for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+                const byteNumbers = new Array(slice.length);
+                for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+                }
+
+                const byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
+            }
+                
+            const blob = new Blob(byteArrays, {type: contentType});
+            return blob;
     }
 
     const getLeave = () => {
@@ -95,6 +127,16 @@
             form.number_of_day = data.number_of_day
             form.initial_approval = data.initial_appr_id
             form.final_approval = data.final_appr_id
+            form.attachment = data.sick_attach
+            // const blob = b64toBlob(data.sick_attach, data.sa_type);
+            // form.attachment = URL.createObjectURL(blob)
+            attach_.value = data.sa_orig_name
+            // attachment_.value = ""
+
+            // Object.entries(form).forEach(([key, value]) => {
+            //     formData2.append(key, value);
+            // });
+
         })
     }
 
@@ -187,14 +229,42 @@
     }
 
     const submitLeaveApplication = ()=>{
+
+        if(sig_image.value == null || sig_image.value == ''){
+            toast.fire({
+                icon:'warning',
+                title:'Upload digital signature first before you proceed!',
+                background:'#c50000'
+            })
+            return;
+        }
+
+        if((form.leave === 4 && attachment_.value == "" && form.id == null) || (form.leave === 4 && form.attachment == null)){
+            toast.fire({
+                icon:'warning',
+                title:'Sick Leave need a attachment!',
+                background:'#c50000'
+            })
+            return;
+        }
+
+        form.attachment = attachment_.value
       
+        Object.entries(form).forEach(([key, value]) => {
+            formData2.append(key, value);
+        });
+
         if(form.id == undefined){
             btnCap.value = "Submitting..."
-            axios.post("api/leave-application", form).then((res)=>{
+
+            axios.post("api/leave-application", formData2,{
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            }).then((res)=>{
                 toast.fire({
                     icon:'success',
                     title:'Leave Application submitted successfully!',
-                    // background:'#c50000'
                 })
                 router.push({name:"myleave"})
                 btnCap.value = "Submit"
@@ -205,11 +275,16 @@
             })
         }else{
             btnCap.value = "Saving..."
-             axios.put("api/leave-application/"+form.id, form).then((res)=>{
+             formData2.append('_method', 'put')
+             axios.post("api/leave-application/"+form.id, formData2,
+             {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+             }).then((res)=>{
                 toast.fire({
                     icon:'success',
                     title:'Leave Application has ben modified!',
-                    // background:'#c50000'
                 })
                 router.push({name:"myleave"})
                 btnCap.value = "Save Changes"
@@ -234,19 +309,29 @@
         }
     }
 
-    const changeFile = ()=>{
-        
+    const changeFile = ()=>{    
         let data = document.querySelector('.fileupload').files
         signatureUpload(data)
     }
-    const sig_image = ref("")
+
+    const changeFileAttach = ()=>{    
+        let data = document.querySelector('.file-attach').files
+        sickattach(data)
+        // signatureUpload(data)
+        
+    }
+    const attach_ = ref("")
+    const sickattach = (data)=>{
+        attach_.value = data[0].name
+        attachment_.value = data[0]
+    }
+
     const sigfile = ref({})
     const signatureUpload = (data)=>{
         sigfile.value = data[0]
         sig_image.value = URL.createObjectURL(data[0])
 
     }
-    const formData = new FormData();
 
     const uplaodSignature = ()=>{
         
@@ -257,8 +342,17 @@
                 'Content-Type': 'multipart/form-data'
             },
         }).then((res)=>{
-
+            toast.fire({
+                icon:'success',
+                title:'Digital Signature uploaded successfully!',
+                // background:'#c50000'
+            })
         })
+    }
+
+    const removeFile = ()=>{
+        attach_.value = ""
+        attachment_.value = ""
     }
 
 
@@ -381,12 +475,13 @@
                     <div class="card-body">
                         <div class="card-title">
                           <small class="text-muted">Attachment</small>
+                          <hr>
                         </div>
                         <div class="form-group">
                             <label>DIGITAL SIGNATURE</label>
-                            <div class="img mb-3">
+                            <div class="img mb-3 mt-1">
                                 <input type="file" @change="changeFile" class="d-none fileupload" id="filesig" accept=".jpeg, .jpg, .png"/>
-                                <img class="img-responsive digital-img"  :src="sig_image">
+                                <img class="img-responsive digital-img"  :src="(sig_image == null || sig_image == '' )? '/img/digital.jpg':sig_image">
                             </div>
                            
                         </div>
@@ -403,15 +498,22 @@
                         <hr>
                         <div class="form-group">
                             <label>MEDICAL CERTIFICATE</label>
-                            <div class="img mb-3">
-                                 <img class="img-responsive digital-img"  src="https://www.familyeducation.com/sites/default/files/styles/max_920w/public/2021-07/100%20Beautiful%20Girl%20Names_Featured.jpg.webp?itok=K_rgPBcE">
+                            <div class="img mb-3 mt-2" v-if="attach_ !=''">
+                                
+                                <p class="text-success">
+                                 <strong class="me-2">   {{ attach_ }}</strong>
+                                 <button type="button" @click="removeFile()" v-if="form.id == undefined" class="btn btn-outline-secondary btn-sm">
+                                     <span class="bi bi-x"></span>
+                                 </button>
+                                </p>
                             </div>
                            
                         </div>
-                         <button type="button" class="btn btn-secondary btn-sm">
+                        <input type="file" @change="changeFileAttach" class="d-none file-attach" id="attachfile" accept=""/>
+                         <label for="attachfile" class="btn btn-secondary btn-sm mt-2" v-if="form.leave == 4">
                              <i class="bi bi-paperclip"></i>
-                             Attach
-                        </button>
+                             Attachment
+                        </label>
                     </div>
                 </div>
             </div>
@@ -423,5 +525,9 @@
     .digital-img{
         width: 150px;
         height: 150px;
+
+        border: 1px solid #225a26;
+        border-radius: 5px;
     }
+    
 </style>

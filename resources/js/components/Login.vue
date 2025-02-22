@@ -29,43 +29,50 @@
 </script>
 
 <template>
-    <div class="container mt-5">
+    <div class="login-body bg-success min-vh-100 m-0">
         <div class="row d-flex justify-content-end">
-            <div class="col-md-8 text-center">  
-                hello
+            <div class="col-md-7 ">  
+                <div class="logo w-100 d-flex justify-content-center">
+                    <img :src="'img/login.png'"  class="img-logo"/>
+                </div>
+                 <div class="badge-logo position-absolute ms-5">
+                    <img :src="'img/ndmc.png'" class="s-logo"/>
+                    <img :src="'img/cite.png'" class="s-logo-2" />
+                </div>
+
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="head text-center">
+            <div class="col-md-5 mt-5">
+                <div class="card mt-5 me-5 h-100 bg-login">
+                    <div class="card-body ps-5 pe-5">
+                        <div class="head text-center text-light mt-5 mb-4">
                             <h1>SIGN IN</h1>
                            
-                            <p class="breadcrumb-item text-center">Please enter your School ID and Password</p>
+                            <p class="breadcrumb-item text-center mt-1">Please enter your School ID and Password</p>
                           
                         </div>
-                        <div class="badge text-center text-danger mb-3" v-if="errors.main"> 
+                        <div class="badge text-center text-light mb-3" v-if="errors.main"> 
                             {{ errors.main[0]}}
                         </div>
                         <div class="form-floating mb-3">
-                            <input class="form-control" v-model="form.school_id" @keyup.enter.prevent="login" id="inputEmail" type="text" placeholder="Enter School ID" />
+                            <input class="form-control" autocomplete="off" v-model="form.school_id" @keyup.enter.prevent="login" id="inputEmail" type="text" placeholder="Enter School ID" />
                             <label for="inputEmail">
-                                <i class="bi bi-person"></i>
+                                <i class="bi bi-person fs-6"></i>
                                 SCHOOL ID
                             </label>
-                            <span class="text-danger" v-if="errors.school_id">{{errors.school_id[0]}}</span>
+                            <span class="text-light" v-if="errors.school_id">{{errors.school_id[0]}}</span>
                         </div>
                         <div class="form-floating mb-3">
                             <input class="form-control" v-model="form.password" @keyup.enter.prevent="login" type="password" placeholder="Enter School ID" />
                             
                             <label for="inputEmail">
-                                <i class="bi bi-lock"></i>
+                                <i class="bi bi-lock fs-6"></i>
                                 PASSWORD
                             </label>
 
-                            <span class="text-danger" v-if="errors.password">{{errors.password[0]}}</span>
+                            <span class="text-light" v-if="errors.password">{{errors.password[0]}}</span>
                         </div>
                         <div class="d-flex justify-content-center">
-                            <button type="button" @click="login" class="btn btn-success mt-2">{{ btnlog }}</button>
+                            <button type="button" @click="login" class="btn btn-light btn-lg mt-2 text-login">{{ btnlog }}</button>
                         </div>
                     </div>
                 </div>
@@ -73,3 +80,39 @@
         </div>
     </div>
 </template>
+<style lang="scss" scoped>
+
+
+    .login-body{
+        background-image: url("img/background.png");
+        background-size: cover;
+        background-position: center top;
+        overflow: hidden;
+        height: 100%;
+    }
+
+    .img-logo{
+        margin-top: 13em;
+        margin-left: 10em;
+        width: 60%;
+    }
+    .bg-login{
+        background-color: #4a6248;
+        border-radius: 2em;
+        width: 24em;
+    }
+    .s-logo{
+        margin-top: 3rem;
+        width: 4em;
+        margin-right: .5em;
+    }
+    .s-logo-2{
+        margin-top: 3rem;
+        width: 3.6em;
+    }
+    .text-login{
+        color:#4a6248;
+    }
+
+</style>
+

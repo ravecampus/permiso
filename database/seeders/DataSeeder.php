@@ -13,6 +13,16 @@ class DataSeeder extends Seeder
      */
     public function run(): void
     {
+        // DB::table('users')->delete();
+        DB::table('users')->insert([
+            'id' => 1,
+            'name' => 'Administrator',
+            'email' => 'admin@gmail.com',
+            'role' => 1,
+            'school_id'=>"admin",
+            'password' => bcrypt('admin'),
+        ]);
+
         DB::table('employment_classification')->delete();
         DB::table('employment_classification')->insert([
             'id' => 1,

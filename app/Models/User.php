@@ -28,7 +28,10 @@ class User extends Authenticatable
         'email',
         'password',
         'image',
-        'digital_signature'
+        'digital_signature',
+        'ds_size',
+        'ds_type',
+        'ds_orig_name',
     ];
 
     /**
@@ -50,4 +53,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function position(){
+        return $this->hasOne(Position::class,'id', 'position_id');
+    }
+
+    public function office(){
+        return $this->hasOne(Office::class,'id', 'office_id');
+    }
+
+
 }

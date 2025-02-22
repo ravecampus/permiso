@@ -33,6 +33,9 @@ return new class extends Migration
             $table->integer("status")->nullable();
             $table->date("disapproved_date")->nullable();
             $table->longText('sick_attach')->nullable();
+            $table->string('sa_size')->nullable();
+            $table->string('sa_type')->nullable();
+            $table->string('sa_orig_name')->nullable();
             $table->timestamps();
         });
     }

@@ -45,14 +45,20 @@
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="bi bi-list lead"></i></button>
             <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <!-- <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
                     <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
                     <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
                 </div>
-            </form>
+            </form> -->
+
+             
             <!-- Navbar-->
-            <div class="user text-light">
+            <a href="" class="text-light text-body ms-auto me-0 me-md-3 my-2 my-md-0">
+                <i class="bi bi-bell fs-4 text-light"></i>
+                <span class="badge rounded-pill badge-notification bg-danger">999+</span>
+            </a>
+            <div class="user text-light ">
                 <div class="mb-0 pb-0"> {{ user.name }}</div>
             </div>
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
@@ -73,10 +79,11 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                            
-                            <router-link  class="nav-link" :to="{name:'permiso'}">
+                            <router-link  class="nav-link mt-4" :to="{name:'permiso'}">
                                 <div class="sb-nav-link-icon"><i class="bi bi-speedometer"></i></div>
                                 Dashboard
                             </router-link>
+                            <div class="sb-sidenav-menu-heading pt-1">Management</div>
                             <!-- <div class="sb-sidenav-menu-heading">Settings</div> -->
                             <router-link class="nav-link" :to="{name:'office_setup'}">
                                 <div class="sb-nav-link-icon"><i class="bi bi-building-fill-add"></i></div>
@@ -88,7 +95,7 @@
                             </router-link>
                             <router-link :to="{name:'employee_setup'}" class="nav-link">
                                 <div class="sb-nav-link-icon"><i class="bi bi-people"></i></div>
-                                Manage Employee
+                                Employee Record
                             </router-link>
                              <router-link :to="{name:'setupschoolyear'}" class="nav-link">
                                 <div class="sb-nav-link-icon"><i class="bi bi-calendar2-plus"></i></div>
@@ -98,6 +105,7 @@
                                 <div class="sb-nav-link-icon"><i class="bi bi-gear-wide-connected"></i></div>
                                 Emp. Classif. Setup
                             </router-link>
+                            <div class="sb-sidenav-menu-heading pt-1">Application</div>
                             <router-link :to="{name:'leaveselection'}" class="nav-link">
                                 <div class="sb-nav-link-icon"><i class="bi bi-filetype-docx"></i></div>
                                 Leave Application
@@ -106,17 +114,17 @@
                                 <div class="sb-nav-link-icon"><i class="bi bi-file-arrow-up-fill"></i></div>
                                 My Leave 
                             </router-link>
-                            <div class="sb-sidenav-menu-heading">Request</div>
-                             <router-link :to="{name:'myleave'}" class="nav-link">
+                            <div class="sb-sidenav-menu-heading pt-1">Request</div>
+                             <router-link :to="{name:'initialrequest'}" class="nav-link">
                                 <div class="sb-nav-link-icon"><i class="bi bi-file-arrow-up-fill"></i></div>
                                 Leave Request
                             </router-link>
 
-                            <router-link :to="{name:'myleave'}" class="nav-link">
+                            <!-- <router-link :to="{name:'myleave'}" class="nav-link">
                                 <div class="sb-nav-link-icon"><i class="bi bi-file-arrow-up-fill"></i></div>
                                 Leave Request
                             </router-link>
-                            
+                             -->
                             <!-- <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -202,7 +210,7 @@
 
 <style lang="scss" scoped>
     .bg-app{
-        background-color: #225a26;
+        background-color: #4a6248;
     }
 
     .sb-sidenav-dark {
@@ -239,6 +247,8 @@
         // border-radius: 2.5rem;
         // transition: color .15sease-in-out, background-color .15sease-in-out, border-color .15sease-in-out, box-shadow .15sease-in-out;
     }
+
+    
 
 </style>
 

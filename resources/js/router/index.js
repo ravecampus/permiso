@@ -16,6 +16,9 @@ import SelectionLeave from '../components/page/SelectionLeave.vue'
 import LeaveApplication from '../components/page/LeaveApplication.vue'
 import MyLeave from '../components/page/MyLeave.vue'
 import  ViewLeave from '../components/page/ViewLeave.vue'
+import  LeaveRequest from '../components/page/LeaveRequest.vue'
+import  InitialRequest from '../components/page/InitialRequest.vue'
+import  FinalRequest from '../components/page/FinalRequest.vue'
 
 
 const routes = [
@@ -97,6 +100,23 @@ const routes = [
                 path:'/apply/view-my-leave/:id',
                 name:'viewleave',
                 component: ViewLeave,
+            },
+            {
+                path:'/leave-request/',
+                name:'leaverequest',
+                component: LeaveRequest,
+                children:[
+                    {
+                        path:'',
+                        name:'initialrequest',
+                        component: InitialRequest,
+                    }, 
+                    {
+                        path:'final',
+                        name:'finalrequest',
+                        component: FinalRequest,
+                    }, 
+                ]
             },
         ]
     },

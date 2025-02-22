@@ -6,10 +6,10 @@
     const leveling = ref({})
     const route = useRoute()
     const router = useRouter()
-
+    const id = ref("")
     onMounted(()=>{
-        var id = route.params.id;
-        getDatawithID(id)
+        id.value = route.params.id;
+        getDatawithID(id.value)
 
    
         // router.push({name:'initialaprv'})
@@ -34,7 +34,7 @@
                
                 <ul class="nav nav-pills mt-4">
                     <li class="nav-item">
-                        <router-link class="nav-link" :to="{name:'initialaprv'}" aria-current="page">INITIAL APPROVAL</router-link>
+                        <router-link class="nav-link" v-if="id != 1" :to="{name:'initialaprv'}" aria-current="page">INITIAL APPROVAL</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'finalaprv'}" aria-current="page">FINAL APPROVAL</router-link>

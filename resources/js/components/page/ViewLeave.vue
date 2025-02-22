@@ -43,16 +43,79 @@
     }
 
     const setStatus = (data)=>{
-        return data == 0 ? "Pending" : data == 1 ? "Initial Approved" : data == 2 ? "Final Approved" :"Disapproved"
+        return data == 0 ? "PENDING" : data == 1 ? "INITIAL APPROVED" : data == 2 ? "FINAL APPROVED" :"DISAPPROVED"
     }
 
+    const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+            
+        const blob = new Blob(byteArrays, {type: contentType});
+        return blob;
+    }
+
+    const extractDigitSig = (data)=>{
+        const blob = b64toBlob(data.digital_signature, data.ds_type);
+        return URL.createObjectURL(blob)
+    }
+
+    const downloadFile = (data)=>{
+        const blob = b64toBlob(data.sick_attach, data.sa_type);
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(blob)
+        link.download = data.sa_orig_name
+        link.click()
+        URL.revokeObjectURL(link.href)
+    }
+
+    const extDescription = (data)=>{
+        return data.description;
+    }
+
+    const initialApproved = ()=>{
+        Swal.fire({
+            title: "Do you want to approved this leave ?",
+            // text: "You won't be able to revert this!",
+            icon: "question",
+            showCancelButton: true,
+            background: '#17a673',
+            color: '#fff',
+            confirmButtonColor: "#424242",
+            cancelButtonColor: "#ffc107",
+            confirmButtonText: "YES!"
+            }).then((result) => {
+            if (result.isConfirmed) {
+                axios.post("/api/initial-approved/", leave.value).then((res)=>{
+                    toast.fire({
+                        title: "Deleted!",
+                        text: "Description has been deleted.",
+                        icon: "success",
+						confirmButtonColor: "#26884b",
+                    });
+                    getData();
+                })
+                
+            }
+        });
+    }
 
 
 </script>
 
 <template>
     <div class="container">
-        <h4 class="mt-4">VIEW MY LEAVE</h4>
+        <h4 class="mt-4">VIEW LEAVE</h4>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active">Provide information about your leave status</li>
         </ol>
@@ -61,6 +124,35 @@
                 <div class="card text-left">
                   <div class="card-body">
                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="data-group">
+                                <small class="text-muted">Name:</small>
+                                <blockquote class="blockquote">
+                                    <p>{{ leave.signature.name }}</p>
+                                </blockquote>
+                            </div>
+                            <div class="data-group">
+                                <small class="text-muted">Date of Employment:</small>
+                                <blockquote class="blockquote">
+                                    <p>{{ format(leave.signature.date_of_employment) }}</p>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="data-group">
+                                <small class="text-muted">Office:</small>
+                                <blockquote class="blockquote">
+                                    <p>{{ extDescription(leave.signature.office) }}</p>
+                                </blockquote>
+                            </div>
+                            <div class="data-group">
+                                <small class="text-muted">Position:</small>
+                                <blockquote class="blockquote">
+                                    <p>{{ extDescription(leave.signature.position) }}</p>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="col-md-6">
                             <div class="data-group">
                                 <small class="text-muted">Leave applied for:</small>
@@ -139,7 +231,14 @@
                         </div>
                       </div>
                   </div>
+                    <div class="card-footer">
+                        <div class="btn-group">
+                            <button type="button" @click="initialApproved()" class="btn btn-success">APPROVED</button>
+                            <button type="button" class="btn btn-secondary">DISAPPROVED</button>
+                        </div>
+                    </div>
                 </div>
+               
 
             </div>
             <div class="col-md-4">
@@ -148,9 +247,40 @@
                         <div class="card-title text-muted">
                             Attachment
                         </div>
+                        <hr class="p-0 m-0">
+                        <div class="form-group">
+                            <label>DIGITAL SIGNATURE</label>
+                            <div class="img mb-3 mt-1">
+                                <img class="img-responsive digital-img"  :src="leave.signature == null ? '/img/digital.jpg':extractDigitSig(leave.signature)">
+                            </div>
+                           
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label>MEDICAL CERTIFICATE</label>
+                            <div class="img mb-3 mt-2" v-if="leave.sick_attach != null">
+                                <p class="text-success">
+                                 <strong class="me-2">{{leave.sa_orig_name }}</strong>
+                                </p>
+                                 <button type="button" @click="downloadFile(leave)"  class="btn btn-outline-secondary btn-sm">
+                                     <span class="bi bi-download"></span> download
+                                 </button>
+                            </div>
+                           
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
+<style lang="scss" scoped>
+    .digital-img{
+        width: 150px;
+        height: 150px;
+
+        border: 1px solid #225a26;
+        border-radius: 5px;
+    }
+</style>
+

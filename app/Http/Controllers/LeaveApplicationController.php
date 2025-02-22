@@ -34,6 +34,13 @@ class LeaveApplicationController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->leave == 4){
+            $file = $request->file('attachment');
+            $image = base64_encode(file_get_contents($file));
+            $mimeType = $file->getClientMimeType();
+            $size = $file->getSize();
+            $name = $file->getClientOriginalName();
+        }
         $user = Auth::user();
         $request->validate([
             "leave" => "required",
@@ -54,9 +61,9 @@ class LeaveApplicationController extends Controller
             "leave_id" => $request->leave,
             "cause" => $request->cause,
             "number_of_day" => $request->number_of_day,
-            "date_apply" =>Carbon::parse($request->date_apply)->format('Y-m-d'),
-            "from" => Carbon::parse($request->from)->format('Y-m-d'),
-            "until" =>Carbon::parse($request->until)->format('Y-m-d'),
+            "date_apply" =>Carbon::parse(strstr($request->date_apply, " (", true))->format('Y-m-d'),
+            "from" => Carbon::parse(strstr($request->from, " (", true))->format('Y-m-d'),
+            "until" =>Carbon::parse(strstr($request->until, " (", true))->format('Y-m-d'),
             "from_ext" =>$request->from_extension,
             "until_ext" =>$request->until_extension,
             "initial_appr_id" =>$request->initial_approval,
@@ -65,6 +72,10 @@ class LeaveApplicationController extends Controller
             "leave_credit_id" =>$lev->id,
             "status" => 0,
             "school_year_id" => SchoolYear::where('is_active', 1)->first()->id ,
+            "sick_attach" => $request->leave == 4 ? $image : null,
+            "sa_size" => $request->leave == 4 ? $size : null,
+            "sa_type" =>$request->leave == 4 ?  $mimeType : null,
+            "sa_orig_name" => $request->leave == 4 ? $name :null,
 
         ]);
 
@@ -77,7 +88,7 @@ class LeaveApplicationController extends Controller
      */
     public function show(string $id)
     {
-        $data = LeaveApplication::with('schoolyear', 'initial', 'final')->select("leave_application.*", "leave.description as description")
+        $data = LeaveApplication::with('schoolyear', 'initial', 'final', 'signature')->select("leave_application.*", "leave.description as description")
         ->join("leave", "leave.id", "=", "leave_application.leave_id")
         ->where("leave_application.id", $id)->first();
 
@@ -97,6 +108,13 @@ class LeaveApplicationController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if($request->leave == 4 && isset($request->attachment)){
+            $file = $request->file('attachment');
+            $image = base64_encode(file_get_contents($file));
+            $mimeType = $file->getClientMimeType();
+            $size = $file->getSize();
+            $name = $file->getClientOriginalName();
+        }
         $user = Auth::user();
         $request->validate([
             "leave" => "required",
@@ -125,6 +143,12 @@ class LeaveApplicationController extends Controller
         $data->final_appr_id = $request->final_approval;
         $data->emp_class_id = $request->emp_class_id;
         $data->leave_credit_id = $lev->id;
+        if($request->leave == 4 && isset($request->attachment)){
+            $data->sick_attach = $image;
+            $data->sa_size = $size;
+            $data->sa_type = $mimeType;
+            $data->sa_orig_name = $name;
+        }
         $data->save();
 
         return response()->json($data, 200);

@@ -30,7 +30,10 @@ class LeaveApplication extends Model
         'cause',
         'remarks',
         'status',
-        'disapproved_date'
+        'sick_attach',
+        'sa_size',
+        'sa_type',
+        'sa_orig_name',
 
     ];
 
@@ -44,6 +47,10 @@ class LeaveApplication extends Model
     }
     public function final(){
         return $this->hasOne(User::class,'id', 'final_appr_id');
+    }
+
+    public function signature(){
+        return $this->hasOne(User::class,'id', 'user_id')->with("position", "office");
     }
 
 
