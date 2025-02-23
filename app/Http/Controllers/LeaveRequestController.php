@@ -34,8 +34,8 @@ class LeaveRequestController extends Controller
         }
 
         $data = $data
-        ->where("status", 1)
-        ->orWhere("status", 2)->latest()->paginate(5);
+        // ->where("status", 1)
+        ->whereIn("status", [1,2,3])->latest()->paginate(5);
 
         return response()->json($data, 200);
     }
@@ -55,8 +55,13 @@ class LeaveRequestController extends Controller
        return response()->json($data, 200);
     }
     public function disapproved(Request $request){
+
+        // if($request->leave == ){
+
+        // }
         $data =  LeaveApplication::find($request->id);
         $data->status = 3;
+        $data->remarks = isset($request->remarks) ? $request->remarks : null;
         $data->disapproved_date = Carbon::now();
         $data->save();
        return response()->json($data, 200);

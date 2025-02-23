@@ -1,13 +1,46 @@
 <script setup>
     import { ref, reactive, onMounted }  from "vue"
     import { useRoute } from "vue-router"
+    import { Modal } from "bootstrap";
 
     const route = useRoute()
     const leave = ref({})
+    const errors = ref([])
+    const user = ref({})
+    const sig_image = ref(null)
+
+    const modaldisapproved = ref(null)
+    let vmodaldisapproved = null;
+
+    const formdata = ()=>({
+        remarks:"",
+        id:null,
+    })
+
+    const form = reactive(formdata())
+    const resetform = ()=> Object.assign(form, formdata())
+
     onMounted(()=>{
+        vmodaldisapproved = new Modal(modaldisapproved.value);
+
         let id = route.params.id
         getLeaveId(id)
+        getAuthUser();
     })
+
+    
+     const getAuthUser = ()=>{
+        axios.get('/api/user').then((res)=>{
+            let data = res.data
+            user.value = res.data
+            if(data.digital_signature != null){
+                const blob = b64toBlob(data.digital_signature, data.ds_type);
+                sig_image.value = URL.createObjectURL(blob)
+            }
+         
+        })
+    }
+
 
     const format = (d_) => {
         let d = new Date(d_)
@@ -84,9 +117,17 @@
     }
 
     const initialApproved = ()=>{
+        if(user.value.digital_signature == "" || user.value.digital_signature == null){
+             toast.fire({
+                icon:'warning',
+                title:'Upload digital signature first before you proceed!',
+                background:'#c50000'
+            })
+            return;
+        }
         Swal.fire({
-            title: "Do you want to approved this leave ?",
-            // text: "You won't be able to revert this!",
+            title: "Do you want to Initial Approved this leave ?",
+            text: " ",
             icon: "question",
             showCancelButton: true,
             background: '#17a673',
@@ -98,16 +139,154 @@
             if (result.isConfirmed) {
                 axios.post("/api/initial-approved/", leave.value).then((res)=>{
                     toast.fire({
-                        title: "Deleted!",
-                        text: "Description has been deleted.",
+                        title: "APPROVED",
+                        text: "Leave application Initially Approved.",
                         icon: "success",
 						confirmButtonColor: "#26884b",
                     });
-                    getData();
+                    let id = route.params.id
+                    getLeaveId(id)
                 })
                 
             }
         });
+    }
+
+    const finalApproved = ()=>{
+        if(user.value.digital_signature == "" || user.value.digital_signature == null){
+             toast.fire({
+                icon:'warning',
+                title:'Upload digital signature first before you proceed!',
+                background:'#c50000'
+            })
+            return;
+        }
+        Swal.fire({
+            title: "Do you want to Final Approved this leave ?",
+            text: " ",
+            icon: "question",
+            showCancelButton: true,
+            background: '#17a673',
+            color: '#fff',
+            confirmButtonColor: "#424242",
+            cancelButtonColor: "#ffc107",
+            confirmButtonText: "YES!"
+            }).then((result) => {
+            if (result.isConfirmed) {
+                axios.post("/api/final-approved/", leave.value).then((res)=>{
+                    toast.fire({
+                        title: "APPROVED",
+                        text: "Leave application Final Approved.",
+                        icon: "success",
+						confirmButtonColor: "#26884b",
+                    });
+                    let id = route.params.id
+                    getLeaveId(id)
+                })
+                
+            }
+        });
+    }
+
+    const disapproved = ()=>{
+        Swal.fire({
+            title: "Do you want to Disapproved this leave ?",
+            text: " ",
+            icon: "question",
+            showCancelButton: true,
+            background: '#17a673',
+            color: '#fff',
+            confirmButtonColor: "#424242",
+            cancelButtonColor: "#ffc107",
+            confirmButtonText: "YES!"
+            }).then((result) => {
+            if (result.isConfirmed) {
+                axios.post("/api/disapproved/", leave.value).then((res)=>{
+                    toast.fire({
+                        title: "DISAPPROVED",
+                        text: "Leave application Disapproved.",
+                        icon: "success",
+						confirmButtonColor: "#26884b",
+                    });
+                    let id = route.params.id
+                    getLeaveId(id)
+                })
+                
+            }
+        });
+    }
+
+    const showDisapproved = ()=>{
+        if(user.value.id == leave.value.initial_appr_id){
+             if(leave.value.emp_class_id == 4 
+                || leave.value.emp_class_id == 5 
+                || leave.value.emp_class_id == 6 ){
+                   vmodaldisapproved.show()
+            }else{
+                disapproved()
+            }
+        }
+
+        if(user.value.id == leave.value.final_appr_id){
+             if(leave.value.emp_class_id == 1 
+                || leave.value.emp_class_id == 2 
+                || leave.value.emp_class_id == 3 ){
+                   vmodaldisapproved.show()
+            }else{
+                disapproved()
+            }
+        }
+       
+        
+    }
+
+    const formData = new FormData();  
+    const uplaodSignature = ()=>{
+        
+        formData.append("id", user.value.id)
+        formData.append("sigfile", sigfile.value)
+        axios.post("api/upload-signature", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+        }).then((res)=>{
+            getAuthUser()
+            toast.fire({
+                icon:'success',
+                title:'Digital Signature uploaded successfully!',
+                // background:'#c50000'
+            })
+        })
+    }
+
+    const changeFile = ()=>{    
+        let data = document.querySelector('.fileupload').files
+        signatureUpload(data)
+    }
+    
+    const sigfile = ref({})
+    const signatureUpload = (data)=>{
+        sigfile.value = data[0]
+        sig_image.value = URL.createObjectURL(data[0])
+
+    }
+
+    const disapprovedwithRemarks = ()=>{
+        form.id = leave.value.id
+        axios.post("/api/disapproved/", form).then((res)=>{
+            toast.fire({
+                title: "DISAPPROVED",
+                text: "Leave application Disapproved.",
+                icon: "success",
+                confirmButtonColor: "#26884b",
+            });
+            resetform()
+            vmodaldisapproved.hide()
+            let id = route.params.id
+            getLeaveId(id)
+        }).catch((err)=>{
+            errors.value = err.response.data.errors
+        })
     }
 
 
@@ -231,10 +410,15 @@
                         </div>
                       </div>
                   </div>
-                    <div class="card-footer">
+                    <div class="card-footer" v-if="(user.id == leave.initial_appr_id && leave.status == 0) || (user.id == leave.final_appr_id && leave.status == 1)">
                         <div class="btn-group">
-                            <button type="button" @click="initialApproved()" class="btn btn-success">APPROVED</button>
-                            <button type="button" class="btn btn-secondary">DISAPPROVED</button>
+                            
+                            <button type="button" @click="initialApproved()" v-if="(user.id == leave.initial_appr_id && leave.status == 0)" class="btn btn-warning">APPROVED</button>
+                            <button type="button" @click="finalApproved()"  v-if="(user.id == leave.final_appr_id && leave.status == 1)" class="btn btn-success">APPROVED</button>
+                            <button type="button" @click="showDisapproved()" 
+                            v-if="(user.id == leave.initial_appr_id && leave.status == 0) 
+                            ||  (user.id == leave.final_appr_id && leave.status == 1)" 
+                            class="btn btn-secondary">DISAPPROVED</button>
                         </div>
                     </div>
                 </div>
@@ -270,8 +454,60 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="card mt-2" v-if="(user.id == leave.initial_appr_id) || (user.id == leave.final_appr_id)">
+                    <div class="card-body">
+                        <div class="card-title text-muted">
+                            APPROVAL
+                        </div>
+                        <hr class="p-0 m-0">
+                        <div class="form-group">
+                            <label>DIGITAL SIGNATURE</label>
+                              <input type="file" @change="changeFile" class="d-none fileupload" id="digitalsig" accept="image/*"/>
+                            <div class="img mb-3 mt-1">
+                                <img class="img-responsive digital-img"  :src="(sig_image == null || sig_image == '' )? '/img/digital.jpg':sig_image">
+                            </div>
+                           
+                        </div>
+                        <div class="btn-group">
+                            <label for="digitalsig" class="btn btn-secondary btn-sm">
+                                <i class="bi bi-upload"></i>
+                                upload
+                            </label>
+                            <button type="button" @click="uplaodSignature" class="btn btn-success btn-sm">
+                                <i class="bi bi-floppy"></i>
+                                save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
+
+        
+            <div class="modal fade" ref="modaldisapproved" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">DISAPPROVED</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-start mb-3 row">
+                        <div class="form-group">
+                            <label>REMARKS</label>
+                            <textarea class="form-control" v-model="form.remarks"></textarea>
+                            <span class="text-danger" v-if="errors.remarks">{{errors.remarks[0]}}</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" @click="disapprovedwithRemarks()">Disapproved</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
     </div>
 </template>
 <style lang="scss" scoped>

@@ -128,7 +128,7 @@ class LeaveApplicationController extends Controller
             "initial_approval" => "required",
             "final_approval" => "required",
         ]);
-        $lev = LevelLeavecredit::where("emp_class_id", $request->emp_class_id)
+        $lev = LevelLeavecredit::where("emp_class_id", $user->emp_class_id)
                                 ->where("leave_id", $request->leave)->first();
 
         $data = LeaveApplication::find($id);
@@ -141,7 +141,7 @@ class LeaveApplicationController extends Controller
         $data->until_ext = $request->until_extension;
         $data->initial_appr_id = $request->initial_approval;
         $data->final_appr_id = $request->final_approval;
-        $data->emp_class_id = $request->emp_class_id;
+        $data->emp_class_id = $user->emp_class_id;
         $data->leave_credit_id = $lev->id;
         if($request->leave == 4 && isset($request->attachment)){
             $data->sick_attach = $image;

@@ -36,8 +36,8 @@
                     <img :src="'img/login.png'"  class="img-logo"/>
                 </div>
                  <div class="badge-logo position-absolute ms-5">
-                    <img :src="'img/ndmc.png'" class="s-logo"/>
-                    <img :src="'img/cite.png'" class="s-logo-2" />
+                    <img :src="'/img/ndmc.png'" class="s-logo"/>
+                    <img :src="'/img/cite.png'" class="s-logo-2" />
                 </div>
 
             </div>

@@ -6,6 +6,7 @@
     const initials = ref([])
     const finals = ref([])
     const errors = ref([])
+    const sickfilter = ref(0)
     const attachment_ = ref("")
     const sig_image = ref(null)
     const formData = new FormData();  
@@ -127,15 +128,15 @@
             form.number_of_day = data.number_of_day
             form.initial_approval = data.initial_appr_id
             form.final_approval = data.final_appr_id
-            form.attachment = data.sick_attach
+            if( data.sick_attach != null){
+               sickfilter.value = 1;
+            }else{
+                sickfilter.value = 0;
+            }
+           
             // const blob = b64toBlob(data.sick_attach, data.sa_type);
             // form.attachment = URL.createObjectURL(blob)
             attach_.value = data.sa_orig_name
-            // attachment_.value = ""
-
-            // Object.entries(form).forEach(([key, value]) => {
-            //     formData2.append(key, value);
-            // });
 
         })
     }
@@ -238,8 +239,9 @@
             })
             return;
         }
+        form.attachment = attachment_.value
 
-        if((form.leave === 4 && attachment_.value == "" && form.id == null) || (form.leave === 4 && form.attachment == null)){
+        if((form.leave === 4 && sickfilter.value == 0 && form.id == null) || (form.leave === 4 && sickfilter.value == "")){
             toast.fire({
                 icon:'warning',
                 title:'Sick Leave need a attachment!',
@@ -248,7 +250,7 @@
             return;
         }
 
-        form.attachment = attachment_.value
+       
       
         Object.entries(form).forEach(([key, value]) => {
             formData2.append(key, value);
@@ -324,6 +326,7 @@
     const sickattach = (data)=>{
         attach_.value = data[0].name
         attachment_.value = data[0]
+        sickfilter.value = 1
     }
 
     const sigfile = ref({})

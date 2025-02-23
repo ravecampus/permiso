@@ -19,6 +19,10 @@ import  ViewLeave from '../components/page/ViewLeave.vue'
 import  LeaveRequest from '../components/page/LeaveRequest.vue'
 import  InitialRequest from '../components/page/InitialRequest.vue'
 import  FinalRequest from '../components/page/FinalRequest.vue'
+import  Dashboard from '../components/page/Dashboard.vue'
+
+import NotFound from '../components/NotFound.vue'
+
 
 
 const routes = [
@@ -27,6 +31,11 @@ const routes = [
         name:'permiso',
         component: Mainpage,
         children:[
+            {
+                path:'',
+                name:'dashboard',
+                component: Dashboard,
+            },
             {
                 path:'/setup/employee',
                 name:'employee_setup',
@@ -97,7 +106,7 @@ const routes = [
                 component: LeaveApplication,
             },
             {
-                path:'/apply/view-my-leave/:id',
+                path:'/apply/view-leave/:id',
                 name:'viewleave',
                 component: ViewLeave,
             },
@@ -126,11 +135,11 @@ const routes = [
         component: Login,
     },
     
-    // {
-    //     path:'/:pathMatch(.*)*',
-    //     name:'notfound',
-    //     component: notFound 
-    // }
+    {
+        path:'/:pathMatch(.*)*',
+        name:'notfound',
+        component: NotFound 
+    }
 
 ]
 
@@ -139,17 +148,13 @@ const router  = createRouter({
     routes
 })
 
-// const openRoutes = [
-//     'about',
-//     'publicpage',
-//     'rechiva',
-//     'signin',
-//     'search',
-//     'signup',
-//     'main.document',
-//     'notfound'
+const openRoutes = [
+    'login',
+    'notfound',
+    'permiso',
+    'dashboard'
     
-// ];
+];
 
 // const adminRoutes = [
 //     'about',
@@ -220,31 +225,32 @@ const router  = createRouter({
     
 // ];
 
-// router.beforeEach((to, from, next)=>{
-//     if(!window.winsdev.isLoggedin){
-//         if(openRoutes.includes(to.name)){
-//             return next();
-//         }else{
-//             return next({ name: 'notfound' })
-//         }
-//     }else{
-//         let user = window.winsdev.user;
-//         if(adminRoutes.includes(to.name) && user.role === 2){
-//             return next();
-//         }else if(user.role === 1){
-//             if(facultyRoutes.includes(to.name) && user.activate == 1){
-//                 return next(); 
-//             }else if(facultyInctive.includes(to.name) && user.activate == 0){
-//                 return next(); 
-//             }else{
-//                 return next({ name: 'notfound' })
-//             }
+router.beforeEach((to, from, next)=>{
+    if(!window.winsdev.isLoggedin){
+        if(openRoutes.includes(to.name)){
+            return next();
+        }else{
+            return next({ name: 'notfound' })
+        }
+    }else{
+        return next()
+        let user = window.winsdev.user;
+        // if(adminRoutes.includes(to.name) && user.role === 2){
+        //     return next();
+        // }else if(user.role === 1){
+        //     if(facultyRoutes.includes(to.name) && user.activate == 1){
+        //         return next(); 
+        //     }else if(facultyInctive.includes(to.name) && user.activate == 0){
+        //         return next(); 
+        //     }else{
+        //         return next({ name: 'notfound' })
+        //     }
             
-//         }else{
-//             return next({ name: 'notfound' })
-//         }
-//     }
-// });
+        // }else{
+        //     return next({ name: 'notfound' })
+        // }
+    }
+});
 
 
 

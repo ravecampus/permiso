@@ -14,14 +14,7 @@ class DataSeeder extends Seeder
     public function run(): void
     {
         // DB::table('users')->delete();
-        DB::table('users')->insert([
-            'id' => 1,
-            'name' => 'Administrator',
-            'email' => 'admin@gmail.com',
-            'role' => 1,
-            'school_id'=>"admin",
-            'password' => bcrypt('admin'),
-        ]);
+        
 
         DB::table('employment_classification')->delete();
         DB::table('employment_classification')->insert([
@@ -96,6 +89,16 @@ class DataSeeder extends Seeder
         DB::table('leave')->insert([
             'id' => 9,
             'description' => 'OTHERS',
+        ]);
+
+        DB::table('users')->insert([
+            'id' => 1,
+            'name' => 'Administrator',
+            'email' => 'admin@gmail.com',
+            'role' => 1,
+            'emp_class_id' => 1,
+            'school_id'=>"admin",
+            'password' => bcrypt('admin'),
         ]);
     }
 }

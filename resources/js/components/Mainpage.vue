@@ -1,11 +1,17 @@
 <script setup>
     import { ref, onMounted } from "vue"
+    import { useRouter } from "vue-router"
 
     const user = ref({})
-    onMounted(()=>{
+    const router = useRouter()
 
-        console.log(window.winsdev.user)
+    onMounted(()=>{
         getAuthUser();
+
+        if(!window.winsdev.isLoggedin){
+            console.log("hello")
+            router.push({name:"login"});
+        }
     })
 
 
@@ -36,12 +42,18 @@
         });
     }
 
+    const extractRole = (data)=>{
+        return data == 1 ? "ADMIN" : data == 2 ? "SCHOOL PRESIDENT": data == 3 ? "OFFICE HEAD" : data == 4 ? "FACULTY / STAFF" :" NONE"
+    }
+
 </script>
 <template>
     <div>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-app">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+            <a class="navbar-brand ps-1" href="index.html">
+                <img class="dashboard-logo" :src="'/img/dashboard.png'" />
+            </a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="bi bi-list lead"></i></button>
             <!-- Navbar Search-->
@@ -54,7 +66,7 @@
 
              
             <!-- Navbar-->
-            <a href="" class="text-light text-body ms-auto me-0 me-md-3 my-2 my-md-0">
+            <a href="" class="text-light text-body ms-auto me-0 my-2 my-md-0 notication">
                 <i class="bi bi-bell fs-4 text-light"></i>
                 <span class="badge rounded-pill badge-notification bg-danger">999+</span>
             </a>
@@ -63,7 +75,7 @@
             </div>
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person"></i></a>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person fs-4"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">Settings</a></li>
                         <li><a class="dropdown-item" href="#!">Activity Log</a></li>
@@ -79,7 +91,7 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                            
-                            <router-link  class="nav-link mt-4" :to="{name:'permiso'}">
+                            <router-link  class="nav-link mt-4" :to="{name:'dashboard'}">
                                 <div class="sb-nav-link-icon"><i class="bi bi-speedometer"></i></div>
                                 Dashboard
                             </router-link>
@@ -179,9 +191,9 @@
                             </a> -->
                         </div>
                     </div>
-                    <div class="sb-sidenav-footer">
+                    <div class="sb-sidenav-footer mt-5">
                         <div class="small">Logged in as:</div>
-                        Start Bootstrap
+                        {{ extractRole(user.role) }}
                     </div>
                 </nav>
             </div>
@@ -194,7 +206,7 @@
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                            <div class="text-muted">Copyright &copy; Your Website 2025</div>
                             <div>
                                 <a href="#">Privacy Policy</a>
                                 &middot;
@@ -248,7 +260,19 @@
         // transition: color .15sease-in-out, background-color .15sease-in-out, border-color .15sease-in-out, box-shadow .15sease-in-out;
     }
 
-    
+    .dashboard-logo{
+        width: 10em;
+        margin-top: .2em;
+
+    }
+
+    .notication{
+        margin-right: 3rem !important;
+        .badge{
+            margin-left: -.8rem !important;
+            position: absolute;
+        }
+    }
 
 </style>
 
