@@ -76,7 +76,7 @@
     }
 
     const setStatus = (data)=>{
-        return data == 0 ? "PENDING" : data == 1 ? "INITIAL APPROVED" : data == 2 ? "FINAL APPROVED" :"DISAPPROVED"
+        return data == 0 ? "PENDING" : data == 1 ? "INITIALLY APPROVED" : data == 2 ? "APPROVED" :"DISAPPROVED"
     }
 
     const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
@@ -341,7 +341,7 @@
                             </div>
 
                             <div class="data-group">
-                                <small class="text-muted ">Cause:</small>
+                                <small class="text-muted ">Cause / Reason:</small>
                                 <blockquote class="blockquote">
                                     <p>{{ leave.cause }}</p>
                                 </blockquote>
@@ -380,7 +380,7 @@
                                     <p>{{ extractName(leave.initial) }}</p>
                                 </blockquote>
                                 <figcaption class="blockquote-footer" v-if="leave.initial_appr_date != null">
-                                    Date approved: <cite title="Source Title">{{ format(leave.initial_appr_date) }}</cite>
+                                    Date approved: <cite title="Approval" class="text-danger fw-bold"> {{ format(leave.initial_appr_date) }}</cite>
                                 </figcaption>
                                 
                             </div>
@@ -390,7 +390,7 @@
                                     <p>{{ extractName(leave.final) }}</p>
                                 </blockquote>
                                  <figcaption class="blockquote-footer" v-if="leave.final_appr_date != null">
-                                    Date approved: <cite title="Source Title">{{ format(leave.final_appr_date) }}</cite>
+                                    Date approved: <cite title="Approval" class="text-danger fw-bold">{{ format(leave.final_appr_date) }}</cite>
                                 </figcaption>
                             </div>
 

@@ -88,6 +88,10 @@ class EmployeeController extends Controller
             $data = $data->where('name','like','%'.$request->search.'%')
             ->orWhere('school_id','like','%'.$request->search.'%');
         }
+
+        if($request->filter != ''){
+            $data = $data->where('office_id', $request->filter);
+        }
         $data = $data->latest()->paginate(10);
 
         return response()->json($data, 200);

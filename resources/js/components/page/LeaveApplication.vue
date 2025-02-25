@@ -31,7 +31,7 @@
         leavedata:"",
         emp_class_id:"",
         leave_credit_id:"",
-        date_apply:"",
+        application_date: format(new Date()),
         cause:"",
         number_of_day:"",
         from:"",
@@ -119,7 +119,7 @@
             form.id = data.id
             form.leave = data.leave_id
             form.emp_class_id = route.params.id
-            form.date_apply = data.date_apply
+            form.application_date = data.date_apply
             form.cause = data.cause
             form.from = data.from
             form.until = data.until
@@ -147,7 +147,7 @@
             let date = d.toISOString().slice(0, 10);
 
             let day3 =  new Date(date);
-            if(form.from != "" && (form.leave === 4 || form.leave === 5)){
+            if(form.from != "" && (form.leave === 5 || form.leave === 6)){
                 if(form.from <= day3){
                     toast.fire({
                         icon:'warning',
@@ -230,11 +230,20 @@
     }
 
     const submitLeaveApplication = ()=>{
-
-        if(sig_image.value == null || sig_image.value == ''){
+        console.log(user.value.digital_signature)
+        if((sig_image.value == null || sig_image.value == '' )){
             toast.fire({
                 icon:'warning',
                 title:'Upload digital signature first before you proceed!',
+                background:'#c50000'
+            })
+            return;
+        }
+
+        if(sig_image.value != null &&  user.value.digital_signature == null){
+             toast.fire({
+                icon:'warning',
+                title:'Please click save on the digital signature!',
                 background:'#c50000'
             })
             return;
@@ -350,6 +359,7 @@
                 title:'Digital Signature uploaded successfully!',
                 // background:'#c50000'
             })
+            getAuthUser();
         })
     }
 
@@ -384,14 +394,14 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                <label>DATE APPLY:</label>
-                                    <VueDatePicker v-model="form.date_apply" :format="format"></VueDatePicker>
-                                    <span class="text-danger" v-if="errors.date_apply">{{errors.date_apply[0]}}</span>
+                                <label>APPLICATION DATE:</label>
+                                    <VueDatePicker v-model="form.application_date" :format="format"></VueDatePicker>
+                                    <span class="text-danger" v-if="errors.application_date">{{errors.application_date[0]}}</span>
                                 </div>
                             </div>
                         </div>
                     <div class="form-group mt-3 mb-3">
-                        <label>CAUSE</label>
+                        <label>CAUSE / REASON</label>
                         <textarea class="form-control" v-model="form.cause"></textarea>
                         <span class="text-danger" v-if="errors.cause">{{errors.cause[0]}}</span>
                     </div>
@@ -408,7 +418,7 @@
                             </div>
                         <div class="col-md-4 pl-1">
                                 <div class="form-group">
-                                    <label>EXT.</label>
+                                    <label>AM/PM</label>
                                     <select class="form-control" v-model="form.from_extension">
                                         <option value="1">AM</option>
                                         <option value="2">PM</option>
@@ -428,7 +438,7 @@
                             </div>
                         <div class="col-md-4 pl-1">
                                 <div class="form-group">
-                                    <label>EXT.</label>
+                                    <label>AM/PM</label>
                                     <select class="form-control" v-model="form.until_extension">
                                         <option value="1">AM</option>
                                         <option value="2">PM</option>

@@ -105,6 +105,10 @@
                                 <div class="sb-nav-link-icon"><i class="bi bi-person-lines-fill"></i></div>
                                 Manage Positions
                             </router-link>
+                            <router-link :to="{name:'leave_type_setup'}" class="nav-link">
+                                <div class="sb-nav-link-icon"><i class="bi bi-journal-plus"></i></div>
+                                Manage Leave Type
+                            </router-link>
                             <router-link :to="{name:'employee_setup'}" class="nav-link">
                                 <div class="sb-nav-link-icon"><i class="bi bi-people"></i></div>
                                 Employee Record

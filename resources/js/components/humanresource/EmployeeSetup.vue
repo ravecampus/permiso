@@ -134,8 +134,13 @@
        
     }
 
+    const filterData = ()=>{
+        getEmployees();
+    }
+
+    const filter = ref("")
     const getEmployees = ()=>{
-        axios.get('api/employees-list?search='+searchData.value).then((res)=>{
+        axios.get('api/employees-list?search='+searchData.value+"&filter="+filter.value).then((res)=>{
             employees.value = res.data.data
             links.value = res.data.links
         })
@@ -316,7 +321,7 @@
 
 </script>
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <h4 class="mt-4">EMPLOYEE SETUP</h4>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active">Dashboard</li>
@@ -422,11 +427,19 @@
             </div>
             <div class="col-md-6">
                <div class="card">
-                   <div class="card-header">
+                   <div class="card-header d-flex justify-content-between">
                         <div class="input-group p-2">
                             <input type="text" class="form-control" placeholder="Search for School ID or Name..." v-model="searchData">
                             <button class="btn btn-success" type="button" id="button-addon1">
                                 <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                        <div class="input-group p-2">
+                           <select class="form-control" v-model="filter" @change="filterData(filter)">
+                                <option v-for="(list, index) in offices" :key="index" :value="list.id">{{ list.description }}</option>
+                           </select>
+                            <button class="btn btn-success" type="button" id="button-addon1">
+                                <i class="bi bi-funnel"></i>
                             </button>
                         </div>
                    </div>

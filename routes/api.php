@@ -12,6 +12,7 @@ use App\Http\Controllers\SetupController;
 use App\Http\Controllers\LASourceDataController;
 use App\Http\Controllers\LeaveApplicationController;
 use App\Http\Controllers\LeaveRequestController;
+use App\Http\Controllers\LeaveTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,8 @@ Route::get('/final-request',[LeaveRequestController::class,'finalRequest']);
 Route::post('/initial-approved',[LeaveRequestController::class,'initialApproved']);
 Route::post('/final-approved',[LeaveRequestController::class,'finalApproved']);
 Route::post('/disapproved',[LeaveRequestController::class,'disapproved']);
+
+Route::resource('/leave-type', LeaveTypeController::class);
 
 
 

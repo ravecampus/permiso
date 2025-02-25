@@ -53,7 +53,7 @@
     }
 
     const setStatus = (data)=>{
-        return data == 0 ? "NEED TO REVIEW" : data == 1 ? "APPROVED INITIALLY" : data == 2 ? "APPROVED" :"DISAPPROVED"
+        return data == 0 ? "NEED TO REVIEW" : data == 1 ? "INITIALLY APPROVED " : data == 2 ? "APPROVED" :"DISAPPROVED"
     }
 
 

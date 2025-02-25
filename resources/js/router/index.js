@@ -5,6 +5,7 @@ import Login from '../components/Login.vue'
 import SetupEmployee from '../components/humanresource/EmployeeSetup.vue'
 import SetupPosition from '../components/humanresource/PositionSetup.vue'
 import SetupOffice from '../components/humanresource/OfficeSetup.vue'
+import SetupLeaveType from '../components/humanresource/LeaveTypeSetup.vue'
 import SetupEmpClassification from '../components/humanresource/EmpClassificationSetup.vue'
 import SetupPage from '../components/humanresource/SetupPage.vue'
 import InitialApp from '../components/humanresource/SetupPageInitial.vue'
@@ -50,6 +51,11 @@ const routes = [
                 path:'/setup/office',
                 name:'office_setup',
                 component: SetupOffice,
+            },
+            {
+                path:'/setup/leave-type',
+                name:'leave_type_setup',
+                component: SetupLeaveType,
             },
             {
                 path:'/setup/level',

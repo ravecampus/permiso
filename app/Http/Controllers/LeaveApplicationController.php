@@ -44,7 +44,7 @@ class LeaveApplicationController extends Controller
         $user = Auth::user();
         $request->validate([
             "leave" => "required",
-            "date_apply" => "required",
+            "application_date" => "required",
             "cause" => "required",
             "number_of_day" => "required",
             "from" => "required",
@@ -61,7 +61,7 @@ class LeaveApplicationController extends Controller
             "leave_id" => $request->leave,
             "cause" => $request->cause,
             "number_of_day" => $request->number_of_day,
-            "date_apply" =>Carbon::parse(strstr($request->date_apply, " (", true))->format('Y-m-d'),
+            "date_apply" =>Carbon::parse(strstr($request->application_date, " (", true))->format('Y-m-d'),
             "from" => Carbon::parse(strstr($request->from, " (", true))->format('Y-m-d'),
             "until" =>Carbon::parse(strstr($request->until, " (", true))->format('Y-m-d'),
             "from_ext" =>$request->from_extension,
@@ -118,7 +118,7 @@ class LeaveApplicationController extends Controller
         $user = Auth::user();
         $request->validate([
             "leave" => "required",
-            "date_apply" => "required",
+            "application_date" => "required",
             "cause" => "required",
             "number_of_day" => "required",
             "from" => "required",
@@ -133,7 +133,7 @@ class LeaveApplicationController extends Controller
 
         $data = LeaveApplication::find($id);
         $data->leave_id = $request->leave;
-        $data->date_apply = Carbon::parse($request->date_apply)->format('Y-m-d');
+        $data->date_apply = Carbon::parse($request->application_date)->format('Y-m-d');
         $data->cause = $request->cause;
         $data->from  = Carbon::parse($request->from)->format('Y-m-d');
         $data->until = Carbon::parse($request->until)->format('Y-m-d');
