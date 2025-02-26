@@ -12,6 +12,10 @@
     const formData = new FormData();  
     const formData2 = new FormData();
 
+    const leave_sy = ref([])
+    const balance = ref(0)
+    const allowed = ref(0)
+
     const weekend = ref("")
 
     const btnCap = ref("Submit")
@@ -61,7 +65,14 @@
         getLeave()
         getInitial()
         getFinal()
+        getMyLeaveSY()
     })
+
+    const getMyLeaveSY = ()=>{
+        axios.get("/api/my-leave-sy").then((res)=>{
+            leave_sy.value = res.data
+        })
+    }
 
     const getAuthUser = ()=>{
         axios.get('/api/user').then((res)=>{
@@ -221,16 +232,11 @@
                 
                 }
 
-                //  if(form.number_of_day > this.availeave){
-                //         let id = this.leave_type.id;
-                //         this.usable = this.extractNonLeaveType(id);
-                //         return;
-                //  }
+             
 
     }
 
     const submitLeaveApplication = ()=>{
-        console.log(user.value.digital_signature)
         if((sig_image.value == null || sig_image.value == '' )){
             toast.fire({
                 icon:'warning',
@@ -318,6 +324,31 @@
         }else{
             openRtxt.value = false
         }
+        checkBalance(data)
+    }
+
+    const checkBalance = (id)=>{
+        let ret = 0
+        leave_sy.value.forEach(val => {
+            if(val.leave_id == id){
+                ret += val.number_of_day
+            }
+        });
+
+        balance.value = (allowedBal(id) == "NO LIMIT" ? 0: allowedBal(id))  - ret
+    }
+
+    const allowedBal = (id)=>{
+        let ret = 0;
+        leaves.value.forEach(val => {
+            if(val.leave_id == id && val.is_no_limit == 0){
+                ret = val.credits
+            }else if(val.leave_id == id && val.is_no_limit == 1){
+                ret = "NO LIMIT"
+            }
+        });
+        allowed.value = ret
+        return ret
     }
 
     const changeFile = ()=>{    
@@ -404,6 +435,17 @@
                         <label>CAUSE / REASON</label>
                         <textarea class="form-control" v-model="form.cause"></textarea>
                         <span class="text-danger" v-if="errors.cause">{{errors.cause[0]}}</span>
+                    </div>
+
+                    <div class="card bg-success text-light">
+                        <div class="card-body">
+                            <label class="text-light me-3"><i class="fw-bold">ALLOWED: </i>
+                                <span class="fs-6">{{ allowed }} </span>
+                             </label>
+                             <label class="text-light"><i class="fw-bold">AVAILABLE: </i>
+                                <span class="fs-6">{{ balance }} </span>
+                             </label>
+                        </div>
                     </div>
                     <div class="row mb-4" v-if="openRtxt">
                         <strong>INCLUSIVE DATE </strong>

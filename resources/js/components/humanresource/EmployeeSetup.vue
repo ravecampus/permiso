@@ -436,6 +436,7 @@
                         </div>
                         <div class="input-group p-2">
                            <select class="form-control" v-model="filter" @change="filterData(filter)">
+                                <option value="0">All</option>
                                 <option v-for="(list, index) in offices" :key="index" :value="list.id">{{ list.description }}</option>
                            </select>
                             <button class="btn btn-success" type="button" id="button-addon1">

@@ -69,6 +69,7 @@ Route::get('/source-leave', [LASourceDataController::class, 'leave']);
 Route::get('/source-initial', [LASourceDataController::class, 'initialApproval']);
 Route::get('/source-final', [LASourceDataController::class, 'finalApproval']);
 
+Route::get('/my-leave-sy', [LeaveApplicationController::class,'myLeaveSY']);
 Route::get('/my-leave', [LeaveApplicationController::class,'myLeave']);
 Route::resource('/leave-application', LeaveApplicationController::class);
 

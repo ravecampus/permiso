@@ -89,7 +89,7 @@ class EmployeeController extends Controller
             ->orWhere('school_id','like','%'.$request->search.'%');
         }
 
-        if($request->filter != ''){
+        if($request->filter != 0){
             $data = $data->where('office_id', $request->filter);
         }
         $data = $data->latest()->paginate(10);
