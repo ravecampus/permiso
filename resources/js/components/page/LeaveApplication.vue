@@ -15,6 +15,8 @@
     const leave_sy = ref([])
     const balance = ref(0)
     const allowed = ref(0)
+    const limits = ref(0)
+    const exhausted = ref("")
 
     const weekend = ref("")
 
@@ -232,11 +234,61 @@
                 
                 }
 
-             
+                if(form.until !=""){
+                    checkLimit()
 
+                }
+    }
+
+
+    const checkPendingLeave = ()=>{
+
+        let item = leave_sy.value.filter((val)=> val.status == 1 || val.status == 0)
+        if(item.length > 0){
+
+         
+            Swal.fire({
+            title: "You have pending Leave Application, Do you want to proceed ?",
+            text: "----",
+            icon: "question",
+            showCancelButton: true,
+            background: '#17a673',
+            color: '#fff',
+            confirmButtonColor: "#424242",
+            cancelButtonColor: "#ffc107",
+            confirmButtonText: "YES!",
+            cancelButtonText: "NO"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    btnCap.value = "Submitting..."
+
+                    axios.post("api/leave-application", formData2,{
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        },
+                    }).then((res)=>{
+                        toast.fire({
+                            icon:'success',
+                            title:'Leave Application submitted successfully!',
+                        })
+                        router.push({name:"myleave"})
+                        btnCap.value = "Submit"
+                        errors.value = []
+                    }).catch((err)=>{
+                        errors.value = err.response.data.errors
+                        btnCap.value = "Submit"
+                    })
+                }
+             });
+             return true
+        }else{
+            return false
+        }
     }
 
     const submitLeaveApplication = ()=>{
+       
+     
         if((sig_image.value == null || sig_image.value == '' )){
             toast.fire({
                 icon:'warning',
@@ -272,6 +324,9 @@
         });
 
         if(form.id == undefined){
+            if(checkPendingLeave()){
+                return
+            }
             btnCap.value = "Submitting..."
 
             axios.post("api/leave-application", formData2,{
@@ -317,6 +372,7 @@
 
     const openRtxt = ref(false);
     const openRange = (data)=>{
+        exhausted.value = ""
         errors.value = []
         form.emp_class_id = route.params.id
         if(data.leave_id != ""){
@@ -336,6 +392,7 @@
         });
 
         balance.value = (allowedBal(id) == "NO LIMIT" ? 0: allowedBal(id))  - ret
+       
     }
 
     const allowedBal = (id)=>{
@@ -349,6 +406,17 @@
         });
         allowed.value = ret
         return ret
+    }
+
+    const checkLimit = ()=>{
+        // exhausted.value = ""
+        if(allowed.value  !== "NO LIMIT"){
+            if(balance.value < form.number_of_day){
+                form.until = ""
+                form.number_of_day = ""
+                exhausted.value = "Your leave credit balance is exhausted! balance: "+balance.value
+            }
+        }
     }
 
     const changeFile = ()=>{    
@@ -437,14 +505,15 @@
                         <span class="text-danger" v-if="errors.cause">{{errors.cause[0]}}</span>
                     </div>
 
-                    <div class="card bg-success text-light">
+                    <div class="card bg-light text-light">
                         <div class="card-body">
-                            <label class="text-light me-3"><i class="fw-bold">ALLOWED: </i>
+                            <label class="text-success me-3"><i class="fw-bold">ALLOWED: </i>
                                 <span class="fs-6">{{ allowed }} </span>
                              </label>
-                             <label class="text-light"><i class="fw-bold">AVAILABLE: </i>
+                             <label class="text-success"><i class="fw-bold">AVAILABLE: </i>
                                 <span class="fs-6">{{ balance }} </span>
                              </label>
+                             <label class="ms-2 fs-6 text-danger">{{ exhausted }} </label>
                         </div>
                     </div>
                     <div class="row mb-4" v-if="openRtxt">

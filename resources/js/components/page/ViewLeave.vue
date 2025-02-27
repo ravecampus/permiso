@@ -402,11 +402,15 @@
                         <div>
                             <small class="text-secondary">Leave Status:</small>
                             <h4 class="text-muted"> {{ setStatus(leave.status) }} ...</h4>
+                            <figcaption class="blockquote-footer mt-1" v-if="leave.disapproved_date != null">
+                                Date: <cite title="Approval" class="text-danger fw-bold">{{ format(leave.disapproved_date) }}</cite>
+                            </figcaption>
                         </div>
 
                         <div>
                             <small class="text-secondary">School Year:</small>
                             <h5 class="text-success"> {{ extractSY(leave.schoolyear) }}</h5>
+                            
                         </div>
                       </div>
                   </div>

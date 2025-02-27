@@ -34,6 +34,14 @@ class LeaveApplicationController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
+        $sy = SchoolYear::where('is_active', 1)->first();
+        $check = LeaveApplication::where("user_id", $user->id)
+            ->where("status", [0,1])
+            ->where("school_year_id", $sy->id)
+            ->get();
+       
+
         if($request->leave == 4){
             $file = $request->file('attachment');
             $image = base64_encode(file_get_contents($file));
@@ -41,7 +49,7 @@ class LeaveApplicationController extends Controller
             $size = $file->getSize();
             $name = $file->getClientOriginalName();
         }
-        $user = Auth::user();
+       
         $request->validate([
             "leave" => "required",
             "application_date" => "required",
@@ -54,6 +62,11 @@ class LeaveApplicationController extends Controller
             "initial_approval" => "required",
             "final_approval" => "required",
         ]);
+
+        // if(count($check) > 0)
+        // {
+        //    return response()->json(["count" => count($check)],409);
+        // }
         $lev = LevelLeavecredit::where("emp_class_id", $request->emp_class_id)
                                 ->where("leave_id", $request->leave)->first();
         $data = LeaveApplication::create([
@@ -179,6 +192,7 @@ class LeaveApplicationController extends Controller
         $data = LeaveApplication::with('schoolyear', 'initial', 'final')->select("leave_application.*", "leave.description as description")
                 ->join("leave", "leave.id", "=", "leave_application.leave_id")
                 ->where("leave_application.user_id", $user->id)
+                ->where("leave_application.status","!=", 3)
                 ->where("leave_application.school_year_id",$sy->id);
         $data = $data->get();
         return response()->json($data, 200);
