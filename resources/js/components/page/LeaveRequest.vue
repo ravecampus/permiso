@@ -1,9 +1,26 @@
 <script setup>
     import { ref, onMounted, watch } from "vue"
 
+    const initial = ref([])
+    const final = ref([])
+
     onMounted(()=>{
-        
+        initialCount()
+        finalCount()
     })
+
+    const initialCount = ()=>{
+        axios.get("api/initial-count").then((res)=>{
+            initial.value = res.data
+        });
+    }
+
+     const finalCount = ()=>{
+        axios.get("api/final-count").then((res)=>{
+            final.value = res.data
+        });
+    }
+
 
 </script>
 
@@ -18,10 +35,14 @@
                
                 <ul class="nav nav-pills mt-4">
                     <li class="nav-item">
-                        <router-link class="nav-link" :to="{name:'initialrequest'}" aria-current="page">INITIAL APPROVAL</router-link>
+                        <router-link class="nav-link" :to="{name:'initialrequest'}" aria-current="page">INITIAL APPROVAL
+                             &nbsp;<span class="badge bg-danger" v-if="initial.length > 0">{{ initial.length }}</span>
+                        </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" :to="{name:'finalrequest'}" aria-current="page">FINAL APPROVAL</router-link>
+                        <router-link class="nav-link" :to="{name:'finalrequest'}" aria-current="page">FINAL APPROVAL
+                            &nbsp;<span class="badge bg-danger" v-if="final.length > 0">{{ final.length }}</span>
+                        </router-link>
                     </li>
                     
                 </ul>

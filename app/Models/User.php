@@ -61,6 +61,13 @@ class User extends Authenticatable
     public function office(){
         return $this->hasOne(Office::class,'id', 'office_id');
     }
+    public function emp_class(){
+        return $this->hasOne(EmploymentClassification::class,'id', 'emp_class_id');
+    }
+
+    public function empleave_credit(){
+        return $this->hasMany(LevelLeavecredit::class,'emp_class_id', 'emp_class_id');
+    }
 
 
 }

@@ -126,4 +126,9 @@ class AuthController extends Controller
 
         return response()->json($data, 200);
     }
+
+    public function user(){
+        $auth = Auth::user();
+        return response()->json(User::with("position", "office", "emp_class")->where("id", $auth->id)->first(), 200);
+    }
 }

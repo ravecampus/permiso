@@ -3,15 +3,17 @@
     import { useRouter } from "vue-router"
 
     const user = ref({})
+    const notifications = ref([])
     const router = useRouter()
 
     onMounted(()=>{
         getAuthUser();
 
         if(!window.winsdev.isLoggedin){
-            console.log("hello")
             router.push({name:"login"});
         }
+
+        getNotification()
     })
 
 
@@ -42,8 +44,21 @@
         });
     }
 
+    const getNotification = ()=>{
+        axios.get("api/notification").then((res)=>{
+            notifications.value = res.data
+        })
+    }
+
     const extractRole = (data)=>{
         return data == 1 ? "ADMIN" : data == 2 ? "SCHOOL PRESIDENT": data == 3 ? "OFFICE HEAD" : data == 4 ? "FACULTY / STAFF" :" NONE"
+    }
+
+    const showNotification = (data)=>{
+        axios.delete("api/notification/"+data.id).then((res)=>{
+            getNotification()
+            router.push({name:'viewleave', params:{id:data.leave_application_id}})
+        })
     }
 
 </script>
@@ -66,19 +81,53 @@
 
              
             <!-- Navbar-->
-            <a href="" class="text-light text-body ms-auto me-0 my-2 my-md-0 notication">
-                <i class="bi bi-bell fs-4 text-light"></i>
-                <span class="badge rounded-pill badge-notification bg-danger">999+</span>
-            </a>
+             <ul class="navbar-nav ms-auto ms-auto me-0 my-2 my-md-0">
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link text-light text-body  notication" id="notification" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-bell fs-4 text-light"></i>
+                        <span class="badge rounded-pill badge-notification bg-danger" v-if="notifications.length > 0">{{ notifications.length }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notification" >
+                        <div class="text-center fw-bold text-success" v-if="notifications.length == 0"> No Notification available !</div>
+                       <div class="noti-div position-relative mt-3" v-if="notifications.length > 0"> 
+                        <li v-for="(list, index) in notifications" :key="index" >
+                            <a  href="#" class="dropdown-item p-2" @click="showNotification(list)">
+                                <div class="notification d-flex justify-content-start">
+                                    <div class="person">
+                                        <div class="badge rounded-pill bg-success p-1 mt-3">
+                                            <i class="bi bi-person fs-3 text-light"></i>
+                                        </div>
+                                    </div>
+                                    <div class="message fs-6 ms-3 text-success fw-bold me-3">
+                                        {{ list.message }}
+                                        <div class="fw-normal m-0">
+                                            {{ list.sender.name }}
+                                        </div>
+                                        <p class="p-0 m-0 text-muted fw-normal">
+                                            <small>
+                                            <timeago  :datetime="list.created_at"/>
+                                            </small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                
+                       </div>
+                        <li><hr class="dropdown-divider" /></li>
+                       
+                    </ul>
+                </li>
+            </ul>
             <div class="user text-light ">
                 <div class="mb-0 pb-0"> {{ user.name }}</div>
             </div>
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person fs-4"></i></a>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person fs-4"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><router-link class="dropdown-item" :to="{name:'profile'}">Profile</router-link></li>
+                        <!-- <li><a class="dropdown-item" href="#!">Activity Log</a></li> -->
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" @click="logout" href="#">Logout</a></li>
                     </ul>
@@ -91,108 +140,53 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                            
-                            <router-link  class="nav-link mt-4" :to="{name:'dashboard'}">
+                            <router-link  class="nav-link side mt-4" :to="{name:'dashboard'}">
                                 <div class="sb-nav-link-icon"><i class="bi bi-speedometer"></i></div>
                                 Dashboard
                             </router-link>
                             <div class="sb-sidenav-menu-heading pt-1">Management</div>
-                            <!-- <div class="sb-sidenav-menu-heading">Settings</div> -->
-                            <router-link class="nav-link" :to="{name:'office_setup'}">
+                            <router-link class="nav-link side" :to="{name:'office_setup'}">
                                 <div class="sb-nav-link-icon"><i class="bi bi-building-fill-add"></i></div>
                                 Manage Offices
                              </router-link>
-                            <router-link :to="{name:'position_setup'}" class="nav-link">
+                            <router-link :to="{name:'position_setup'}" class="nav-link side">
                                 <div class="sb-nav-link-icon"><i class="bi bi-person-lines-fill"></i></div>
                                 Manage Positions
                             </router-link>
-                            <router-link :to="{name:'leave_type_setup'}" class="nav-link">
+                            <router-link :to="{name:'leave_type_setup'}" class="nav-link side">
                                 <div class="sb-nav-link-icon"><i class="bi bi-journal-plus"></i></div>
                                 Manage Leave Type
                             </router-link>
-                            <router-link :to="{name:'employee_setup'}" class="nav-link">
+                            <router-link :to="{name:'employee_setup'}" class="nav-link side">
                                 <div class="sb-nav-link-icon"><i class="bi bi-people"></i></div>
                                 Employee Record
                             </router-link>
-                             <router-link :to="{name:'setupschoolyear'}" class="nav-link">
+                             <router-link :to="{name:'setupschoolyear'}" class="nav-link side">
                                 <div class="sb-nav-link-icon"><i class="bi bi-calendar2-plus"></i></div>
                                 Manage S.Y.
                             </router-link>
-                             <router-link :to="{name:'emplevel'}" class="nav-link">
+                             <router-link :to="{name:'emplevel'}" class="nav-link side">
                                 <div class="sb-nav-link-icon"><i class="bi bi-gear-wide-connected"></i></div>
                                 Emp. Classif. Setup
                             </router-link>
+                             <router-link :to="{name:'empleavecredit'}" class="nav-link">
+                                <div class="sb-nav-link-icon"><i class="bi bi-person-lines-fill"></i></div>
+                                Emp. Leave Credits
+                            </router-link>
                             <div class="sb-sidenav-menu-heading pt-1">Application</div>
-                            <router-link :to="{name:'leaveselection'}" class="nav-link">
+                            <router-link :to="{name:'leaveselection'}" class="nav-link side">
                                 <div class="sb-nav-link-icon"><i class="bi bi-filetype-docx"></i></div>
                                 Leave Application
                             </router-link>
-                            <router-link :to="{name:'myleave'}" class="nav-link">
+                            <router-link :to="{name:'myleave'}" class="nav-link side">
                                 <div class="sb-nav-link-icon"><i class="bi bi-file-arrow-up-fill"></i></div>
                                 My Leave 
                             </router-link>
                             <div class="sb-sidenav-menu-heading pt-1">Request</div>
-                             <router-link :to="{name:'initialrequest'}" class="nav-link">
+                             <router-link :to="{name:'initialrequest'}" class="nav-link side">
                                 <div class="sb-nav-link-icon"><i class="bi bi-file-arrow-up-fill"></i></div>
                                 Leave Request
                             </router-link>
-
-                            <!-- <router-link :to="{name:'myleave'}" class="nav-link">
-                                <div class="sb-nav-link-icon"><i class="bi bi-file-arrow-up-fill"></i></div>
-                                Leave Request
-                            </router-link>
-                             -->
-                            <!-- <div class="sb-sidenav-menu-heading">Interface</div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Layouts
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                                </nav>
-                            </div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Pages
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a> -->
-                            <!-- <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Authentication
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="login.html">Login</a>
-                                            <a class="nav-link" href="register.html">Register</a>
-                                            <a class="nav-link" href="password.html">Forgot Password</a>
-                                        </nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                        Error
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="401.html">401 Page</a>
-                                            <a class="nav-link" href="404.html">404 Page</a>
-                                            <a class="nav-link" href="500.html">500 Page</a>
-                                        </nav>
-                                    </div>
-                                </nav>
-                            </div> -->
-                            <!-- <div class="sb-sidenav-menu-heading">Addons</div>
-                            <a class="nav-link" href="charts.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Charts
-                            </a>
-                            <a class="nav-link" href="tables.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Tables
-                            </a> -->
                         </div>
                     </div>
                     <div class="sb-sidenav-footer mt-5">
@@ -241,7 +235,7 @@
     .sb-sidenav-dark .sb-sidenav-menu .nav-link .sb-nav-link-icon {
          color: #fff;
     }
-    .nav-link{
+    .side{
         
         &:hover, :focus{
          
@@ -277,6 +271,33 @@
             position: absolute;
         }
     }
+
+    .dropdown-item{
+        &:hover{
+            background-color: #d3f3d0 !important;
+            // color:#fff !important;
+        }
+    }
+
+    .noti-div{
+        max-height: 15rem;
+        // width: 22rem !important;
+        overflow-y: hidden; /* Hide vertical scrollbar */
+        overflow-x: hidden;
+        margin: 0 auto;
+        &:hover {
+            // width: 22rem !important;
+            overflow-y: scroll;
+            margin: 0 auto;
+        }
+        // width: 22rem !important;
+    }
+    ::-webkit-scrollbar {
+        width: .2rem;
+    }
+    ::-webkit-scrollbar-track {
+        background: #0aa35c;
+     }
 
 </style>
 

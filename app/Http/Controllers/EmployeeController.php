@@ -83,7 +83,7 @@ class EmployeeController extends Controller
     }
 
     public function employeeList(Request $request){
-        $data = User::query();
+        $data = User::with('empleave_credit');
         if($request->search != ''){
             $data = $data->where('name','like','%'.$request->search.'%')
             ->orWhere('school_id','like','%'.$request->search.'%');
@@ -92,7 +92,7 @@ class EmployeeController extends Controller
         if($request->filter != 0){
             $data = $data->where('office_id', $request->filter);
         }
-        $data = $data->latest()->paginate(10);
+        $data = $data->orderBy('name', 'asc')->paginate(10);
 
         return response()->json($data, 200);
     }

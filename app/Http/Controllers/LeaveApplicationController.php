@@ -7,6 +7,7 @@ use App\Models\LeaveApplication;
 use App\Models\LevelLeavecredit;
 use App\Models\myLeave;
 use App\Models\SchoolYear;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -67,6 +68,7 @@ class LeaveApplicationController extends Controller
         // {
         //    return response()->json(["count" => count($check)],409);
         // }
+      
         $lev = LevelLeavecredit::where("emp_class_id", $request->emp_class_id)
                                 ->where("leave_id", $request->leave)->first();
         $data = LeaveApplication::create([
@@ -90,6 +92,14 @@ class LeaveApplicationController extends Controller
             "sa_type" =>$request->leave == 4 ?  $mimeType : null,
             "sa_orig_name" => $request->leave == 4 ? $name :null,
 
+        ]);
+
+        Notification::create([
+            "sender_id" => $user->id,
+            "receiver_id" => $data->initial_appr_id,
+            "leave_application_id" => $data->id,
+            "status" => 0,
+            "message" => "You have notification for leave request"
         ]);
 
         return response()->json($data, 200);
@@ -192,6 +202,16 @@ class LeaveApplicationController extends Controller
         $data = LeaveApplication::with('schoolyear', 'initial', 'final')->select("leave_application.*", "leave.description as description")
                 ->join("leave", "leave.id", "=", "leave_application.leave_id")
                 ->where("leave_application.user_id", $user->id)
+                ->where("leave_application.status","!=", 3)
+                ->where("leave_application.school_year_id",$sy->id);
+        $data = $data->get();
+        return response()->json($data, 200);
+    }
+
+    public function employeeLeave(){
+        $sy = SchoolYear::where('is_active', 1)->first();
+        $data = LeaveApplication::with('schoolyear', 'initial', 'final')->select("leave_application.*", "leave.description as description")
+                ->join("leave", "leave.id", "=", "leave_application.leave_id")
                 ->where("leave_application.status","!=", 3)
                 ->where("leave_application.school_year_id",$sy->id);
         $data = $data->get();

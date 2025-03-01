@@ -272,6 +272,16 @@
     }
 
     const disapprovedwithRemarks = ()=>{
+        if(form.remarks == ""){
+
+             toast.fire({
+                title: "REQUIRED",
+                text: "Remarks is required!",
+                icon: "warning",
+                confirmButtonColor: "#26884b",
+            });
+            return
+        }
         form.id = leave.value.id
         axios.post("/api/disapproved/", form).then((res)=>{
             toast.fire({
@@ -404,6 +414,9 @@
                             <h4 class="text-muted"> {{ setStatus(leave.status) }} ...</h4>
                             <figcaption class="blockquote-footer mt-1" v-if="leave.disapproved_date != null">
                                 Date: <cite title="Approval" class="text-danger fw-bold">{{ format(leave.disapproved_date) }}</cite>
+                                <div class="fw-bold">
+                                  <small class="text-muted">REMARKS :</small>  {{ leave.remarks }}
+                                </div>
                             </figcaption>
                         </div>
 

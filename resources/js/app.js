@@ -9,6 +9,8 @@ import router from './router'
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
+import timeago from 'vue-timeago3'
+
 import axios from 'axios'
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = '/';
@@ -31,5 +33,6 @@ window.toast = toast
 import App from './components/App.vue'
 
 const app = createApp(App);
+app.use(timeago) 
 app.component('VueDatePicker', VueDatePicker)
 app.use(router).mount("#app")

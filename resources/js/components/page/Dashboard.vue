@@ -56,8 +56,8 @@
                                 <tbody>
                                     <tr v-for="(list, index) in leaves" :key="index">
                                         <td class="fs-6 fw-bold text-muted">{{ list.description }}</td>
-                                        <td>{{ list.is_no_limit == 1 ? "NO LIMIT" :  list.credits }}</td>
-                                        <td>{{ list.is_no_limit == 1 ? "NO LIMIT" :  available(list) }}</td>
+                                        <td class="fw-bold">{{ list.is_no_limit == 1 ? "NO LIMIT" :  list.credits }}</td>
+                                        <td class="fw-bold">{{ list.is_no_limit == 1 ? "NO LIMIT" :  available(list) }}</td>
                                     </tr>
                                 </tbody>
 

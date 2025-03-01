@@ -12,6 +12,7 @@ import InitialApp from '../components/humanresource/SetupPageInitial.vue'
 import FinalApp from '../components/humanresource/SetupPageFinal.vue'
 import SetupLeaveCredit from '../components/humanresource/SetupPageLeaveCredit.vue'
 import SetupSchoolYear from '../components/humanresource/SetupPageSY.vue'
+import EmpLeaveCredit from '../components/humanresource/EmpLeaveCredit.vue'
 
 import SelectionLeave from '../components/page/SelectionLeave.vue'
 import LeaveApplication from '../components/page/LeaveApplication.vue'
@@ -21,6 +22,7 @@ import  LeaveRequest from '../components/page/LeaveRequest.vue'
 import  InitialRequest from '../components/page/InitialRequest.vue'
 import  FinalRequest from '../components/page/FinalRequest.vue'
 import  Dashboard from '../components/page/Dashboard.vue'
+import  Profile from '../components/page/Profile.vue'
 
 import NotFound from '../components/NotFound.vue'
 
@@ -68,6 +70,11 @@ const routes = [
                 component: SetupSchoolYear,
             },
             {
+                path:'/employee/leave-credit',
+                name:'empleavecredit',
+                component: EmpLeaveCredit,
+            },
+            {
                 path:'/setup/level/:id',
                 name:'emplevelsetup',
                 component: SetupPage,
@@ -105,6 +112,11 @@ const routes = [
                 path:'/apply/my-leave',
                 name:'myleave',
                 component: MyLeave,
+            },
+            {
+                path:'/profile',
+                name:'profile',
+                component: Profile,
             },
             {
                 path:'/apply/leave-application/:id/edit/:leave_id',
