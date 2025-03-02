@@ -14,6 +14,7 @@ use App\Http\Controllers\LeaveApplicationController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\LeaveReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +75,7 @@ Route::get('/source-final', [LASourceDataController::class, 'finalApproval']);
 Route::get('/employee-leave', [LeaveApplicationController::class,'employeeLeave']);
 Route::get('/my-leave-sy', [LeaveApplicationController::class,'myLeaveSY']);
 Route::get('/my-leave', [LeaveApplicationController::class,'myLeave']);
+Route::post('/leave-application-edit', [LeaveApplicationController::class, "editLeaveApp"]);
 Route::resource('/leave-application', LeaveApplicationController::class);
 
 Route::get('/initial-request',[LeaveRequestController::class,'initialRequest']);
@@ -88,6 +90,10 @@ Route::get('/initial-count',[LeaveRequestController::class,'initialCount']);
 Route::get('/final-count',[LeaveRequestController::class,'finalCount']);
 
 Route::resource('/notification',NotificationController::class);
+
+Route::put('/change-name/{id}', [EmployeeController::class, 'changeName']);
+Route::post('/leave-report', [LeaveReportController::class, 'leaveReport']);
+
 
 
 

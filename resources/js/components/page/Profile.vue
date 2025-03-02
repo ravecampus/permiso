@@ -1,8 +1,14 @@
 <script setup>
-    import { ref, onMounted } from "vue"
+    import { ref,reactive, onMounted } from "vue"
+    import { Modal } from "bootstrap";
 
     const user = ref({})
+    const errors = ref([])
 
+    const modal = ref(null)
+    let vmodal = null;
+    const modalname = ref(null)
+    let vmodalname = null;
     
     const format = (d) => {
         const day =("0" + d.getDate()).slice(-2);
@@ -13,8 +19,26 @@
     }
 
     onMounted(()=>{
+        vmodal = new Modal(modal.value);
+        vmodalname = new Modal(modalname.value);
         getAuthUser()
+        modal.value.addEventListener("hidden.bs.modal", clearModal)
+        modalname.value.addEventListener("hidden.bs.modal", clearModal)
     })
+
+    const clearModal = ()=>{
+        resetform()
+        errors.value = []
+    }
+
+    const fdata=()=>({
+        password:"",
+        password_confirmation:"",
+        name:"",
+    })
+
+    const form = reactive(fdata())
+    const resetform = () => Object.assign(form, fdata())
 
     const getAuthUser = ()=>{
         axios.get("api/user").then((res)=>{
@@ -22,8 +46,53 @@
         })
     }
 
+    const savePassword = ()=>{
+        errors.value = []
+        axios.put("api/employees-change-password/"+form.id, form).then((res)=>{
+            resetform()
+            toast.fire({
+                icon:'success',
+                title:'Password has been changed!'
+            })
+            errors.value = []
+            getAuthUser()
+            vmodal.hide()
+            window.location.href="/login"
+        }).catch((err)=>{
+            errors.value = err.response.data.errors
+        })
+    }
+
+    const saveName = ()=>{
+        errors.value = []
+        axios.put("api/change-name/"+form.id, form).then((res)=>{
+            resetform()
+            toast.fire({
+                icon:'success',
+                title:'Name has been changed!'
+            })
+            errors.value = []
+            getAuthUser()
+            vmodalname.hide()
+        }).catch((err)=>{
+            errors.value = err.response.data.errors
+        })
+    }
+
+
     const extractRole = (data)=>{
         return data == 1 ? "ADMIN" : data == 2 ? "SCHOOL PRESIDENT": data == 3 ? "OFFICE HEAD" : data == 4 ? "FACULTY / STAFF" :" NONE"
+    }
+
+    const changePassword = ()=>{
+        form.id = user.value.id
+        vmodal.show()
+    }
+
+    const changeName = ()=>{
+        form.name = user.value.name
+        form.id = user.value.id
+        vmodalname.show()
     }
 </script>
 
@@ -33,7 +102,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-10 d-flex justify-content-between">
-                        <div class="profile-pic me-4">
+                        <div class="profile-pic me-4 border p-3 m-0">
                             <img class="img-pic" :src="'/img/permiso.png'"/>
                         </div>
                         <div class="row">
@@ -72,12 +141,66 @@
                         </div>
                        
                     </div>
-                    <div class="col-md-2">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-success btn-sm">Change Name</button>
-                            <button type="button" class="btn btn-secondary btn-sm">Change Passord</button>
+                    <div class="col-md-2 border text-center">
+                        <h5 class="mt-3">Change on?</h5>
+                        <hr>
+                        <div class="btn-group mt-2 mb-3">
+                            <button type="button" @click="changeName" class="btn btn-success btn-sm">Name</button>
+                            <button type="button"  @click="changePassword" class="btn btn-secondary btn-sm">Password</button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" ref="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">CHANGE PASSWORD</h5>
+                    
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-start mb-3">
+                    <p >Note: Once you change your password, it will automatically logout! </p>
+                    <div class="form-group mb-3">
+                        <label>PASSWORD</label>
+                        <input type="password" class="form-control" v-model="form.password" placeholder="Enter Password">
+                        <span class="text-danger" v-if="errors.password">{{errors.password[0]}}</span>
+                    </div>
+                    <div class="form-group">
+                        <label>PASSWORD CONFIRMATION</label>
+                        <input type="password" class="form-control" v-model="form.password_confirmation" placeholder="Enter Password Confirmation">
+                        <span class="text-danger" v-if="errors.password_confirmation">{{errors.password_confirmation[0]}}</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" @click="savePassword()">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" ref="modalname" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">CHANGE MY NAME</h5>
+                    
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-start mb-3">
+                    <div class="form-group mb-3">
+                        <label>NAME</label>
+                        <input type="text" class="form-control" v-model="form.name" placeholder="Enter Password">
+                        <span class="text-danger" v-if="errors.name">{{errors.name[0]}}</span>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" @click="saveName()">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
                 </div>
             </div>
         </div>

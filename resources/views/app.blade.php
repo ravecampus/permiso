@@ -9,7 +9,9 @@
     <link rel="icon" type="image/png" href="./favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 	<!-- <link rel="stylesheet" href="{{ asset('/css/font-awesome/css/font-awesome.min.css')}}"> -->
-
+    @section('head')
+        <meta name="csrf_token" content="{{ csrf_token() }}" />
+     @endsection
      @vite(['resources/css/app.css','resources/sass/app.scss','resources/js/app.js'])
 </head>
 <body>

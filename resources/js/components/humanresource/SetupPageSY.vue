@@ -169,6 +169,9 @@
 <template>
     <div class="container">
         <h4 class="mt-4">SCHOOL YEAR SETUP</h4>
+         <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
         <div class="row card mt-3">
             <div class="col-md-12 card-body">
                 <div class="d-flex justify-content-start mb-4">

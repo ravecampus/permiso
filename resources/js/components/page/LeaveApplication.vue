@@ -57,7 +57,6 @@
 
     onMounted(()=>{
         let id = route.params.leave_id
-
         if(id != null){
              getLeaveId(id)
              btnCap.value ="Save Changes"
@@ -234,7 +233,7 @@
                 
                 }
 
-                if(form.until !=""){
+                if(form.until !="" && route.params.leave_id == ""){
                     checkLimit()
 
                 }
@@ -347,8 +346,8 @@
             })
         }else{
             btnCap.value = "Saving..."
-             formData2.append('_method', 'put')
-             axios.post("api/leave-application/"+form.id, formData2,
+            //  formData2.append('_method', 'put')
+             axios.post("api/leave-application-edit/", formData2,
              {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -566,7 +565,7 @@
                         <span class="text-danger" v-if="errors.number_of_day">{{errors.number_of_day[0]}}</span>
                     </div>
                         <div class="row mb-4">
-                            <div class="col-md-6 mb-4">
+                            <div class="col-md-6 mb-4" v-if="user.emp_class_id != 1">
                                 <div class="form-group">
                                     <label>IINITIAL APPROVAL</label>
                                     <select class="form-control" v-model="form.initial_approval">

@@ -384,7 +384,7 @@
                         </div>
                         <div class="col-md-12 row">
 
-                            <div class="data-group col-md-6">
+                            <div class="data-group col-md-6" v-if="user.emp_class_id != 1">
                                 <small class="text-muted">Initial Approval:</small>
                                 <blockquote class="blockquote">
                                     <p>{{ extractName(leave.initial) }}</p>

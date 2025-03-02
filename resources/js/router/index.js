@@ -13,6 +13,7 @@ import FinalApp from '../components/humanresource/SetupPageFinal.vue'
 import SetupLeaveCredit from '../components/humanresource/SetupPageLeaveCredit.vue'
 import SetupSchoolYear from '../components/humanresource/SetupPageSY.vue'
 import EmpLeaveCredit from '../components/humanresource/EmpLeaveCredit.vue'
+import LeaveReport from '../components/humanresource/LeaveReport.vue'
 
 import SelectionLeave from '../components/page/SelectionLeave.vue'
 import LeaveApplication from '../components/page/LeaveApplication.vue'
@@ -68,6 +69,11 @@ const routes = [
                 path:'/setup/school-year',
                 name:'setupschoolyear',
                 component: SetupSchoolYear,
+            },
+            {
+                path:'/report/leave-application',
+                name:'leavereport',
+                component: LeaveReport,
             },
             {
                 path:'/employee/leave-credit',

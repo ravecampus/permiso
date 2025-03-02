@@ -51,23 +51,35 @@ class LeaveApplicationController extends Controller
             $name = $file->getClientOriginalName();
         }
        
-        $request->validate([
-            "leave" => "required",
-            "application_date" => "required",
-            "cause" => "required",
-            "number_of_day" => "required",
-            "from" => "required",
-            "until" => "required",
-            "from_extension" => "required",
-            "until_extension" => "required",
-            "initial_approval" => "required",
-            "final_approval" => "required",
-        ]);
-
-        // if(count($check) > 0)
-        // {
-        //    return response()->json(["count" => count($check)],409);
-        // }
+       
+        if($request->emp_class_id == 1){
+            $request->validate([
+                "leave" => "required",
+                "application_date" => "required",
+                "cause" => "required",
+                "number_of_day" => "required",
+                "from" => "required",
+                "until" => "required",
+                "from_extension" => "required",
+                "until_extension" => "required",
+                "final_approval" => "required",
+            ]);
+    
+        }else{
+            $request->validate([
+                "leave" => "required",
+                "application_date" => "required",
+                "cause" => "required",
+                "number_of_day" => "required",
+                "from" => "required",
+                "until" => "required",
+                "from_extension" => "required",
+                "until_extension" => "required",
+                "final_approval" => "required",
+                "initial_approval" => "required",
+            ]);
+    
+        }
       
         $lev = LevelLeavecredit::where("emp_class_id", $request->emp_class_id)
                                 ->where("leave_id", $request->leave)->first();
@@ -85,7 +97,7 @@ class LeaveApplicationController extends Controller
             "final_appr_id" =>$request->final_approval,
             "emp_class_id" =>$request->emp_class_id,
             "leave_credit_id" =>$lev->id,
-            "status" => 0,
+            "status" => $request->emp_class_id == 1 ? 1 : 0,
             "school_year_id" => SchoolYear::where('is_active', 1)->first()->id ,
             "sick_attach" => $request->leave == 4 ? $image : null,
             "sa_size" => $request->leave == 4 ? $size : null,
@@ -93,14 +105,26 @@ class LeaveApplicationController extends Controller
             "sa_orig_name" => $request->leave == 4 ? $name :null,
 
         ]);
+        if($request->emp_class_id == 1){
+            Notification::create([
+                "sender_id" => $user->id,
+                "receiver_id" => $data->final_appr_id,
+                "leave_application_id" => $data->id,
+                "status" => 0,
+                "message" => "You have notification for leave request"
+            ]);
 
-        Notification::create([
-            "sender_id" => $user->id,
-            "receiver_id" => $data->initial_appr_id,
-            "leave_application_id" => $data->id,
-            "status" => 0,
-            "message" => "You have notification for leave request"
-        ]);
+        }else{
+            Notification::create([
+                "sender_id" => $user->id,
+                "receiver_id" => $data->initial_appr_id,
+                "leave_application_id" => $data->id,
+                "status" => 0,
+                "message" => "You have notification for leave request"
+            ]);
+        }
+
+       
 
         return response()->json($data, 200);
 
@@ -131,50 +155,7 @@ class LeaveApplicationController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        if($request->leave == 4 && isset($request->attachment)){
-            $file = $request->file('attachment');
-            $image = base64_encode(file_get_contents($file));
-            $mimeType = $file->getClientMimeType();
-            $size = $file->getSize();
-            $name = $file->getClientOriginalName();
-        }
-        $user = Auth::user();
-        $request->validate([
-            "leave" => "required",
-            "application_date" => "required",
-            "cause" => "required",
-            "number_of_day" => "required",
-            "from" => "required",
-            "until" => "required",
-            "from_extension" => "required",
-            "until_extension" => "required",
-            "initial_approval" => "required",
-            "final_approval" => "required",
-        ]);
-        $lev = LevelLeavecredit::where("emp_class_id", $user->emp_class_id)
-                                ->where("leave_id", $request->leave)->first();
-
-        $data = LeaveApplication::find($id);
-        $data->leave_id = $request->leave;
-        $data->date_apply = Carbon::parse($request->application_date)->format('Y-m-d');
-        $data->cause = $request->cause;
-        $data->from  = Carbon::parse($request->from)->format('Y-m-d');
-        $data->until = Carbon::parse($request->until)->format('Y-m-d');
-        $data->from_ext = $request->from_extension;
-        $data->until_ext = $request->until_extension;
-        $data->initial_appr_id = $request->initial_approval;
-        $data->final_appr_id = $request->final_approval;
-        $data->emp_class_id = $user->emp_class_id;
-        $data->leave_credit_id = $lev->id;
-        if($request->leave == 4 && isset($request->attachment)){
-            $data->sick_attach = $image;
-            $data->sa_size = $size;
-            $data->sa_type = $mimeType;
-            $data->sa_orig_name = $name;
-        }
-        $data->save();
-
-        return response()->json($data, 200);
+        
     }
 
     /**
@@ -215,6 +196,73 @@ class LeaveApplicationController extends Controller
                 ->where("leave_application.status","!=", 3)
                 ->where("leave_application.school_year_id",$sy->id);
         $data = $data->get();
+        return response()->json($data, 200);
+    }
+
+    public function editLeaveApp(Request $request){
+
+        if($request->leave == 4 && isset($request->attachment)){
+            $file = $request->file('attachment');
+            $image = base64_encode(file_get_contents($file));
+            $mimeType = $file->getClientMimeType();
+            $size = $file->getSize();
+            $name = $file->getClientOriginalName();
+        }
+        $user = Auth::user();
+        if($user->emp_class_id == 1){
+            $request->validate([
+                "leave" => "required",
+                "application_date" => "required",
+                "cause" => "required",
+                "number_of_day" => "required",
+                "from" => "required",
+                "until" => "required",
+                "from_extension" => "required",
+                "until_extension" => "required",
+                "final_approval" => "required",
+            ]);
+    
+        }else{
+            $request->validate([
+                "leave" => "required",
+                "application_date" => "required",
+                "cause" => "required",
+                "number_of_day" => "required",
+                "from" => "required",
+                "until" => "required",
+                "from_extension" => "required",
+                "until_extension" => "required",
+                "final_approval" => "required",
+                "initial_approval" => "required",
+            ]);
+    
+        }
+        $lev = LevelLeavecredit::where("emp_class_id", $user->emp_class_id)
+                                ->where("leave_id", $request->leave)->first();
+
+        $data = LeaveApplication::find($request->id);
+        $data->leave_id = $request->leave;
+        $data->date_apply = Carbon::parse($request->application_date)->format('Y-m-d');
+        $data->cause = $request->cause;
+        $data->from  = Carbon::parse($request->from)->format('Y-m-d');
+        $data->until = Carbon::parse($request->until)->format('Y-m-d');
+        $data->from_ext = $request->from_extension;
+        $data->until_ext = $request->until_extension;
+        if($request->initial_approval == null){
+            $data->initial_appr_id = $request->initial_approval;
+        }
+        
+        $data->final_appr_id = $request->final_approval;
+        $data->emp_class_id = $user->emp_class_id;
+        $data->leave_credit_id = $lev->id;
+        if($request->leave == 4 && isset($request->attachment)){
+            $data->sick_attach = $image;
+            $data->sa_size = $size;
+            $data->sa_type = $mimeType;
+            $data->sa_orig_name = $name;
+        }
+        $data->save();
+
         return response()->json($data, 200);
     }
 }

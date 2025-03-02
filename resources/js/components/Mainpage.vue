@@ -64,7 +64,7 @@
 </script>
 <template>
     <div>
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-app">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-app d-print-none">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-1" href="index.html">
                 <img class="dashboard-logo" :src="'/img/dashboard.png'" />
@@ -136,7 +136,7 @@
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <nav class="sb-sidenav accordion sb-sidenav-dark d-print-none" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                            
@@ -173,6 +173,10 @@
                                 <div class="sb-nav-link-icon"><i class="bi bi-person-lines-fill"></i></div>
                                 Emp. Leave Credits
                             </router-link>
+                            <router-link :to="{name:'leavereport'}" class="nav-link side">
+                                <div class="sb-nav-link-icon"><i class="bi bi-file-earmark-bar-graph"></i></div>
+                                Leave Report
+                            </router-link>
                             <div class="sb-sidenav-menu-heading pt-1">Application</div>
                             <router-link :to="{name:'leaveselection'}" class="nav-link side">
                                 <div class="sb-nav-link-icon"><i class="bi bi-filetype-docx"></i></div>
@@ -187,6 +191,8 @@
                                 <div class="sb-nav-link-icon"><i class="bi bi-file-arrow-up-fill"></i></div>
                                 Leave Request
                             </router-link>
+
+                            
                         </div>
                     </div>
                     <div class="sb-sidenav-footer mt-5">
@@ -201,10 +207,10 @@
                         <router-view></router-view>
                     </div>
                 </main>
-                <footer class="py-4 bg-light mt-auto">
+                <footer class="py-4 bg-light mt-auto d-print-none">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2025</div>
+                            <div class="fw-bold text-success fs-5">{{ user.emp_class==null ? "": user.emp_class.title}}</div>
                             <div>
                                 <a href="#">Privacy Policy</a>
                                 &middot;

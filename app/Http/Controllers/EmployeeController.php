@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Session;
 
 class EmployeeController extends Controller
 {
@@ -98,6 +100,7 @@ class EmployeeController extends Controller
     }
 
     public function changePasswordEmployee(Request $request, string $id){
+        $user = Auth::user();
         $request->validate([
             'password' => 'required|string|min:4|confirmed',
             'password_confirmation' => 'required',
@@ -107,7 +110,23 @@ class EmployeeController extends Controller
         $data->password = bcrypt($request->password);
         $data->save();
 
+        if($data->id == $user->id){
+            Session::flush();
+            Auth::logout();
+        }
+
         return response()->json($data, 200);
+    }
+
+    public function changeName(Request $request, string $id){
+        $request->validate([
+            "name" => "required|string"
+        ]);
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->save();
+
+        return response()->json($user, 200);
     }
 
 }
