@@ -161,7 +161,7 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between mb-2">
-                <h4>LEAVE CREADITS</h4>
+                <h4>LEAVE CREDITS</h4>
                 <button type="button" @click="addModal" class="btn btn-success">
                     <i class="bi bi-plus-square"></i> ADD
                 </button>

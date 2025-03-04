@@ -43,7 +43,7 @@ class DataSeeder extends Seeder
 
         DB::table('employment_classification')->insert([
             'id' => 5,
-            'title' => 'NON-TEACHING PERSONNE',
+            'title' => 'NON-TEACHING PERSONNEL',
             'sub_title' => 'FORM 114 - APPLICATION FOR LEAVE',
         ]);
         DB::table('employment_classification')->insert([

@@ -32,10 +32,10 @@
     <div class="login-body bg-success min-vh-100 m-0">
         <div class="row d-flex justify-content-end">
             <div class="col-md-7 ">  
-                <div class="logo w-100 d-flex justify-content-center">
+                <div class="logo w-100">
                     <img :src="'img/login.png'"  class="img-logo"/>
                 </div>
-                 <div class="badge-logo position-absolute ms-5">
+                 <div class="">
                     <img :src="'/img/ndmc.png'" class="s-logo"/>
                     <img :src="'/img/cite.png'" class="s-logo-2" />
                 </div>
@@ -105,6 +105,7 @@
         margin-top: 3rem;
         width: 4em;
         margin-right: .5em;
+        margin-left: 10em;
     }
     .s-logo-2{
         margin-top: 3rem;

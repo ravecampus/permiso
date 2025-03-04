@@ -4,11 +4,19 @@
 
     const leave_sy = ref([])
     const leaves = ref([])
+    const user = ref([])
 
     onMounted(()=>{
         getMyLeaveSY()
         getLeave()
+        getAuthUser()
     })
+
+    const getAuthUser = ()=>{
+        axios.get('/api/user').then((res)=>{
+            user.value = res.data
+        })
+    }
 
     const getMyLeaveSY = ()=>{
         axios.get("/api/my-leave-sy").then((res)=>{
@@ -40,7 +48,7 @@
     <div class="container mt-5">
         <h1 class="text-success text-center">WELCOME TO PERMISO</h1>
         <div class="row mt-4">
-            <div class="col-md-5">
+            <div class="col-md-5" v-if="user.id != undefined && user.role != 2">
                 <div class="card">
                     <div class="card-body">
                         <h3 class="text-center"> LEAVE CREDITS</h3>

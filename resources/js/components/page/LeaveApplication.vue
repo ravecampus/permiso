@@ -159,7 +159,7 @@
             let date = d.toISOString().slice(0, 10);
 
             let day3 =  new Date(date);
-            if(form.from != "" && (form.leave === 5 || form.leave === 6)){
+            if(form.from != "" && (form.leave === 5)){
                 if(form.from <= day3){
                     toast.fire({
                         icon:'warning',
@@ -228,7 +228,6 @@
                         weekend.value = ""
                     }
                     date_diff -= iAdjust // take into account both days on weekend
-
                     form.number_of_day =  (date_diff + 1) - (form.until_extension == 1 ? 0.5 : 0) - (form.from_extension == 2 ? 0.5 : 0); //
                 
                 }
@@ -307,7 +306,7 @@
         }
         form.attachment = attachment_.value
 
-        if((form.leave === 4 && sickfilter.value == 0 && form.id == null) || (form.leave === 4 && sickfilter.value == "")){
+        if(((form.leave === 4 && sickfilter.value == 0 && form.id == null) || (form.leave === 4 && sickfilter.value == "")) && form.number_of_day > 1){
             toast.fire({
                 icon:'warning',
                 title:'Sick Leave need a attachment!',
@@ -440,6 +439,28 @@
     const signatureUpload = (data)=>{
         sigfile.value = data[0]
         sig_image.value = URL.createObjectURL(data[0])
+
+        
+            Swal.fire({
+            title: "Do you want to save your digital signature?",
+            text: "Confirmation",
+            icon: "question",
+            showCancelButton: true,
+            background: '#17a673',
+            color: '#fff',
+            confirmButtonColor: "#424242",
+            cancelButtonColor: "#ffc107",
+            confirmButtonText: "YES!",
+            cancelButtonText: "NO"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                     uplaodSignature()
+                }else{
+                      sig_image.value = ""
+                      sigfile.value = ""
+                      getAuthUser()
+                }
+             });
 
     }
 
@@ -622,7 +643,6 @@
                         <div class="form-group">
                             <label>MEDICAL CERTIFICATE</label>
                             <div class="img mb-3 mt-2" v-if="attach_ !=''">
-                                
                                 <p class="text-success">
                                  <strong class="me-2">   {{ attach_ }}</strong>
                                  <button type="button" @click="removeFile()" v-if="form.id == undefined" class="btn btn-outline-secondary btn-sm">
@@ -633,7 +653,7 @@
                            
                         </div>
                         <input type="file" @change="changeFileAttach" class="d-none file-attach" id="attachfile" accept=""/>
-                         <label for="attachfile" class="btn btn-secondary btn-sm mt-2" v-if="form.leave == 4">
+                         <label for="attachfile" class="btn btn-secondary btn-sm mt-2" v-if="form.leave == 4 && form.number_of_day > 1">
                              <i class="bi bi-paperclip"></i>
                              Attachment
                         </label>

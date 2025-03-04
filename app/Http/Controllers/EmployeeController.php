@@ -63,7 +63,7 @@ class EmployeeController extends Controller
 
         $data = User::find($id);
         $data->name = $request->name;
-        // $data->school_id = $request->school_id;
+        $data->school_id = $request->school_id;
         $data ->position_id = $request->position;
         $data->office_id = $request->office;
         $data->role = $request->role;
@@ -85,7 +85,7 @@ class EmployeeController extends Controller
     }
 
     public function employeeList(Request $request){
-        $data = User::with('empleave_credit');
+        $data = User::with('empleave_credit')->where("role", "!=", 2);
         if($request->search != ''){
             $data = $data->where('name','like','%'.$request->search.'%')
             ->orWhere('school_id','like','%'.$request->search.'%');

@@ -14,11 +14,17 @@ class NotificationController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $data = Notification::with('sender', 'leaveapp')->where("receiver_id", $user->id)
+        $data = Notification::with('sender', 'leaveapp')
+        ->where("receiver_id", $user->id)
         ->where("status", 0)
         ->latest()->get();
 
-        return response()->json($data , 200);
+        $data_ = Notification::with('sender', 'leaveapp')
+        ->where("receiver_id", $user->id)
+        ->latest()->get();
+
+
+        return response()->json(["list"=>$data_, "number"=>$data] , 200);
     }
 
     /**

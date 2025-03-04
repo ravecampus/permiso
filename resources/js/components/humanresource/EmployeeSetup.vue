@@ -380,7 +380,7 @@
                         
                         <div class="form-group mb-2 col-md-6">
                             <label>SCHOOL ID</label>
-                            <input type="text" :disabled="distxt" v-model="form.school_id" class="form-control" placeholder="Enter School ID">
+                            <input type="text" v-model="form.school_id" class="form-control" placeholder="Enter School ID">
                             <span class="text-danger" v-if="errors.school_id">{{errors.school_id[0]}}</span>
                         </div>
 
@@ -458,7 +458,7 @@
 
                                 <tbody>
                                     <tr v-for="(list, index) in employees" :key="index">
-                                        <td>{{ list.school_id }}</td>
+                                        <td><span class="fw-bold text-success">{{ list.school_id }}</span></td>
                                         <td>{{ list.name }}</td>
                                         <td>{{ extractPosition(list.position_id) }}</td>
                                         <td>

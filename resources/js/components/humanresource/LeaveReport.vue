@@ -213,7 +213,7 @@
                 <div>
                   Date :  {{ format(new Date(form.datefrom)) }} - {{ format(new Date(form.dateto)) }}
                 </div>
-                <div class="table-responsive">
+                <div>
                     <table class="table table-sm table-bordered">
                         <thead class="text-uppercase text-muted">
                             <tr>
@@ -253,5 +253,19 @@
 <style lang="scss" scoped>
     .print-logo{
         width:4.5rem;
+    }
+
+    @page {     
+        margin: 0 !important;
+        .container{
+            margin:0 !important;
+        }
+    }
+
+    @media print {
+         .container{
+             margin: 0 !important;
+            align-content: center;
+         }
     }
 </style>

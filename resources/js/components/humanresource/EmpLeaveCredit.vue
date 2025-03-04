@@ -60,19 +60,38 @@
     const noData = (data)=>{
         return data == undefined ? true : (data.length > 0) ? true : false;
     }
-
+    
     const extractAvailable = (data, user)=>{
         let ret = 0;
+        let pend = 0
         leaves.value.forEach(val => {
             // console.log(val)
             if(data.leave_id != undefined){
                 if(val.user_id  == user.id && data.leave_id == val.leave_id){
-                     ret += val.number_of_day           
+                     ret += val.number_of_day     
                 }
             }
            
         });
         return data.credits - ret
+    }
+
+    const extractPending = (data, user)=>{
+        let ret = 0;
+        let pend = 0
+        leaves.value.forEach(val => {
+            if(data.leave_id != undefined){
+                if(val.user_id  == user.id && data.leave_id == val.leave_id){
+                    
+                     if(val.status != 3 || val.status != 2)  
+                     {
+                           ret+= val.number_of_day  
+                     }      
+                }
+            }
+           
+        });
+        return ret
     }
 
 </script>
@@ -127,6 +146,7 @@
                                               <th>DESCRIPTION</th>
                                               <th>ALLOWED</th>
                                               <th>AVAILABLE</th>
+                                              <th>PENDING</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -134,6 +154,7 @@
                                                 <td>{{ lst.description }}</td>
                                                 <td>{{ lst.is_no_limit == 1 ? "NO LIMIT" :  lst.credits }}</td>
                                                 <td>{{ lst.is_no_limit == 1 ? "NO LIMIT" :  extractAvailable(lst, list) }}</td>
+                                                <td>{{ lst.is_no_limit == 1 ? "NO LIMIT" :  extractPending(lst, list) }}</td>
                                             </tr>
                                         </tbody>
                                     </table>

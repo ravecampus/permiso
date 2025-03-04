@@ -75,8 +75,13 @@
         }
     }
 
-    const setStatus = (data)=>{
-        return data == 0 ? "PENDING" : data == 1 ? "INITIALLY APPROVED" : data == 2 ? "APPROVED" :"DISAPPROVED"
+    const setStatus = (val)=>{
+        let data = val.status
+        return data == 0 ? "PENDING" : data == 1 ? checkApprovalStatus(val) : data == 2 ? "APPROVED" :"DISAPPROVED"
+    }
+
+    const checkApprovalStatus = (data)=>{
+        return data.emp_class_id == 1 ? "PENDING" : "INITIALLY APPROVED"
     }
 
     const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
@@ -162,7 +167,7 @@
             return;
         }
         Swal.fire({
-            title: "Do you want to Final Approved this leave ?",
+            title: "Do you want to Approved this leave ?",
             text: " ",
             icon: "question",
             showCancelButton: true,
@@ -384,7 +389,7 @@
                         </div>
                         <div class="col-md-12 row">
 
-                            <div class="data-group col-md-6" v-if="user.emp_class_id != 1">
+                            <div class="data-group col-md-6" v-if="leave.emp_class_id != 1">
                                 <small class="text-muted">Initial Approval:</small>
                                 <blockquote class="blockquote">
                                     <p>{{ extractName(leave.initial) }}</p>
@@ -411,7 +416,7 @@
                       <div class="d-flex justify-content-between">
                         <div>
                             <small class="text-secondary">Leave Status:</small>
-                            <h4 class="text-muted"> {{ setStatus(leave.status) }} ...</h4>
+                            <h4 class="text-muted"> {{ setStatus(leave) }} ...</h4>
                             <figcaption class="blockquote-footer mt-1" v-if="leave.disapproved_date != null">
                                 Date: <cite title="Approval" class="text-danger fw-bold">{{ format(leave.disapproved_date) }}</cite>
                                 <div class="fw-bold">

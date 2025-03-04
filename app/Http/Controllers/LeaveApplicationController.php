@@ -43,7 +43,7 @@ class LeaveApplicationController extends Controller
             ->get();
        
 
-        if($request->leave == 4){
+        if($request->leave == 4 && $request->number_of_day > 1){
             $file = $request->file('attachment');
             $image = base64_encode(file_get_contents($file));
             $mimeType = $file->getClientMimeType();

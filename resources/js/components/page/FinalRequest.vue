@@ -52,10 +52,15 @@
         router.push({name:'viewleave', params:{id:data.id}})
     }
 
-    const setStatus = (data)=>{
-        return data == 0 ? "NEED TO REVIEW" : data == 1 ? "INITIALLY APPROVED " : data == 2 ? "APPROVED" :"DISAPPROVED"
+    const setStatus = (val)=>{
+        let data = val.status
+        return data == 0 ? "NEED TO REVIEW" : data == 1 ? checkApprovalStatus(val) : data == 2 ? "APPROVED" :"DISAPPROVED"
     }
 
+    const checkApprovalStatus = (data)=>{
+        return data.emp_class_id == 1 ? "PENDING" : "INITIALLY APPROVED"
+
+    }
 
 
 </script>
@@ -89,7 +94,7 @@
                             <td>{{ format(list.date_apply) }}</td>
                             <td>
                                 <small class="text-success fw-bold">
-                                {{ setStatus(list.status) }}
+                                {{ setStatus(list) }}
                                 </small>
                             </td>
                             <td class="text-muted">

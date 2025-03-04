@@ -4,6 +4,7 @@
 
     const user = ref({})
     const notifications = ref([])
+    const notidata = ref([])
     const router = useRouter()
 
     onMounted(()=>{
@@ -46,7 +47,8 @@
 
     const getNotification = ()=>{
         axios.get("api/notification").then((res)=>{
-            notifications.value = res.data
+            notifications.value = res.data.number
+            notidata.value = res.data.list
         })
     }
 
@@ -88,9 +90,9 @@
                         <span class="badge rounded-pill badge-notification bg-danger" v-if="notifications.length > 0">{{ notifications.length }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notification" >
-                        <div class="text-center fw-bold text-success" v-if="notifications.length == 0"> No Notification available !</div>
-                       <div class="noti-div position-relative mt-3" v-if="notifications.length > 0"> 
-                        <li v-for="(list, index) in notifications" :key="index" >
+                        <div class="text-center fw-bold text-success noti-div" v-if="notidata.length == 0"> No Notification available !</div>
+                       <div class="noti-div position-relative mt-3" v-if="notidata.length > 0"> 
+                        <li v-for="(list, index) in notidata" :key="index" >
                             <a  href="#" class="dropdown-item p-2" @click="showNotification(list)">
                                 <div class="notification d-flex justify-content-start">
                                     <div class="person">
@@ -287,7 +289,7 @@
 
     .noti-div{
         max-height: 15rem;
-        // width: 22rem !important;
+        min-width: 22rem !important;
         overflow-y: hidden; /* Hide vertical scrollbar */
         overflow-x: hidden;
         margin: 0 auto;

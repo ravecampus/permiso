@@ -25,7 +25,7 @@
     }
 
     const formdata = ()=>({
-        description:"",
+        position_name:"",
         id:null,
     })
 
@@ -73,7 +73,7 @@
     }
 
     const editData = (data)=>{
-        form.description = data.description
+        form.position_name = data.description
         form.id = data.id
         vmodalposition.show();
         btnCap.value = "Save Changes"
@@ -151,7 +151,7 @@
                     <table class="table table-sm table-striped">
                         <thead class="text-uppercase text-muted">
                             <tr>
-                                <th>DESCRIPTION</th>
+                                <th>POSITION NAME</th>
                                 <th>ACTION</th>
                             </tr>
                         </thead>
@@ -203,9 +203,9 @@
                         </div>
                         <div class="modal-body text-start mb-3 row">
                            <div class="form-group">
-                               <label>DESCRIPTION</label>
-                               <input type="text" class="form-control" v-model="form.description">
-                               <span class="text-danger" v-if="errors.description">{{errors.description[0]}}</span>
+                               <label>POSITION NAME</label>
+                               <input type="text" class="form-control" v-model="form.position_name">
+                               <span class="text-danger" v-if="errors.position_name">{{errors.position_name[0]}}</span>
                            </div>
                         </div>
                         <div class="modal-footer">

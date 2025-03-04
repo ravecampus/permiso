@@ -36,11 +36,11 @@ class PositionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'description' => 'required|string'
+            'position_name' => 'required|string'
         ]);
 
         $data = Position::create([
-            'description' => $request->description
+            'description' => $request->position_name
         ]);
 
         return response()->json($data, 200);
@@ -68,11 +68,11 @@ class PositionController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'description' => 'required|string'
+            'position_name' => 'required|string'
         ]);
 
         $data = Position::find($id);
-        $data->description = $request->description;
+        $data->description = $request->position_name;
         $data->save();
 
         return response()->json($data, 200);

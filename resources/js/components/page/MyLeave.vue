@@ -62,8 +62,13 @@
         }
     }
 
-    const setStatus = (data)=>{
-        return data == 0 ? "Pending" : data == 1 ? "Initial Approved" : data == 2 ? "Final Approved" :"Disapproved"
+    const setStatus = (val)=>{
+        let data = val.status
+        return data == 0 ? "PENDING" : data == 1 ? checkApprovalStatus(val) : data == 2 ? "APPROVED" :"DISAPPROVED"
+    }
+
+    const checkApprovalStatus = (data)=>{
+        return data.emp_class_id == 1 ? "PENDING" : "INITIALLY APPROVED"
     }
 
     const editLeave = (data)=>{
@@ -151,7 +156,7 @@
                                
 
                                 </td>
-                                <td class="text-center text-success">{{ setStatus(list.status) }}</td>
+                                <td class="text-center text-success">{{ setStatus(list) }}</td>
                                 <td class="text-muted">
                                     <div class="btn-group">
                                         <button type="button" v-if="list.status == 0" @click="editLeave(list)" class="btn btn-success btn-sm">
