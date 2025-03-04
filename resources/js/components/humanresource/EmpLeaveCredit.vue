@@ -132,7 +132,7 @@
                             <tr>
                                 <th>SCHOOL ID</th>
                                 <th>NAME</th>
-                                <th>ACTION</th>
+                                <th>CREDITS</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -162,7 +162,7 @@
                                 </td>
                             </tr>
                              <tr>
-                                <td colspan="2" v-show="!noData(listData)">
+                                <td colspan="3" v-show="!noData(listData)">
                                     No Result Found!
                                 </td>
                             </tr>

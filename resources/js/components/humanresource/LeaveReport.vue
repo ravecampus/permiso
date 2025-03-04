@@ -79,7 +79,7 @@
     }
 
     const setStatus = (data)=>{
-        return data == 0 ? "Pending" : data == 1 ? "Initial Approved" : data == 2 ? "Final Approved" :"Disapproved"
+        return data == 0 ? "PENDING" : data == 1 ? "INITIALLY APPROVED" : data == 2 ? "APPROVED" :"DISAPPROVED"
     }
 
     const printReport = ()=>{
@@ -140,7 +140,7 @@
                                         
                                     </tr>
                                     <tr>
-                                        <td colspan="2" v-show="!noData(listData)">
+                                        <td colspan="7" v-show="!noData(listData)">
                                             No Result Found!
                                         </td>
                                     </tr>
