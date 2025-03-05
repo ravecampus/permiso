@@ -2,6 +2,7 @@
     import { ref, reactive, onMounted }  from "vue"
     import { useRoute } from "vue-router"
     import { Modal } from "bootstrap";
+    import Print from "../print/ApplicationLeave.vue";
 
     const route = useRoute()
     const leave = ref({})
@@ -309,11 +310,12 @@
 
 <template>
     <div class="container">
-        <h4 class="mt-4">VIEW LEAVE</h4>
-        <ol class="breadcrumb mb-4">
+        <Print></Print>
+        <h4 class="mt-4 d-print-none">VIEW LEAVE</h4>
+        <ol class="breadcrumb mb-4 d-print-none">
             <li class="breadcrumb-item active">Provide information about your leave status</li>
         </ol>
-        <div class="row" v-if="leave.id != null">
+        <div class="row d-print-none" v-if="leave.id != null">
             <div class="col-md-8">
                 <div class="card text-left">
                   <div class="card-body">
@@ -540,5 +542,16 @@
         border: 1px solid #225a26;
         border-radius: 5px;
     }
+
+    @media print {
+         .container{
+             color: #000 !important;
+            font-family: "Times New Roman";
+            font-size: 11px;
+             margin: 0 !important;
+             padding: 0 !important;
+         }
+    }
+
 </style>
 

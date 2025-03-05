@@ -59,7 +59,6 @@
 
     const checkApprovalStatus = (data)=>{
         return data.emp_class_id == 1 ? "PENDING" : "INITIALLY APPROVED"
-
     }
 
 
