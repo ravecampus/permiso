@@ -310,7 +310,7 @@
 
 <template>
     <div class="container">
-        <Print></Print>
+        <Print v-if="leave.id != undefined" :leaveapp="leave"></Print>
         <h4 class="mt-4 d-print-none">VIEW LEAVE</h4>
         <ol class="breadcrumb mb-4 d-print-none">
             <li class="breadcrumb-item active">Provide information about your leave status</li>
@@ -330,7 +330,7 @@
                             <div class="data-group">
                                 <small class="text-muted">Date of Employment:</small>
                                 <blockquote class="blockquote">
-                                    <p>{{ format(leave.signature.date_of_employment) }}</p>
+                                    <p>{{ format(new Date(leave.signature.date_of_employment)) }}</p>
                                 </blockquote>
                             </div>
                         </div>
@@ -547,7 +547,7 @@
          .container{
              color: #000 !important;
             font-family: "Times New Roman";
-            font-size: 11px;
+            font-size: 15px;
              margin: 0 !important;
              padding: 0 !important;
          }

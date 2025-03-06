@@ -1,9 +1,47 @@
+<script setup>
+    import {ref, onMounted } from "vue"
+    
+    const format = (d_) => {
+        let d = new Date(d_)
+        const day =("0" + d.getDate()).slice(-2);
+        const month = ("0"+(d.getMonth()+1)).slice(-2);
+        const year =  d.getFullYear();
+
+        return  month+ "/"+day+"/" + year;
+    }
+
+    const leave_data = ref({})
+    const props = defineProps({
+            leaveapp: {
+            type: Object,
+            required: true
+          },
+    })
+
+    onMounted(()=>{
+        leave_data.value = props.leaveapp
+        console.log(props.leaveapp)
+    })
+
+    const extractOffice = (data)=>{
+        return data.office != null ? data.office.description : ""
+    }
+
+    const extractPosition = (data)=>{
+        return data.position != undefined ? data.position.description : ""
+    }
+
+    const setExten = (data)=>{
+        return data == 1 ? "AM" : "PM"
+    }
+
+</script>
 <template>
     <div class=" print-leave d-none d-print-block row">
        <div class="print-header fw-bold">
            <div class="cap">NDMC FORM 114</div>
            <div class="cap"> APPLICATION FOR LEAVE</div>
-           <div class="cap">(Level III Administrators)</div>
+           <div class="cap">(College Faculty/ IBED)</div>
        </div>
        <div class="print-sub-header text-center">
            <div class="title fw-bold">NOTRE DAME OF MIDSAYAP COLLEGE</div>
@@ -14,14 +52,14 @@
                <div class="name-cap">
                    Name:
                </div>
-               <div class="name-content">
-Lavwin C. Campollo
+               <div class="name-content ps-2">
+                   {{ leave_data.signature != null ? leave_data.signature.name : ""}}
                </div>
                  <div class="office-cap">
                    Office:
                </div>
-               <div class="office-content">
-                   CITE
+               <div class="office-content ps-2">
+                   {{ leave_data.signature != null ? extractOffice(leave_data.signature) : ""}}
                </div>
            </div>
 
@@ -29,14 +67,14 @@ Lavwin C. Campollo
                <div class="pos-cap">
                    Position:
                </div>
-               <div class="pos-content">
-                   President
+               <div class="pos-content ps-2">
+                   {{ leave_data.signature != null ? extractPosition(leave_data.signature) :"" }}
                </div>
                  <div class="doe-cap">
                    Date of Employment:
                </div>
-               <div class="doe-content">
-                   12/21/2025
+               <div class="doe-content ps-2">
+                   {{ leave_data.signature != null ? format(leave_data.signature.date_of_employment) : "" }}
                </div>
            </div>
             <div class="line-3 d-flex">
@@ -46,45 +84,45 @@ Lavwin C. Campollo
             </div>
 
             <div class="line-4 d-flex">
-                <div class="official-content">
-
+                <div class="official-content text-center">
+                    <i class="bi bi-check text-success fw-bold"></i>
                 </div>
                 <div class="official-cap">
                     Official
                 </div>
 
-                <div class="official-content">
-
+                <div class="official-content text-center">
+                      <i class="bi bi-check text-success fw-bold"></i>
                 </div>
                 <div class="official-cap">
                     Maternity
                 </div>
-                <div class="official-content">
-
+                <div class="official-content text-center">
+                      <i class="bi bi-check text-success fw-bold"></i>
                 </div>
                 <div class="official-cap">
                     Absence
                 </div>
-                <div class="official-content">
-
+                <div class="official-content text-center">
+                      <i class="bi bi-check text-success fw-bold"></i>
                 </div>
                 <div class="official-cap">
                     Sick
                 </div>
-                <div class="official-content">
-
+                <div class="official-content text-center">
+                    <i class="bi bi-check text-success fw-bold"></i>
                 </div>
                 <div class="official-cap">
                     Vacation
                 </div>
-                <div class="official-content">
-
+                <div class="official-content text-center">
+                      <i class="bi bi-check text-success fw-bold"></i>
                 </div>
                 <div class="official-cap">
                     Study
                 </div>
-                <div class="official-content">
-
+                <div class="official-content text-center">
+                    <i class="bi bi-check text-success fw-bold"></i>  
                 </div>
                 <div class="official-cap">
                     Others
@@ -94,22 +132,154 @@ Lavwin C. Campollo
                 <div class="inc-date-cap">
                     Inclusive Dates: 
                 </div>
-                 <div class="inc-date-content">
-                   
+                 <div class="inc-date-content ps-2">
+                    {{ format(leave_data.from)  }} {{ setExten(leave_data.from_ext) }} -
+                    {{ format(leave_data.until)  }} {{ setExten(leave_data.unti_ext) }}
                 </div>
                  <div class="num-day-cap">
                    No. of days:
                 </div>
-                 <div class="num-day-content">
-                  123
+                 <div class="num-day-content ps-3">
+                  {{ leave_data.number_of_day }}
                 </div>
             </div>
             <div class="line-6 d-flex">
                 <div class="cause-cap">
                     Cause:
                 </div>
-                <div class="cause-content">
+                <div class="cause-content ps-2">
+                    {{ leave_data.cause }}
+                </div>
+            </div>
+            <div class="line-7 d-flex justify-content-between">
+                <div class="text-center">
+                    <div class="app-cap">
+                        {{ format(new Date(leave_data.date_apply)) }}
+                    </div>
+                    <div class="app-content">
+                        Date
+                    </div>
+                </div>
 
+                <div class="text-center">
+                    <div class="app-cap">
+                        <img :src="'/img/login.png'" class="applicant-sig position-absolute">
+                        {{ leave_data.signature != null ? leave_data.signature.name : ""}}
+                    </div>
+                    <div class="sig-content">
+                        Name and Signature of Applicant
+                    </div>
+                </div>
+            </div>
+            <div class="line-8">
+                <div class="endorse-cap">
+                    ENDORSEMENT OF THE VPAA:
+                </div>
+            </div>
+            <div class="line-9">
+                <div class="list-endorse ms-4">
+                    <div class="first-line d-flex">
+                        <div class="line-content"></div>
+                        <div class="line-cap">has a balance of </div>
+                        <div class="line-content"></div>
+                        <div class="line-cap">days sick/vacation leave privilege</div>
+                        
+                    </div>
+                    <div class="first-line d-flex">
+                        <div class="line-content"></div>
+                        <div class="line-cap">has exhausted his/her sick/vacation leave privilege</div>
+                        
+                    </div>
+                    <div class="first-line d-flex">
+                        <div class="line-content"></div>
+                        <div class="line-cap">Recommending approval with pay</div>
+                        
+                    </div>
+                    <div class="first-line d-flex">
+                        <div class="line-content"></div>
+                        <div class="line-cap">Recommending approval without pay</div>
+                        
+                    </div>
+                    <div class="first-line d-flex">
+                        <div class="line-content"></div>
+                        <div class="line-cap">Recommending disapproval because </div>
+                        <div class="disapproval-content"></div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="line-7 d-flex justify-content-between">
+                <div class="text-center">
+                    <div class="app-cap">
+                        {{ leave_data.initial_appr_date !=null ? format(new Date(leave_data.initial_appr_date)) : "" }}
+                    </div>
+                    <div class="app-content">
+                        Date
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="app-cap">
+                        <img :src="'/img/login.png'" class="applicant-sig position-absolute">
+                        {{ leave_data.initial != null ? leave_data.initial.name : ""}}
+                    </div>
+                    <div class="sig-content">
+                       Name and Signature of Dean/Principal
+                    </div>
+                </div>
+            </div>
+
+            <div class="line-10">
+                <div class="taken-cap">
+                    ACTION TAKEN:
+                </div>
+            </div>
+
+             <div class="line-9">
+                <div class="list-endorse">
+                    <div class="first-line d-flex">
+                        <div class="line-content text-center">
+                             <i   v-if="leave_data.status == 2"  class="bi bi-check text-success fw-bold"></i>
+                        </div>
+                        <div class="line-cap">Approved </div>
+                    </div>
+                    <div class="first-line d-flex">
+                        <div class="line-content text-center">
+                             <i v-if="leave_data.status == 3" class="bi bi-check text-success fw-bold"></i>
+                        </div>
+                        <div class="line-cap">Disapproved </div>
+                    </div>
+                </div>
+             </div>
+
+            <div class="line-7 d-flex justify-content-between">
+                <div class="text-center">
+                    <div class="app-cap">
+                     {{ leave_data.final_appr_date !=null ? format(new Date(leave_data.final_appr_date)) :"" }}
+                    </div>
+                    <div class="app-content">
+                        Date
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="app-cap">
+                        <img :src="'/img/login.png'" class="applicant-sig position-absolute">
+                          {{ leave_data.final != null ? leave_data.final.name : ""}}
+                    </div>
+                    <div class="sig-content">
+                        Vice President for Academic Affairs
+                    </div>
+                </div>
+            </div>
+
+            <div class="line-11">
+                <div class="foot-cap d-flex justify-content-between">
+                    <div class="cap-line">cc.</div>
+                    <div class="cap-line">Applicant</div>
+                    <div class="cap-line">Office Head</div>
+                    <div class="cap-line">Finance Officer</div>
+                    <div class="cap-line">HR</div>
                 </div>
             </div>
 
@@ -122,17 +292,18 @@ Lavwin C. Campollo
 $border-line : .5px solid #000;
     .print-leave{
         font-weight: bold;
-        margin: 48px 94px !important;
+        margin: 48px 60px !important;
         .print-header{
            line-height: 1.08;
         }
         .print-sub-header{
-            margin-top: 18px !important;
+            margin-top: 20px !important;
             line-height: 1.08;
         }
         .line-1{
             display: table;
-            margin-top: 11x !important;
+            margin-top: 20px !important;
+             line-height: 1.08;
             .name-content{
                 display: table-cell;
                 border-bottom: $border-line;
@@ -148,7 +319,8 @@ $border-line : .5px solid #000;
     }
     .line-2{
             display: table;
-            margin-top: 11px !important;
+            margin-top: 18px !important;
+            line-height: 1.08;
             .pos-content{
                 display: table-cell;
                 border-bottom: $border-line;
@@ -159,7 +331,7 @@ $border-line : .5px solid #000;
                 display: table-cell;
                 border-bottom: $border-line;
                 margin-left: 3px;
-                width: 113px;
+                width: 129px;
             }
     }
     .line-3{
@@ -168,8 +340,9 @@ $border-line : .5px solid #000;
     }
 
         .line-4{
-            margin-top: 11px !important;
+            margin-top: 18px !important;
             display: table;
+            line-height: 1.08;
             .official-content{
                 display: table-cell;
                 border-bottom: $border-line;
@@ -180,8 +353,9 @@ $border-line : .5px solid #000;
 
         }
         .line-5{
-            margin-top: 11px !important;
+            margin-top: 18px !important;
             display: table;
+            line-height: 1.08;
             .inc-date-content{
                 display: table-cell;
                 border-bottom: $border-line;
@@ -192,13 +366,14 @@ $border-line : .5px solid #000;
                 display: table-cell;
                 border-bottom: $border-line;
                 margin-left: 2px;
-                width: 100px;
+                width: 120px;
             }
         }
 
         .line-6{
-            margin-top: 11px !important;
+            margin-top: 18px !important;
             display: table;
+            line-height: 1.08;
             .cause-content{
                 display: table-cell;
                 border-bottom: $border-line;
@@ -207,6 +382,76 @@ $border-line : .5px solid #000;
             }
         }
 
+         .line-7{
+            margin-top: 54px !important;
+            display: table;
+            line-height: 1.08;
+            .app-content{
+                display: table-cell;
+                border-top: $border-line;
+                margin-left: 2px;
+                width: 113px;
+            }
+             .sig-content{
+                display: table-cell;
+                border-top: $border-line;
+                margin-left: 2px;
+                width: 265px;
+            }
+        }
+
+        
+         .line-8{
+            margin-top: 20px !important;
+            line-height: 1.08;
+            display: table;
+            .endorse-content{
+                display: table-cell;
+                border-top: $border-line;
+                margin-left: 2px;
+                width: 113px;
+            }
+           
+        }
+        .line-9{
+            margin-top: 20px !important;
+            line-height: 1.08;
+        }
+        .line-10{
+            .taken-cap{
+                margin-top: 72px !important;
+            }
+        }
+        .line-11{  
+            margin-top: 70px !important;
+            .cap-line{
+            
+            }
+        }
+
+    }
+
+    .applicant-sig{
+        margin: 0 auto;
+        width: 10rem;
+        height: 10rem;
+        margin-top: -4.8rem;
+    }
+
+    .first-line{
+        display: table;
+        .line-content{
+            display: table-cell;
+            border-bottom: $border-line;
+            margin-left: 2px;
+            width: 57px;
+        }
+        .disapproval-content{
+            display: table-cell;
+            border-bottom: $border-line;
+            margin-left: 2px;
+            width: 250px;
+        }
     }
     
 </style>

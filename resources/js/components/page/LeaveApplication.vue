@@ -623,12 +623,13 @@
                         </div>
                         <div class="form-group">
                             <label>DIGITAL SIGNATURE</label>
-                            <div class="img mb-3 mt-1">
+                            <div class="img mb-1 mt-1">
                                 <input type="file" @change="changeFile" class="d-none fileupload" id="filesig" accept=".jpeg, .jpg, .png"/>
                                 <img class="img-responsive digital-img"  :src="(sig_image == null || sig_image == '' )? '/img/digital.jpg':sig_image">
                             </div>
                            
                         </div>
+                        <div class="text-success mb-3 fw-bold">Use .png format for better output!</div>
                         <div class="btn-group">
                             <label for="filesig" class="btn btn-secondary btn-sm">
                                 <i class="bi bi-upload"></i>

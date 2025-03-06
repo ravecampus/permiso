@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->longText('image')->nullable();
+            $table->string('img_size')->nullable();
+            $table->string('img_type')->nullable();
+            $table->string('img_orig_name')->nullable();
             $table->integer('office_id')->nullable();
             $table->integer('role')->nullable();
             $table->integer('position_id')->nullable();
