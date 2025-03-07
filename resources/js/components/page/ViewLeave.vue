@@ -2,7 +2,15 @@
     import { ref, reactive, onMounted }  from "vue"
     import { useRoute } from "vue-router"
     import { Modal } from "bootstrap";
-    import Print from "../print/ApplicationLeave.vue";
+    import Print from "../print/ApplicationLeaveCollege.vue";
+    // import Print from "../print/ApplicationLeaveLevelNonTeach.vue";
+    // import Print from "../print/ApplicationLeaveLevel4.vue";
+    // import Print from "../print/ApplicationLeaveLevel3.vue";
+    // import Print from "../print/ApplicationLeaveLevel3Non.vue";
+    // import Print from "../print/ApplicationLeaveLevel2.vue";
+    
+    
+
 
     const route = useRoute()
     const leave = ref({})

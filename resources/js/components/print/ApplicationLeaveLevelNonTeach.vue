@@ -20,7 +20,6 @@
 
     onMounted(()=>{
         leave_data.value = props.leaveapp
-        console.log(props.leaveapp)
     })
 
     const extractOffice = (data)=>{
@@ -41,7 +40,7 @@
        <div class="print-header fw-bold">
            <div class="cap">NDMC FORM 114</div>
            <div class="cap"> APPLICATION FOR LEAVE</div>
-           <div class="cap">(College Faculty/ IBED)</div>
+           <div class="cap">(Non-Teaching Personnel)</div>
        </div>
        <div class="print-sub-header text-center">
            <div class="title fw-bold">NOTRE DAME OF MIDSAYAP COLLEGE</div>
@@ -56,7 +55,7 @@
                    {{ leave_data.signature != null ? leave_data.signature.name : ""}}
                </div>
                  <div class="office-cap">
-                   Office:
+                   Unit:
                </div>
                <div class="office-content ps-2">
                    {{ leave_data.signature != null ? extractOffice(leave_data.signature) : ""}}
@@ -85,47 +84,65 @@
 
             <div class="line-4 d-flex">
                 <div class="official-content text-center">
-                    <i class="bi bi-check text-success fw-bold"></i>
+                    <i class="bi bi-check text-danger fw-bold" v-if="leave_data.leave_id == 1"></i>
                 </div>
                 <div class="official-cap">
                     Official
                 </div>
 
                 <div class="official-content text-center">
-                      <i class="bi bi-check text-success fw-bold"></i>
+                      <i class="bi bi-check text-danger fw-bold" v-if="leave_data.leave_id == 2"></i>
                 </div>
                 <div class="official-cap">
                     Maternity
                 </div>
                 <div class="official-content text-center">
-                      <i class="bi bi-check text-success fw-bold"></i>
+                      <i class="bi bi-check text-danger fw-bold" v-if="leave_data.leave_id == 3"></i>
                 </div>
                 <div class="official-cap">
                     Absence
                 </div>
                 <div class="official-content text-center">
-                      <i class="bi bi-check text-success fw-bold"></i>
+                      <i class="bi bi-check text-danger fw-bold" v-if="leave_data.leave_id == 4"></i>
                 </div>
                 <div class="official-cap">
                     Sick
                 </div>
                 <div class="official-content text-center">
-                    <i class="bi bi-check text-success fw-bold"></i>
+                    <i class="bi bi-check text-danger fw-bold" v-if="leave_data.leave_id == 5"></i>
                 </div>
                 <div class="official-cap">
                     Vacation
                 </div>
                 <div class="official-content text-center">
-                      <i class="bi bi-check text-success fw-bold"></i>
+                      <i class="bi bi-check text-danger fw-bold" v-if="leave_data.leave_id == 7"></i>
                 </div>
                 <div class="official-cap">
                     Study
                 </div>
                 <div class="official-content text-center">
-                    <i class="bi bi-check text-success fw-bold"></i>  
+                    <i class="bi bi-check text-danger fw-bold" v-if="leave_data.leave_id == 9"></i>  
                 </div>
                 <div class="official-cap">
                     Others
+                </div>
+            </div>
+            <div class="line-4 d-flex">
+               
+
+                
+              
+                 <div class="official-content text-center">
+                    <i class="bi bi-check text-danger fw-bold" v-if="leave_data.leave_id == 6"></i>
+                </div>
+                <div class="official-cap">
+                    Emergency
+                </div>
+                <div class="official-content text-center">
+                    <i class="bi bi-check text-danger fw-bold" v-if="leave_data.leave_id == 8"></i>  
+                </div>
+                <div class="official-cap">
+                    Sabbatical
                 </div>
             </div>
             <div class="line-5 d-flex">
@@ -173,23 +190,11 @@
             </div>
             <div class="line-8">
                 <div class="endorse-cap">
-                    ENDORSEMENT OF THE VPAA:
+                    ACTION TAKEN:
                 </div>
             </div>
             <div class="line-9">
                 <div class="list-endorse ms-4">
-                    <div class="first-line d-flex">
-                        <div class="line-content"></div>
-                        <div class="line-cap">has a balance of </div>
-                        <div class="line-content"></div>
-                        <div class="line-cap">days sick/vacation leave privilege</div>
-                        
-                    </div>
-                    <div class="first-line d-flex">
-                        <div class="line-content"></div>
-                        <div class="line-cap">has exhausted his/her sick/vacation leave privilege</div>
-                        
-                    </div>
                     <div class="first-line d-flex">
                         <div class="line-content"></div>
                         <div class="line-cap">Recommending approval with pay</div>
@@ -199,6 +204,17 @@
                         <div class="line-content"></div>
                         <div class="line-cap">Recommending approval without pay</div>
                         
+                    </div>
+                    <div class="first-line d-flex">
+                        <div class="line-content"></div>
+                        <div class="line-cap">has a balance of </div>
+                        <div class="line-content"></div>
+                        <div class="line-cap">day</div>
+                        
+                    </div>
+                    <div class="first-line d-flex">
+                        <div class="line-content"></div>
+                        <div class="line-cap">has exhausted his/her sick/vacation leave privilege</div> 
                     </div>
                     <div class="first-line d-flex">
                         <div class="line-content"></div>
@@ -239,13 +255,13 @@
                 <div class="list-endorse">
                     <div class="first-line d-flex">
                         <div class="line-content text-center">
-                             <i   v-if="leave_data.status == 2"  class="bi bi-check text-success fw-bold"></i>
+                             <i   v-if="leave_data.status == 2"  class="bi bi-check text-danger fw-bold"></i>
                         </div>
                         <div class="line-cap">Approved </div>
                     </div>
                     <div class="first-line d-flex">
                         <div class="line-content text-center">
-                             <i v-if="leave_data.status == 3" class="bi bi-check text-success fw-bold"></i>
+                             <i v-if="leave_data.status == 3" class="bi bi-check text-danger fw-bold"></i>
                         </div>
                         <div class="line-cap">Disapproved </div>
                     </div>
@@ -268,7 +284,7 @@
                           {{ leave_data.final != null ? leave_data.final.name : ""}}
                     </div>
                     <div class="sig-content">
-                        Vice President for Academic Affairs
+                       HRDM - DIRECTOR
                     </div>
                 </div>
             </div>
@@ -277,7 +293,7 @@
                 <div class="foot-cap d-flex justify-content-between">
                     <div class="cap-line">cc.</div>
                     <div class="cap-line">Applicant</div>
-                    <div class="cap-line">Office Head</div>
+                    <div class="cap-line">VPAA</div>
                     <div class="cap-line">Finance Officer</div>
                     <div class="cap-line">HR</div>
                 </div>
@@ -419,11 +435,11 @@ $border-line : .5px solid #000;
         }
         .line-10{
             .taken-cap{
-                margin-top: 72px !important;
+                margin-top: 60px !important;
             }
         }
         .line-11{  
-            margin-top: 70px !important;
+            margin-top: 60px !important;
             .cap-line{
             
             }
