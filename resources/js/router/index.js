@@ -180,74 +180,76 @@ const openRoutes = [
     
 ];
 
-// const adminRoutes = [
-//     'about',
-//     'search',
-//     'main.document',
-//     'rechiva',
-//     'publicpage',
-//     'admin',
-//     'dashboard',
-//     'settings',
-//     'setting.authors',
-//     'setting.departments',
-//     'setting.typeofpapers',
-//     'admin.request',
-//     'admin.requestdoc',
-//     'admin.published',
-//     'admin.archived',
-//     'admin.account',
-//     'admin.canceled',
-//     'notfound',
-//     'admin.users',
-//     'admin.user',
-//     'admin.upload_p',
-//     'admin.upload_a',
-//     'admin.editupload_p',
-//     'admin.editupload_a',
-//     'admin.report',
-    
-// ];
+const admRt = [
+    'dashboard',
+    'permiso',
+    'employee_setup',
+    'position_setup',
+    'office_setup',
+    'leave_type_setup',
+    'emplevel',
+    'setupschoolyear',
+    'leavereport',
+    'empleavecredit',
+    'emplevelsetup',
+    'initialaprv',
+    'finalaprv',
+    'setupleavecredit',
+    'leaveselection',
+    'leaveapplication',
+    'myleave',
+    'profile',
+    'leaveapplication_edit',
+    'viewleave',
+    'leaverequest',
+    'initialrequest',
+    'finalrequest',
+    'notfound'
+];
 
-// const facultyRoutes = [
-//     'about',
-//     'rechiva',
-//     'publicpage',
-//     'signin',
-//     'search',
-//     'signup',
-//     'main.document',
-//     'notfound',
-//     'faculty',
-//     'faculty.upload_a',
-//     'faculty.upload_p',
-//     'faculty.documents',
-//     'faculty.document',
-//     'faculty.approved',
-//     'faculty.published',
-//     'faculty.canceled',
-//     'faculty.archived',
-//     'faculty.myaccount',
-//     'faculty.dashboard',
-//     'faculty.editupload_p',
-//     'faculty.editupload_a'
-    
-// ];
+const presRt = [
+    'dashboard',
+    'permiso',
+    // 'employee_setup',
+    'leavereport',
+    'empleavecredit',
+    'myleave',
+    'profile',
+    'viewleave',
+    'leaverequest',
+    'finalrequest',
+    'notfound'
+];
 
-// const facultyInctive = [
-//     'about',
-//     'rechiva',
-//     'publicpage',
-//     'signin',
-//     'main.document',
-//     'search',
-//     'signup',
-//     'notfound',
-//     'faculty',
-//     'faculty.dashboard',
-//     'faculty.myaccount',
-    
-// ];
+const oficHeadRt = [
+    'dashboard',
+    'permiso',
+    'leavereport',
+    'empleavecredit',
+    'leaveselection',
+    'leaveapplication',
+    'myleave',
+    'profile',
+    'leaveapplication_edit',
+    'viewleave',
+    'leaverequest',
+    'initialrequest',
+    'finalrequest',
+    'notfound'
+];
+
+const staffRt = [
+    'dashboard',
+    'permiso',
+    'leaveselection',
+    'leaveapplication',
+    'myleave',
+    'profile',
+    'leaveapplication_edit',
+    'viewleave',
+    'notfound'
+];
+
 
 router.beforeEach((to, from, next)=>{
     if(!window.winsdev.isLoggedin){

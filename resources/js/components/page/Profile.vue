@@ -288,7 +288,7 @@
                 </div>
                 <div class="modal-body text-start mb-3">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body text-center">
                             <img :src="profilepic" class="img-pic"/>
                         </div>
                     </div>

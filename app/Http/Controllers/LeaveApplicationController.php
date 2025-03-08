@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\LeaveApplication;
 use App\Models\LevelLeavecredit;
-use App\Models\myLeave;
+use App\Models\Leave;
 use App\Models\SchoolYear;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;

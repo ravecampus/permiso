@@ -15,6 +15,8 @@ use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\LeaveReportController;
+use App\Http\Controllers\DashboardController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -95,6 +97,7 @@ Route::put('/change-name/{id}', [EmployeeController::class, 'changeName']);
 Route::post('/leave-report', [LeaveReportController::class, 'leaveReport']);
 
 Route::post('/profile-picture', [EmployeeController::class,'profilePicture']);
+Route::get('/dashboard-history', [DashboardController::class,'leaveHistory']);
 
 
 

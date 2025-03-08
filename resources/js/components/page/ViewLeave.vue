@@ -2,12 +2,12 @@
     import { ref, reactive, onMounted }  from "vue"
     import { useRoute } from "vue-router"
     import { Modal } from "bootstrap";
-    // import Print from "../print/ApplicationLeaveCollege.vue";
-    // import Print from "../print/ApplicationLeaveLevelNonTeach.vue";
-    // import Print from "../print/ApplicationLeaveLevel4.vue";
-    // import Print from "../print/ApplicationLeaveLevel3.vue";
-    // import Print from "../print/ApplicationLeaveLevel3Non.vue";
-    import Print from "../print/ApplicationLeaveLevel2.vue";
+    import Print from "../print/ApplicationLeaveCollege.vue";
+    import Print1 from "../print/ApplicationLeaveLevelNonTeach.vue";
+    import Print2 from "../print/ApplicationLeaveLevel4.vue";
+    import Print3 from "../print/ApplicationLeaveLevel3.vue";
+    import Print4 from "../print/ApplicationLeaveLevel3Non.vue";
+    import Print5 from "../print/ApplicationLeaveLevel2.vue";
     
     
 
@@ -330,7 +330,12 @@
 
 <template>
     <div class="container">
-        <Print v-if="leave.id != undefined" :leaveapp="leave"></Print>
+        <Print v-if="leave.id != undefined && leave.emp_class_id === 6" :leaveapp="leave"></Print>
+        <Print1 v-if="leave.id != undefined && leave.emp_class_id === 5" :leaveapp="leave"></Print1>
+        <Print2 v-if="leave.id != undefined && leave.emp_class_id === 4" :leaveapp="leave"></Print2>
+        <Print3 v-if="leave.id != undefined && leave.emp_class_id === 2" :leaveapp="leave"></Print3>
+        <Print4 v-if="leave.id != undefined && leave.emp_class_id === 3" :leaveapp="leave"></Print4>
+        <Print5 v-if="leave.id != undefined && leave.emp_class_id === 1" :leaveapp="leave"></Print5>
         <h4 class="mt-4 d-print-none">VIEW LEAVE</h4>
         <ol class="breadcrumb mb-4 d-print-none">
             <li class="breadcrumb-item active">Provide information about your leave status</li>
@@ -583,6 +588,7 @@
         height: 8rem;
         border: 2px solid #0b8552;
         border-radius:  4px !important;
+        padding: 4px;
     }
 
 </style>

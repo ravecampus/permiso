@@ -446,7 +446,7 @@
             text: "Confirmation",
             icon: "question",
             showCancelButton: true,
-            background: '#17a673',
+            // background: '#17a673',
             color: '#fff',
             confirmButtonColor: "#424242",
             cancelButtonColor: "#ffc107",

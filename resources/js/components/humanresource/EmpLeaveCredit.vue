@@ -168,7 +168,7 @@
                                 <td class="text-muted">
                                     <img class="img-profile" :src="(list.image !== null )? extractImage(list) : '/img/permiso.png'" alt="">
                                 </td>
-                                <td class="text-muted">{{ list.school_id }}</td>
+                                <td class="text-success fw-bold">{{ list.school_id }}</td>
                                 <td class="text-muted">{{ list.name }}</td>
                                 <td class="text-muted">
                                     <table class="table table-sm table-bordered">
@@ -245,5 +245,6 @@
         height: 5rem;
         border: 2px solid #0b8552;
         border-radius:  4px !important;
+        padding: 4px;
     }
 </style>

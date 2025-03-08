@@ -229,7 +229,7 @@
             <div class="col-md-12 d-none d-print-block">
                 <div class="d-flex justify-content-start">
                 <div class="me-5">
-                  Date :  {{ format(new Date(form.datefrom)) }} - {{ format(new Date(form.dateto)) }}
+                  Date :  {{ form.datefrom == "" ? "" :format(new Date(form.datefrom)) }} - {{ form.datefrom == "" ? "" : format(new Date(form.dateto)) }}
                 </div>
                 <div class="ms-6">
                     Office: {{ setoff }}
