@@ -2,12 +2,12 @@
     import { ref, reactive, onMounted }  from "vue"
     import { useRoute } from "vue-router"
     import { Modal } from "bootstrap";
-    import Print from "../print/ApplicationLeaveCollege.vue";
+    // import Print from "../print/ApplicationLeaveCollege.vue";
     // import Print from "../print/ApplicationLeaveLevelNonTeach.vue";
     // import Print from "../print/ApplicationLeaveLevel4.vue";
     // import Print from "../print/ApplicationLeaveLevel3.vue";
     // import Print from "../print/ApplicationLeaveLevel3Non.vue";
-    // import Print from "../print/ApplicationLeaveLevel2.vue";
+    import Print from "../print/ApplicationLeaveLevel2.vue";
     
     
 
@@ -115,6 +115,18 @@
     const extractDigitSig = (data)=>{
         const blob = b64toBlob(data.digital_signature, data.ds_type);
         return URL.createObjectURL(blob)
+    }
+
+    const extractProfilePic = (data)=>{
+        if(data !== undefined ){
+            if(data.image === null){
+                return "/img/permiso.png"
+            }else{
+                const blob = b64toBlob(data.image, data.img_type);
+                return URL.createObjectURL(blob)
+            }
+        } 
+        
     }
 
     const downloadFile = (data)=>{
@@ -328,7 +340,12 @@
                 <div class="card text-left">
                   <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-3">
+                            <div class="img-profile">
+                                <img :src="extractProfilePic(leave.signature)" class="img-prof"/>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
                             <div class="data-group">
                                 <small class="text-muted">Name:</small>
                                 <blockquote class="blockquote">
@@ -342,7 +359,7 @@
                                 </blockquote>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="data-group">
                                 <small class="text-muted">Office:</small>
                                 <blockquote class="blockquote">
@@ -559,6 +576,13 @@
              margin: 0 !important;
              padding: 0 !important;
          }
+    }
+
+    .img-prof{
+        width: 8rem;
+        height: 8rem;
+        border: 2px solid #0b8552;
+        border-radius:  4px !important;
     }
 
 </style>

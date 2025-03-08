@@ -34,6 +34,36 @@
         return data == 1 ? "AM" : "PM"
     }
 
+    const extractDigitSig = (data)=>{
+        if(data !== undefined ){
+            if(data.digital_signature === null){
+                return "/img/login.png"
+            }else{
+                const blob = b64toBlob(data.digital_signature, data.ds_type);
+                return URL.createObjectURL(blob)
+            }
+        }   
+    }
+    
+    const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+            
+        const blob = new Blob(byteArrays, {type: contentType});
+        return blob;
+    }
+
 </script>
 <template>
     <div class=" print-leave d-none d-print-block row">
@@ -180,7 +210,7 @@
 
                 <div class="text-center">
                     <div class="app-cap">
-                        <img :src="'/img/login.png'" class="applicant-sig position-absolute">
+                        <img :src="extractDigitSig(leave_data.initial)" class="applicant-sig position-absolute">
                         {{ leave_data.signature != null ? leave_data.signature.name : ""}}
                     </div>
                     <div class="sig-content">
@@ -288,7 +318,7 @@
 
                 <div class="text-center">
                     <div class="app-cap">
-                        <img :src="'/img/login.png'" class="applicant-sig position-absolute">
+                        <img :src="extractDigitSig(leave_data.final)" class="applicant-sig position-absolute">
                           {{ leave_data.final != null ? leave_data.final.name : ""}}
                     </div>
                     <div class="sig-content">

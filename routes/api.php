@@ -94,7 +94,7 @@ Route::resource('/notification',NotificationController::class);
 Route::put('/change-name/{id}', [EmployeeController::class, 'changeName']);
 Route::post('/leave-report', [LeaveReportController::class, 'leaveReport']);
 
-
+Route::post('/profile-picture', [EmployeeController::class,'profilePicture']);
 
 
 

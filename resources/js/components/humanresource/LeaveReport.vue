@@ -11,6 +11,7 @@
     const listLeaves = ref([])
     let links = ref([])
     let leaves = ref([])
+    let offices = ref([])
     let searchData = ref('')
     
     const format = (d) => {
@@ -27,12 +28,14 @@
     onMounted(()=>{
         getData()
         getLeave()
+        getOffice()
     })
 
     const formdata = ()=>({
         datefrom: "",
         dateto: "",
-        filter:0
+        filter:0,
+        office:0
     })
 
     const form = reactive(formdata())
@@ -84,6 +87,20 @@
 
     const printReport = ()=>{
         window.print()
+    }
+
+    const getOffice = () =>{
+        axios.get('api/office-list').then((res)=>{
+            offices.value = res.data
+        })
+    }
+    const setoff = ref("")
+    const setOffice = (id)=>{
+        offices.value.forEach(val => {
+            if(id == val.id){
+                setoff.value = val.description
+            }
+        });
     }
 
 
@@ -170,14 +187,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5>Filter</h5>
-                         <!-- <div class="d-flex justify-content-between mb-5">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search..." aria-label="Example text with button addon" v-model="searchData" aria-describedby="button-addon1">
-                                <button class="btn btn-success" type="button" id="button-addon1">
-                                    <i class="bi bi-search"></i>
-                                </button>
-                            </div>
-                        </div> -->
+                     
                         <!-- <div class="d-flex justify-content-between mb-2"> -->
                             <div class="form-group me-1 mb-3">
                                 <label>FROM</label>
@@ -189,11 +199,18 @@
                             </div>
                         <!-- </div> -->
 
-                        <div class="form-group mt-3 mb-5">
+                        <div class="form-group mt-2 mb-2">
                             <label>LEAVE TYPE</label>
                             <select class="form-control" v-model="form.filter" >
                                 <option :value="0">ALL</option>
                                 <option v-for="(list, index) in leaves" :key="index" :value="list.id">{{ list.description }}</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-5">
+                            <label>OFFICES</label>
+                            <select class="form-control" v-model="form.office" @change="setOffice(form.office)">
+                                <option :value="0">ALL</option>
+                                <option v-for="(list, index) in offices" :key="index" :value="list.id">{{ list.description }}</option>
                             </select>
                         </div>
                         
@@ -210,12 +227,17 @@
             </div>
 
             <div class="col-md-12 d-none d-print-block">
-                <div>
+                <div class="d-flex justify-content-start">
+                <div class="me-5">
                   Date :  {{ format(new Date(form.datefrom)) }} - {{ format(new Date(form.dateto)) }}
+                </div>
+                <div class="ms-6">
+                    Office: {{ setoff }}
+                </div>
                 </div>
                 <div>
                     <table class="table table-sm table-bordered">
-                        <thead class="text-uppercase text-muted">
+                        <thead class="text-uppercase">
                             <tr>
                                 <th>DATE REQUEST</th>
                                 <th>NAME</th>
@@ -228,7 +250,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="(list, index) in listLeaves" :key="index">
-                                <td class="text-muted">{{ format(new Date(list.date_apply)) }}</td>
+                                <td>{{ format(new Date(list.date_apply)) }}</td>
                                 <td>{{ list.signature.name }}</td>
                                 <td>{{ list.description }}</td>
                                 <td>

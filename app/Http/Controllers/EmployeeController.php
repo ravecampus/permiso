@@ -129,4 +129,23 @@ class EmployeeController extends Controller
         return response()->json($user, 200);
     }
 
+    public function profilePicture(Request $request){
+
+        $file = $request->file('image');
+        $image = base64_encode(file_get_contents($file));
+        $mimeType = $file->getClientMimeType();
+        $size = $file->getSize();
+        $name = $file->getClientOriginalName();
+
+        $user = User::find($request->id);
+        $user->image = $image;
+        $user->img_size = $size;
+        $user->img_type = $mimeType;
+        $user->img_orig_name = $name;
+        $user->save();
+
+        return response()->json($user, 200);
+
+    }
+
 }

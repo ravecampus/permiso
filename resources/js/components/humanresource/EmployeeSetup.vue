@@ -81,7 +81,7 @@
     })
     const fdatap=()=>({
         id:null,
-        description:"",
+        position_name:"",
     })
     const fdatao=()=>({
         id:null,
@@ -89,8 +89,8 @@
     })
     const form = reactive(formdata())
     const form2 = reactive(fdata())
-    const form3 = reactive(formdata())
-    const form4 = reactive(formdata())
+    const form3 = reactive(fdatap())
+    const form4 = reactive(fdatao())
     const resetform4 = () => Object.assign(form4, fdatao())
     const resetform3 = () => Object.assign(form3, fdatap())
     const resetform2 = () => Object.assign(form2, fdata())
@@ -271,7 +271,7 @@
 
     const editPosition = (data)=>{
         form3.id = data.id
-        form3.description = data.description
+        form3.position_name = data.description
     }
 
     const selectPosition = (data)=>{
@@ -538,9 +538,9 @@
                 <div class="modal-body text-start mb-3">
                     
                     <div class="form-group mb-3">
-                        <label>DESCRIPTION</label>
+                        <label>POSITION NAME</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" v-model="form3.description" placeholder="Enter Description">
+                            <input type="text" class="form-control" v-model="form3.position_name" placeholder="Enter Position Name">
                             <button class="btn btn-secondary" v-if="form3.id != undefined " @click="resetform3" type="button">
                                 <i class="bi bi-x-square"></i>
                             </button>
@@ -548,14 +548,14 @@
                                 <i class="bi" :class="form3.id == undefined ? 'bi-floppy-fill' :'bi-pencil-square'"></i>
                             </button>
                         </div>
-                          <span class="text-danger" v-if="errors3.description">{{errors3.description[0]}}</span>
+                          <span class="text-danger" v-if="errors3.position_name">{{errors3.position_name[0]}}</span>
                     </div>
                     <div class="card">
                         <div class="card-body">
                             <table class="table table-sm">
                                 <thead class="text-uppercase text-muted">
                                     <tr>
-                                        <th>Description</th>
+                                        <th>Position Name</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>

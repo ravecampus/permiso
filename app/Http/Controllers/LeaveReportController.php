@@ -14,14 +14,18 @@ class LeaveReportController extends Controller
         $to->addDays(1)->format('Y-m-d');
 
       
-        $data = LeaveApplication::with("signature")->select("leave_application.*", "leave.description as description")
-                ->join("leave" , "leave.id", "=", "leave_application.leave_id");
+        $data = LeaveApplication::with("signature")->select("leave_application.*", "leave.description as description", "users.name", "users.position_id")
+                ->join("leave" , "leave.id", "=", "leave_application.leave_id")
+                ->leftjoin("users" , "users.id", "=", "leave_application.user_id");
                 
         if($request->datefrom != "" && $request->dateto != ""){
             $data = $data->whereDate("date_apply",">=", $from)->whereDate("date_apply","<=", $to);
         }
         if($request->filter > 0){
             $data = $data->where("leave_application.leave_id", $request->filter);
+        }
+        if($request->office > 0){
+            $data = $data->where("users.position_id", $request->office);
         }
         $data_ = $data->get();
         $data__ = $data->latest()->paginate(10);

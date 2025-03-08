@@ -35,11 +35,17 @@
     }
 
     const extractDigitSig = (data)=>{
-        const blob = b64toBlob(data.digital_signature, data.ds_type);
-        return URL.createObjectURL(blob)
-    }
 
-    
+        if(data !== undefined ){
+            if(data.digital_signature === null){
+                return "/img/login.png"
+            }else{
+                const blob = b64toBlob(data.digital_signature, data.ds_type);
+                return URL.createObjectURL(blob)
+            }
+        } 
+        
+    }
     const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
         const byteCharacters = atob(b64Data);
         const byteArrays = [];
@@ -206,7 +212,7 @@
 
                 <div class="text-center">
                     <div class="app-cap">
-                        <img :src="leave_data.signature == null ? '/img/digital.jpg':extractDigitSig(leave_data.signature)" class="applicant-sig position-absolute">
+                        <img :src="leave_data.signature === null ? '/img/login.png':extractDigitSig(leave_data.signature)" class="applicant-sig position-absolute">
                         {{ leave_data.signature != null ? leave_data.signature.name : ""}}
                     </div>
                     <div class="sig-content">
@@ -263,7 +269,7 @@
 
                 <div class="text-center">
                     <div class="app-cap">
-                        <img :src="leave_data.signature == null ? '/img/digital.jpg':extractDigitSig(leave_data.signature)"  class="applicant-sig position-absolute">
+                        <img :src="extractDigitSig(leave_data.initial)"  class="applicant-sig position-absolute">
                         {{ leave_data.initial != null ? leave_data.initial.name : ""}}
                     </div>
                     <div class="sig-content">
@@ -307,7 +313,7 @@
 
                 <div class="text-center">
                     <div class="app-cap">
-                        <img :src="'/img/login.png'" class="applicant-sig position-absolute">
+                        <img :src="extractDigitSig(leave_data.final)"  class="applicant-sig position-absolute">
                           {{ leave_data.final != null ? leave_data.final.name : ""}}
                     </div>
                     <div class="sig-content">
@@ -466,10 +472,7 @@ $border-line : .5px solid #000;
             }
         }
         .line-11{  
-            margin-top: 60px !important;
-            .cap-line{
-            
-            }
+            margin-top: 40px !important;
         }
 
     }

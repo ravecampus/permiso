@@ -41,7 +41,7 @@
             axios.post('api/position', form).then((res)=>{
                 toast.fire({
                     icon:'success',
-                    title:'Description Added Successfully!'
+                    title:'Position name Added Successfully!'
                 })
                 vmodalposition.hide();
                 resetform()
@@ -53,7 +53,7 @@
             axios.put('api/position/'+form.id, form).then((res)=>{
                 toast.fire({
                     icon:'success',
-                    title:'Description Modified Successfully!'
+                    title:'Position name Modified Successfully!'
                 })
                 vmodalposition.hide();
                 resetform()

@@ -94,6 +94,33 @@
         return ret
     }
 
+    const extractImage = (data)=>{
+         if(data.image !== undefined && data.image != null){
+            const blob = b64toBlob(data.image, data.img_type);
+            return URL.createObjectURL(blob)
+         }
+        
+    }
+
+    const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+            
+        const blob = new Blob(byteArrays, {type: contentType});
+        return blob;
+    }
+
 </script>
 
 <template>
@@ -130,6 +157,7 @@
                     <table class="table table-sm table-striped">
                         <thead class="text-uppercase text-muted">
                             <tr>
+                                <th>PROFILE PICTURE</th>
                                 <th>SCHOOL ID</th>
                                 <th>NAME</th>
                                 <th>CREDITS</th>
@@ -137,6 +165,9 @@
                         </thead>
                         <tbody>
                             <tr v-for="(list, index) in listData" :key="index">
+                                <td class="text-muted">
+                                    <img class="img-profile" :src="(list.image !== null )? extractImage(list) : '/img/permiso.png'" alt="">
+                                </td>
                                 <td class="text-muted">{{ list.school_id }}</td>
                                 <td class="text-muted">{{ list.name }}</td>
                                 <td class="text-muted">
@@ -162,7 +193,7 @@
                                 </td>
                             </tr>
                              <tr>
-                                <td colspan="3" v-show="!noData(listData)">
+                                <td colspan="4" v-show="!noData(listData)">
                                     No Result Found!
                                 </td>
                             </tr>
@@ -208,3 +239,11 @@
         </div>
     </div>
 </template>
+<style lang="scss" scoped>
+    .img-profile{
+        width: 5rem;
+        height: 5rem;
+        border: 2px solid #0b8552;
+        border-radius:  4px !important;
+    }
+</style>
