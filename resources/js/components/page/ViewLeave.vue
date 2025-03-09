@@ -324,12 +324,14 @@
             errors.value = err.response.data.errors
         })
     }
-
+    const printReport = ()=>{
+        window.print()
+    }
 
 </script>
 
 <template>
-    <div class="container">
+    <div class="container mb-5">
         <Print v-if="leave.id != undefined && leave.emp_class_id === 6" :leaveapp="leave"></Print>
         <Print1 v-if="leave.id != undefined && leave.emp_class_id === 5" :leaveapp="leave"></Print1>
         <Print2 v-if="leave.id != undefined && leave.emp_class_id === 4" :leaveapp="leave"></Print2>
@@ -364,7 +366,7 @@
                                 </blockquote>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="data-group">
                                 <small class="text-muted">Office:</small>
                                 <blockquote class="blockquote">
@@ -377,6 +379,12 @@
                                     <p>{{ extDescription(leave.signature.position) }}</p>
                                 </blockquote>
                             </div>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" @click="printReport()" class="btn btn-outline-success btn-sm mb-2 me-2">
+                                <i class="bi bi-printer"></i>
+                                Print
+                            </button>
                         </div>
                         <hr>
                         <div class="col-md-6">

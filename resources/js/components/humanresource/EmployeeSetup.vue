@@ -74,6 +74,7 @@
         position:"",
         password_confirmation:"",
         default_password: false,
+        id:undefined
     })
     const fdata=()=>({
         password:"",
@@ -319,6 +320,11 @@
         vmodalo.hide()
     }
 
+    const extractRole = (data)=>{
+        return data == 1 ? "ADMIN" : data == 2 ? "SCHOOL PRESIDENT": data == 3 ? "OFFICE HEAD" : data == 4 ? "FACULTY / STAFF" :" NONE"
+    }
+
+
 </script>
 <template>
     <div class="container-fluid">
@@ -452,6 +458,7 @@
                                         <th>SCHOOL ID</th>
                                         <th>NAME</th>
                                         <th>POSITION</th>
+                                        <th>ROLE</th>
                                         <th>ACTION</th>
                                     </tr>
                                 </thead>
@@ -461,6 +468,7 @@
                                         <td><span class="fw-bold text-success">{{ list.school_id }}</span></td>
                                         <td>{{ list.name }}</td>
                                         <td>{{ extractPosition(list.position_id) }}</td>
+                                        <td>{{ extractRole(list.role) }}</td>
                                         <td>
                                           <div class="btn-group">
                                                 <button type="button" @click="editEmployee(list)" class="btn btn-sm btn-success" title="Edit Employee">

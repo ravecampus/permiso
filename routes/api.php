@@ -49,6 +49,7 @@ Route::post('/employees', [EmployeeController::class, 'storeEmployee']);
 Route::put('/employees-edit/{id}', [EmployeeController::class, 'updateEmployee']);
 Route::put('/employees-change-password/{id}', [EmployeeController::class, 'changePasswordEmployee']);
 Route::get('/employees-list', [EmployeeController::class, 'employeeList']);
+Route::get('/employees-list-credits', [EmployeeController::class, 'employeeListCredits']);
 Route::get('/employee', [EmployeeController::class,'employee']);
 
 Route::post('/setup-initial', [SetupController::class,'addInitialAppproval']);

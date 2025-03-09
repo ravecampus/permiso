@@ -6,9 +6,11 @@
     const leave_sy = ref([])
     const leaves = ref([])
     const user = ref([])
+    const user_ = ref({})
     const history = ref([])
 
     onMounted(()=>{
+        user_.value = window.winsdev.user
         getMyLeaveSY()
         getLeave()
         getAuthUser()
@@ -97,7 +99,7 @@
     <div class="container mt-5">
         <h1 class="text-success text-center mb-5">WELCOME TO PERMISO</h1>
         <div class="row mt-4 d-flex justify-content-center">
-            <div class="col-md-5" v-if="user.id != undefined && user.role != 2">
+            <div class="col-md-5" v-if="user_.id != undefined && user_.role != 2">
                 <div class="card">
                     <div class="card-body">
                         <h3 class="text-center text-success"> LEAVE CREDITS</h3>

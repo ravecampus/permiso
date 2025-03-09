@@ -26,7 +26,7 @@
 
     const filter = ref("")
     const getEmployees = ()=>{
-        axios.get('api/employees-list?search='+searchData.value+"&filter="+filter.value).then((res)=>{
+        axios.get('api/employees-list-credits?search='+searchData.value+"&filter="+filter.value).then((res)=>{
             listData.value = res.data.data
             links.value = res.data.links
         })
@@ -164,7 +164,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(list, index) in listData" :key="index">
+                            <tr v-for="(list, index) in listData" :key="index" >
                                 <td class="text-muted">
                                     <img class="img-profile" :src="(list.image !== null )? extractImage(list) : '/img/permiso.png'" alt="">
                                 </td>
@@ -243,7 +243,7 @@
     .img-profile{
         width: 5rem;
         height: 5rem;
-        border: 2px solid #0b8552;
+        border: 1px solid #0b8552;
         border-radius:  4px !important;
         padding: 4px;
     }

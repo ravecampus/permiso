@@ -85,6 +85,22 @@ class EmployeeController extends Controller
     }
 
     public function employeeList(Request $request){
+        $data = User::with('empleave_credit');
+        if($request->search != ''){
+            $data = $data->where('name','like','%'.$request->search.'%')
+            ->orWhere('school_id','like','%'.$request->search.'%');
+        }
+
+        if($request->filter != 0){
+            $data = $data->where('office_id', $request->filter);
+        }
+        $data = $data->orderBy('name', 'asc')->paginate(10);
+
+        return response()->json($data, 200);
+    }
+
+    
+    public function employeeListCredits(Request $request){
         $data = User::with('empleave_credit')->where("role", "!=", 2);
         if($request->search != ''){
             $data = $data->where('name','like','%'.$request->search.'%')
@@ -98,6 +114,7 @@ class EmployeeController extends Controller
 
         return response()->json($data, 200);
     }
+
 
     public function changePasswordEmployee(Request $request, string $id){
         $user = Auth::user();
@@ -130,7 +147,6 @@ class EmployeeController extends Controller
     }
 
     public function profilePicture(Request $request){
-
         $file = $request->file('image');
         $image = base64_encode(file_get_contents($file));
         $mimeType = $file->getClientMimeType();

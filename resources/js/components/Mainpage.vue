@@ -146,50 +146,50 @@
                                 <div class="sb-nav-link-icon"><i class="bi bi-speedometer"></i></div>
                                 Dashboard
                             </router-link>
-                            <div class="sb-sidenav-menu-heading pt-1">Management</div>
-                            <router-link class="nav-link side" :to="{name:'office_setup'}">
+                            <div class="sb-sidenav-menu-heading pt-1"  v-if="user.role ===1 || user.role === 2 || user.role === 3">Management</div>
+                            <router-link class="nav-link side" :to="{name:'office_setup'}" v-if="user.role ===1">
                                 <div class="sb-nav-link-icon"><i class="bi bi-building-fill-add"></i></div>
                                 Manage Offices
                              </router-link>
-                            <router-link :to="{name:'position_setup'}" class="nav-link side">
+                            <router-link :to="{name:'position_setup'}" class="nav-link side"  v-if="user.role ===1">
                                 <div class="sb-nav-link-icon"><i class="bi bi-person-lines-fill"></i></div>
                                 Manage Positions
                             </router-link>
-                            <router-link :to="{name:'leave_type_setup'}" class="nav-link side">
+                            <router-link :to="{name:'leave_type_setup'}" class="nav-link side"  v-if="user.role ===1">
                                 <div class="sb-nav-link-icon"><i class="bi bi-journal-plus"></i></div>
                                 Manage Leave Type
                             </router-link>
-                            <router-link :to="{name:'employee_setup'}" class="nav-link side">
+                            <router-link :to="{name:'employee_setup'}" class="nav-link side"  v-if="user.role ===1">
                                 <div class="sb-nav-link-icon"><i class="bi bi-people"></i></div>
                                 Employee Record
                             </router-link>
-                             <router-link :to="{name:'setupschoolyear'}" class="nav-link side">
+                             <router-link :to="{name:'setupschoolyear'}" class="nav-link side"  v-if="user.role ===1">
                                 <div class="sb-nav-link-icon"><i class="bi bi-calendar2-plus"></i></div>
                                 Manage S.Y.
                             </router-link>
-                             <router-link :to="{name:'emplevel'}" class="nav-link side">
+                             <router-link :to="{name:'emplevel'}" class="nav-link side"  v-if="user.role ===1">
                                 <div class="sb-nav-link-icon"><i class="bi bi-gear-wide-connected"></i></div>
                                 Emp. Classif. Setup
                             </router-link>
-                             <router-link :to="{name:'empleavecredit'}" class="nav-link">
+                             <router-link :to="{name:'empleavecredit'}" class="nav-link"  v-if="user.role ===1">
                                 <div class="sb-nav-link-icon"><i class="bi bi-person-lines-fill"></i></div>
                                 Emp. Leave Credits
                             </router-link>
-                            <router-link :to="{name:'leavereport'}" class="nav-link side">
+                            <router-link :to="{name:'leavereport'}" class="nav-link side" v-if="user.role ===1 || user.role === 2 || user.role === 3 ">
                                 <div class="sb-nav-link-icon"><i class="bi bi-file-earmark-bar-graph"></i></div>
                                 Leave Report
                             </router-link>
-                            <div class="sb-sidenav-menu-heading pt-1">Application</div>
-                            <router-link :to="{name:'leaveselection'}" class="nav-link side">
+                            <div class="sb-sidenav-menu-heading pt-1" v-if="user.role !==2" >Application</div>
+                            <router-link :to="{name:'leaveselection'}" class="nav-link side" v-if="user.role === 1 || user.role === 3 ||user.role === 4">
                                 <div class="sb-nav-link-icon"><i class="bi bi-filetype-docx"></i></div>
                                 Leave Application
                             </router-link>
-                            <router-link :to="{name:'myleave'}" class="nav-link side">
+                            <router-link :to="{name:'myleave'}" class="nav-link side" v-if="user.role ===1 || user.role === 3 ||user.role === 4">
                                 <div class="sb-nav-link-icon"><i class="bi bi-file-arrow-up-fill"></i></div>
                                 My Leave 
                             </router-link>
-                            <div class="sb-sidenav-menu-heading pt-1">Request</div>
-                             <router-link :to="{name:'initialrequest'}" class="nav-link side">
+                            <div class="sb-sidenav-menu-heading pt-1"  v-if="user.role ===1 || user.role === 2 || user.role === 3">Request</div>
+                             <router-link :to="{name:'leaverequest'}" class="nav-link side"  v-if="user.role ===1 || user.role === 2 || user.role === 3">
                                 <div class="sb-nav-link-icon"><i class="bi bi-file-arrow-up-fill"></i></div>
                                 Leave Request
                             </router-link>

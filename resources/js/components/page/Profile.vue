@@ -309,6 +309,7 @@
         height: 8rem;
         border: 1px solid #225a26;
         border-radius: 5px;
+        padding: 4px;
     }
 </style>
 

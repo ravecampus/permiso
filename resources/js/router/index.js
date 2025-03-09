@@ -213,10 +213,11 @@ const presRt = [
     // 'employee_setup',
     'leavereport',
     'empleavecredit',
-    'myleave',
+    // 'myleave',
     'profile',
     'viewleave',
     'leaverequest',
+    // 'initialrequest',
     'finalrequest',
     'notfound'
 ];
@@ -259,22 +260,19 @@ router.beforeEach((to, from, next)=>{
             return next({ name: 'notfound' })
         }
     }else{
-        return next()
+        // return next()
         let user = window.winsdev.user;
-        // if(adminRoutes.includes(to.name) && user.role === 2){
-        //     return next();
-        // }else if(user.role === 1){
-        //     if(facultyRoutes.includes(to.name) && user.activate == 1){
-        //         return next(); 
-        //     }else if(facultyInctive.includes(to.name) && user.activate == 0){
-        //         return next(); 
-        //     }else{
-        //         return next({ name: 'notfound' })
-        //     }
-            
-        // }else{
-        //     return next({ name: 'notfound' })
-        // }
+        if(admRt.includes(to.name) && user.role === 1){
+            return next();
+        }else if(presRt.includes(to.name) && user.role === 2){
+            return next();   
+        }else if(oficHeadRt.includes(to.name) && user.role === 3){
+            return next();
+        }else if(staffRt.includes(to.name) && user.role === 4){
+            return next();
+        }else{
+            return next({ name: 'notfound' })
+        }
     }
 });
 

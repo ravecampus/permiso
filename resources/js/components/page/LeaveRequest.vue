@@ -1,13 +1,32 @@
 <script setup>
     import { ref, onMounted, watch } from "vue"
+    import { useRouter } from "vue-router"
 
     const initial = ref([])
     const final = ref([])
+    const user = ref({})
+    const user_ = ref({})
+
+    const router = useRouter()
 
     onMounted(()=>{
+        user_.value = window.winsdev.user
         initialCount()
         finalCount()
+        getAuthUser()
+
+        if(user_.value.role === 2){
+            router.push({name:"finalrequest"})
+        }else{
+            router.push({name:"initialrequest"})
+        }
     })
+
+    const getAuthUser = ()=>{
+        axios.get('/api/user').then((res)=>{
+            user.value = res.data
+        })
+    }
 
     const initialCount = ()=>{
         axios.get("api/initial-count").then((res)=>{
@@ -34,7 +53,7 @@
             <div class="col-md-12">
                
                 <ul class="nav nav-pills mt-4">
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="user_.role !== 2">
                         <router-link class="nav-link" :to="{name:'initialrequest'}" aria-current="page">INITIAL APPROVAL
                              &nbsp;<span class="badge bg-danger" v-if="initial.length > 0">{{ initial.length }}</span>
                         </router-link>
