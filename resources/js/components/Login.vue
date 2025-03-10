@@ -84,7 +84,7 @@
 
 
     .login-body{
-        background-image: url("img/background.png");
+        background-image: url("/img/background.png");
         background-size: cover;
         background-position: center top;
         overflow: hidden;
