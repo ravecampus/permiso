@@ -489,6 +489,7 @@ $border-line : .5px solid #000;
         width: 10rem;
         height: 10rem;
         margin-top: -4.8rem;
+        z-index: -99 !important;
     }
 
     .first-line{
