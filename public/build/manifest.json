@@ -14,16 +14,21 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-DEyKjD4h.js",
+    "file": "assets/app-C07ZrJuK.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app-xSIlNJC7.css"
+      "assets/app-08FAaMKr.css"
     ],
     "assets": [
       "assets/bootstrap-icons-BtvjY1KL.woff2",
       "assets/bootstrap-icons-BOrJxbIo.woff"
     ]
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-CZxZraON.css",
+    "src": "resources/sass/app.scss",
+    "isEntry": true
   }
 }
