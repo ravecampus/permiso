@@ -265,4 +265,15 @@ class LeaveApplicationController extends Controller
 
         return response()->json($data, 200);
     }
+
+    public function leaveApplicationId(string $id){
+        $sy = SchoolYear::where('is_active', 1)->first();
+        $data = LeaveApplication::with('schoolyear', 'initial', 'final')->select("leave_application.*", "leave.description as description")
+                ->join("leave", "leave.id", "=", "leave_application.leave_id")
+                ->where("leave_application.user_id", $id)
+                ->where("leave_application.status","!=", 3)
+                ->where("leave_application.school_year_id",$sy->id);
+        $data = $data->get();
+        return response()->json($data, 200);
+    }
 }

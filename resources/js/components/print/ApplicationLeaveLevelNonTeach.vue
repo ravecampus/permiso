@@ -18,9 +18,54 @@
           },
     })
 
+    const leaves = ref([])
+    const leaved = ref([])
+
     onMounted(()=>{
         leave_data.value = props.leaveapp
+        getleaveByID(props.leaveapp.user_id)
+        getLeave(props.leaveapp.emp_class_id)
     })
+
+    const getleaveByID = (id)=>{
+        axios.get("api/leave-app-id/"+id).then((res)=>{
+            leaves.value = res.data
+           
+        })
+    }
+
+    const getLeave = (id) => {
+         axios.get('/api/source-leave-id/'+id).then((res)=>{
+            leaved.value = res.data
+    
+        })
+    }
+
+     const checkBalance = (id)=>{
+        if(id === 4 || id === 5){
+            let ret = 0
+            leaves.value.forEach(val => {
+                if(val.leave_id == id){
+                    ret += val.number_of_day
+                }
+            });
+
+        return (allowedBal(id) == "NO LIMIT" ? 0: allowedBal(id))  - ret
+         }
+    }
+
+    const allowedBal = (id)=>{
+        let ret = 0;
+        leaved.value.forEach(val => {
+            if(val.leave_id == id && val.is_no_limit == 0){
+                ret = val.credits
+            }else if(val.leave_id == id && val.is_no_limit == 1){
+                ret = "NO LIMIT"
+            }
+        });
+        return ret
+    }
+
 
     const extractOffice = (data)=>{
         return data.office != null ? data.office.description : ""
@@ -239,7 +284,7 @@
                     <div class="first-line d-flex">
                         <div class="line-content"></div>
                         <div class="line-cap">has a balance of </div>
-                        <div class="line-content"></div>
+                        <div class="line-content ps-2">{{ checkBalance(leave_data.leave_id) }}</div>
                         <div class="line-cap">day</div>
                         
                     </div>
@@ -250,7 +295,7 @@
                     <div class="first-line d-flex">
                         <div class="line-content"></div>
                         <div class="line-cap">Recommending disapproval because </div>
-                        <div class="disapproval-content"></div>
+                        <div class="disapproval-content ps-2">{{ leave_data.remarks}}</div>
                         
                     </div>
                 </div>

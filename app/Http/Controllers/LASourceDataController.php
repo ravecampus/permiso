@@ -20,6 +20,14 @@ class LASourceDataController extends Controller
 
             return response()->json($data, 200);
     }
+    public function leaveId($id){
+        $data = LevelLeavecredit::select("level_leavecredit.*", "leave.description as leave_description")
+            ->join('leave', 'leave.id', "=", "level_leavecredit.leave_id")
+            ->where("emp_class_id",$id )->get();
+
+        return response()->json($data, 200);
+    }
+
 
     public function initialApproval(){
         $user = Auth::user();

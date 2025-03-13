@@ -71,6 +71,7 @@ Route::put('/setup-school-year/{id}', [SetupController::class,'schoolyearSetupEd
 Route::get('/school-year-list', [SetupController::class,'schoolyearSetupList']);
 Route::get('/school-year-status/{id}', [SetupController::class,'schoolyearSetupStatus']);
 
+Route::get('/source-leave-id/{id}', [LASourceDataController::class, 'leaveId']);
 Route::get('/source-leave', [LASourceDataController::class, 'leave']);
 Route::get('/source-initial', [LASourceDataController::class, 'initialApproval']);
 Route::get('/source-final', [LASourceDataController::class, 'finalApproval']);
@@ -99,6 +100,7 @@ Route::post('/leave-report', [LeaveReportController::class, 'leaveReport']);
 
 Route::post('/profile-picture', [EmployeeController::class,'profilePicture']);
 Route::get('/dashboard-history', [DashboardController::class,'leaveHistory']);
+Route::get('/leave-app-id/{id}', [LeaveApplicationController::class,'leaveApplicationId']);
 
 
 
