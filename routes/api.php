@@ -102,7 +102,7 @@ Route::post('/profile-picture', [EmployeeController::class,'profilePicture']);
 Route::get('/dashboard-history', [DashboardController::class,'leaveHistory']);
 Route::get('/leave-app-id/{id}', [LeaveApplicationController::class,'leaveApplicationId']);
 
-
+Route::get('/employee-print', [EmployeeController::class, 'printEmployee']);
 
 
 

@@ -190,7 +190,7 @@
                             </router-link>
                             <div class="sb-sidenav-menu-heading pt-1"  v-if="user.role ===1 || user.role === 2 || user.role === 3">Request</div>
                              <router-link :to="{name:'leaverequest'}" class="nav-link side"  v-if="user.role ===1 || user.role === 2 || user.role === 3">
-                                <div class="sb-nav-link-icon"><i class="bi bi-file-arrow-up-fill"></i></div>
+                                <div class="sb-nav-link-icon"><i class="bi bi-person-down"></i></div>
                                 Leave Request
                             </router-link>
 

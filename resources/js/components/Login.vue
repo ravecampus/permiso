@@ -31,19 +31,19 @@
 <template>
     <div class="login-body bg-success min-vh-100 m-0">
         <div class="row d-flex justify-content-end">
-            <div class="col-md-7 ">  
-                <div class="logo w-100">
-                    <img :src="'img/login.png'"  class="img-logo"/>
+            <div class="col-md-7 col-lg-6 col-sm-12">  
+                <div class="logo w-100 text-center mx-auto my-auto">
+                    <img :src="'img/login1.png'"  class="img-logo "/>
                 </div>
                  <div class="">
-                    <img :src="'/img/ndmc.png'" class="s-logo"/>
-                    <img :src="'/img/cite.png'" class="s-logo-2" />
+                    <!-- <img :src="'/img/ndmc.png'" class="s-logo"/>
+                    <img :src="'/img/cite.png'" class="s-logo-2" /> -->
                 </div>
 
             </div>
-            <div class="col-md-5 mt-5">
-                <div class="card mt-5 me-5 h-100 bg-login">
-                    <div class="card-body ps-5 pe-5">
+            <div class="col-md-5 mt-5 col-lg-6 col-sm-6 text-center mx-auto">
+                <div class="card mt-5 bg-login">
+                    <div class="card-body ps-5 pe-5 pb-5 mb-3 ">
                         <div class="head text-center text-light mt-5 mb-4">
                             <h1>SIGN IN</h1>
                            
@@ -92,9 +92,10 @@
     }
 
     .img-logo{
-        margin-top: 13em;
-        margin-left: 10em;
-        width: 60%;
+        margin-top: 11em;
+        // margin-left: 10em;
+        
+        width: 80%;
     }
     .bg-login{
         background-color: #4a6248;

@@ -25,6 +25,8 @@ import  FinalRequest from '../components/page/FinalRequest.vue'
 import  Dashboard from '../components/page/Dashboard.vue'
 import  Profile from '../components/page/Profile.vue'
 
+import  PrintEmployee from '../components/humanresource/PrintEmployee.vue'
+
 import NotFound from '../components/NotFound.vue'
 
 
@@ -79,6 +81,11 @@ const routes = [
                 path:'/employee/leave-credit',
                 name:'empleavecredit',
                 component: EmpLeaveCredit,
+            },
+            {
+                path:'/employee/print',
+                name:'printemployee',
+                component:PrintEmployee,
             },
             {
                 path:'/setup/level/:id',
@@ -204,7 +211,8 @@ const admRt = [
     'leaverequest',
     'initialrequest',
     'finalrequest',
-    'notfound'
+    'notfound',
+    'printemployee'
 ];
 
 const presRt = [

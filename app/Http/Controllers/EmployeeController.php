@@ -46,7 +46,7 @@ class EmployeeController extends Controller
             'emp_class_id' => $request->employee_classification,
             'school_id'=>$request->school_id,
             'email'=>$request->school_id."@gmail.com",
-            'password'=> $passdef ? bcrypt('1234') : bcrypt($request->password)
+            'password'=> $passdef ? bcrypt('permiso2025') : bcrypt($request->password)
         ]);
     }
 
@@ -162,6 +162,17 @@ class EmployeeController extends Controller
 
         return response()->json($user, 200);
 
+    }
+
+    public function printEmployee(Request $request){
+        $data = User::with("empleave_credit","position", "office", "emp_class");
+
+        if($request->filter != 0){
+            $data = $data->where('office_id', $request->filter);
+        }
+        $data = $data->orderBy('name', 'asc')->get();
+
+        return response()->json($data, 200);
     }
 
 }

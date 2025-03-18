@@ -449,6 +449,12 @@
                                 <i class="bi bi-funnel"></i>
                             </button>
                         </div>
+                        <div class="p-2">
+                            <router-link :to="{name:'printemployee'}" class="btn btn-success" title="print">
+                                <i class="bi bi-printer"></i>
+                           </router-link>
+                        </div>
+                        
                    </div>
                    <div class="card-body">
                         <div class="table-responsive">
@@ -481,7 +487,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="4" v-show="!noData(employees)">
+                                        <td colspan="5" v-show="!noData(employees)">
                                             No Result Found!
                                         </td>
                                     </tr>
