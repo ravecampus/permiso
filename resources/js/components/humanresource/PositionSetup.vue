@@ -151,7 +151,7 @@
                     <table class="table table-sm table-striped">
                         <thead class="text-uppercase text-muted">
                             <tr>
-                                <th>POSITION NAME</th>
+                                <th>LIST OF POSITIONS</th>
                                 <th>ACTION</th>
                             </tr>
                         </thead>

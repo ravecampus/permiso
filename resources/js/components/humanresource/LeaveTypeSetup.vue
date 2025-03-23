@@ -171,7 +171,7 @@
                     <table class="table table-sm table-striped">
                         <thead class="text-uppercase text-muted">
                             <tr>
-                                <th>DESCRIPTION</th>
+                                <th>LEAVE TYPES</th>
                                 <th>ACTION</th>
                             </tr>
                         </thead>

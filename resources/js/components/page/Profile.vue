@@ -219,7 +219,7 @@
                         <h5 class="mt-3">Change on?</h5>
                         <hr>
                         <div class="btn-group mt-2 mb-3">
-                            <button type="button" @click="changeName" class="btn btn-success btn-sm">Name</button>
+                            <!-- <button type="button" @click="changeName" class="btn btn-success btn-sm">Name</button> -->
                             <button type="button"  @click="changePassword" class="btn btn-secondary btn-sm">Password</button>
                         </div>
                     </div>
