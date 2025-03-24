@@ -582,7 +582,7 @@
                             <table class="table table-sm">
                                 <thead class="text-uppercase text-muted">
                                     <tr>
-                                        <th>Position Name</th>
+                                        <th>List of Positions</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
