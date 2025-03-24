@@ -86,7 +86,7 @@
     })
     const fdatao=()=>({
         id:null,
-        description:"",
+        office_name:"",
     })
     const form = reactive(formdata())
     const form2 = reactive(fdata())
@@ -109,6 +109,7 @@
                 })
                 errors.value = []
                 getEmployees();
+                hideEmp.value = true
             }).catch((err)=>{
                 btncap.value = "Save"
                 errors.value = err.response.data.errors
@@ -127,6 +128,7 @@
                 dispass.value = true
                 defview.value = true
                 getEmployees();
+                hideEmp.value = true
             }).catch((err)=>{
                 btncap.value = "Save Changes"
                 errors.value = err.response.data.errors
@@ -177,6 +179,7 @@
     const defview = ref(true)
     const distxt = ref(false)
     const editEmployee = (data)=>{
+        hideEmp.value = data.role == 2 ? false : true
         distxt.value = true
         errors.value = []
         btncap.value ="Save Changes"
@@ -312,7 +315,7 @@
 
     const editOffice = (data)=>{
         form4.id = data.id
-        form4.description = data.description
+        form4.office_name = data.description
     }
 
     const selectOffice = (data)=>{
@@ -322,6 +325,16 @@
 
     const extractRole = (data)=>{
         return data == 1 ? "ADMIN" : data == 2 ? "SCHOOL PRESIDENT": data == 3 ? "OFFICE HEAD" : data == 4 ? "FACULTY / STAFF" :" NONE"
+    }
+
+    const hideEmp = ref(true)
+
+    const hideEmployment = (data)=>{
+        if(data == 2){
+            hideEmp.value = false
+        }else{
+            hideEmp.value = true
+        }
     }
 
 
@@ -371,7 +384,7 @@
                             </div>
                             <span class="text-danger" v-if="errors.office">{{errors.office[0]}}</span>
                         </div>
-                        <div class="form-group mb-3 col-md-6">
+                        <div class="form-group mb-3 col-md-6" v-if="hideEmp">
                             <label>EMPLOYMENT CLASSIFICATION</label>
                             <select class="form-select" v-model="form.employee_classification">
                                 <option v-for="(lst, idx) in empclass" :key="idx" :value="lst.id">{{ lst.title }}</option>
@@ -392,7 +405,7 @@
 
                         <div class="form-group mb-3 col-md-6">
                             <label>ROLE</label>
-                            <select class="form-select" v-model="form.role">
+                            <select class="form-select" v-model="form.role" @change="hideEmployment(form.role)">
                             
                                 <option value="1">Admin</option>
                                 <option value="2">School President</option>
@@ -614,9 +627,9 @@
                 <div class="modal-body text-start mb-3">
                     
                     <div class="form-group mb-3">
-                        <label>DESCRIPTION</label>
+                        <label>OFFICE NAME</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" v-model="form4.description" placeholder="Enter Description">
+                            <input type="text" class="form-control" v-model="form4.office_name" placeholder="Enter Office Name">
                             <button class="btn btn-secondary" v-if="form4.id != undefined " @click="resetform4" type="button">
                                 <i class="bi bi-x-square"></i>
                             </button>
@@ -624,14 +637,14 @@
                                 <i class="bi" :class="form4.id == undefined ? 'bi-floppy-fill' :'bi-pencil-square'"></i>
                             </button>
                         </div>
-                          <span class="text-danger" v-if="errors4.description">{{errors4.description[0]}}</span>
+                          <span class="text-danger" v-if="errors4.office_name">{{errors4.office_name[0]}}</span>
                     </div>
                     <div class="card">
                         <div class="card-body">
                             <table class="table table-sm">
                                 <thead class="text-uppercase text-muted">
                                     <tr>
-                                        <th>Description</th>
+                                        <th>List of Offices</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>

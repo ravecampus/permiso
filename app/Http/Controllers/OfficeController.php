@@ -35,11 +35,11 @@ class OfficeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'description' => 'required|string'
+            'office_name' => 'required|string'
         ]);
 
         $data = Office::create([
-            'description' => $request->description
+            'description' => $request->office_name
         ]);
 
         return response()->json($data, 200);
@@ -67,11 +67,11 @@ class OfficeController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'description' => 'required|string'
+            'office_name' => 'required|string'
         ]);
 
         $data = Office::find($id);
-        $data->description = $request->description;
+        $data->description = $request->office_name;
         $data->save();
 
         return response()->json($data, 200);

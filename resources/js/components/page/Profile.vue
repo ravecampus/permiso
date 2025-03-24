@@ -198,11 +198,11 @@
                                 <span class="fw-bold fs-5 text-success">{{ user.position != null ?  user.position.description :"" }}</span></label>
                             </div>
                             <hr>
-                             <div class="col-md-12 mt-3">
+                             <div class="col-md-12 mt-3" v-if="user.role != 2">
                                 <label><small>EMPLOYMENT CLASSIFICATION:</small> &nbsp;
                                 <span class="fw-bold fs-5 text-success">{{ user.emp_class !=null ? user.emp_class.title :""  }}</span></label>
                             </div>
-                            <hr>
+                            <hr v-if="user.role != 2">
                             <div class="col-md-6 mt-2">
                                 <label ><small>SCHOOL ID:</small> &nbsp;
                                 <span class="fw-bold fs-5 text-success">{{ user.school_id }}</span></label>

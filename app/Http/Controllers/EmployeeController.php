@@ -14,28 +14,55 @@ class EmployeeController extends Controller
     public function storeEmployee(Request $request){
 
         $passdef = $request->default_password;
-        if($passdef){
-            $request->validate([
-                'name'=>'required|string',
-                'school_id'=>'required|unique:users,school_id',
-                'position'=>'required',
-                'office'=>'required',
-                'date_of_employment'=>'required',
-                'employee_classification'=>'required',
-                'role'=>'required',
-            ]);
+
+        if($request->role == 2){
+            if($passdef){
+                $request->validate([
+                    'name'=>'required|string',
+                    'school_id'=>'required|unique:users,school_id',
+                    'position'=>'required',
+                    'office'=>'required',
+                    'date_of_employment'=>'required',
+                    // 'employee_classification'=>'required',
+                    'role'=>'required',
+                ]);
+            }else{
+                $request->validate([
+                    'name'=>'required|string',
+                    'school_id'=>'required|unique:users,school_id',
+                    'position'=>'required',
+                    'office'=>'required',
+                    'date_of_employment'=>'required',
+                    // 'employee_classification'=>'required',
+                    'role'=>'required',
+                    'password' => 'required|string|min:4|confirmed',
+                ]);
+            }
         }else{
-            $request->validate([
-                'name'=>'required|string',
-                'school_id'=>'required|unique:users,school_id',
-                'position'=>'required',
-                'office'=>'required',
-                'date_of_employment'=>'required',
-                'employee_classification'=>'required',
-                'role'=>'required',
-                'password' => 'required|string|min:4|confirmed',
-            ]);
+            if($passdef){
+                $request->validate([
+                    'name'=>'required|string',
+                    'school_id'=>'required|unique:users,school_id',
+                    'position'=>'required',
+                    'office'=>'required',
+                    'date_of_employment'=>'required',
+                    'employee_classification'=>'required',
+                    'role'=>'required',
+                ]);
+            }else{
+                $request->validate([
+                    'name'=>'required|string',
+                    'school_id'=>'required|unique:users,school_id',
+                    'position'=>'required',
+                    'office'=>'required',
+                    'date_of_employment'=>'required',
+                    'employee_classification'=>'required',
+                    'role'=>'required',
+                    'password' => 'required|string|min:4|confirmed',
+                ]);
+            }
         }
+    
         
         $user = User::create([
             'name' => $request->name,
@@ -51,15 +78,29 @@ class EmployeeController extends Controller
     }
 
     public function updateEmployee(Request $request, string $id){
-        $request->validate([
-            'name'=>'required|string',
-            // 'school_id'=>'required|unique:users,school_id',
-            'position'=>'required',
-            'office'=>'required',
-            'date_of_employment'=>'required',
-            'employee_classification'=>'required',
-            'role'=>'required',
-        ]);
+
+        if($request->role == 2){
+            $request->validate([
+                'name'=>'required|string',
+                // 'school_id'=>'required|unique:users,school_id',
+                'position'=>'required',
+                'office'=>'required',
+                'date_of_employment'=>'required',
+                // 'employee_classification'=>'required',
+                'role'=>'required',
+            ]);
+        }else{
+            $request->validate([
+                'name'=>'required|string',
+                // 'school_id'=>'required|unique:users,school_id',
+                'position'=>'required',
+                'office'=>'required',
+                'date_of_employment'=>'required',
+                'employee_classification'=>'required',
+                'role'=>'required',
+            ]);
+        }
+  
 
         $data = User::find($id);
         $data->name = $request->name;
