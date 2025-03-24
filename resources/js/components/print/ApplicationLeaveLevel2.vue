@@ -80,7 +80,7 @@
     }
 
     const extractDigitSig = (data)=>{
-        if(data !== undefined ){
+        if(data !== undefined){
             if(data.digital_signature === null){
                 return "/img/login.png"
             }else{
@@ -255,7 +255,7 @@
 
                 <div class="text-center">
                     <div class="app-cap">
-                        <img :src="extractDigitSig(leave_data.initial)" class="applicant-sig position-absolute">
+                        <img :src="extractDigitSig(leave_data.signature)" class="applicant-sig position-absolute">
                         {{ leave_data.signature != null ? leave_data.signature.name : ""}}
                     </div>
                     <div class="sig-content">
