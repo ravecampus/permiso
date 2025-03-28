@@ -24,6 +24,17 @@ class LeaveReportController extends Controller
         if($request->filter > 0){
             $data = $data->where("leave_application.leave_id", $request->filter);
         }
+        if($request->status > 0){
+            $stat = $request->status;
+            if($stat == 1){
+                $data = $data->whereIn("leave_application.status", [0,1])->orderBy("leave_application.status", "asc");
+            }else if($stat == 2){
+                $data = $data->where("leave_application.status",2);
+            }else if($stat == 3){
+                $data = $data->where("leave_application.status",3);
+            }
+           
+        }
         if($request->office > 0){
             $data = $data->where("users.position_id", $request->office);
         }

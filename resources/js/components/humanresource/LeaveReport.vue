@@ -35,7 +35,8 @@
         datefrom: "",
         dateto: "",
         filter:0,
-        office:0
+        office:0,
+        status:0
     })
 
     const form = reactive(formdata())
@@ -204,6 +205,15 @@
                             <select class="form-control" v-model="form.filter" >
                                 <option :value="0">ALL</option>
                                 <option v-for="(list, index) in leaves" :key="index" :value="list.id">{{ list.description }}</option>
+                            </select>
+                        </div>
+                         <div class="form-group mt-2 mb-2">
+                            <label>STATUS </label>
+                            <select class="form-control" v-model="form.status" >
+                                <option :value="0">ALL</option>
+                                <option :value="1">PENDING / INITIALLY APPROVED</option>
+                                <option :value="2">APPROVED</option>
+                                <option :value="3">DISAPPROVED</option>
                             </select>
                         </div>
                         <div class="form-group mb-5">
