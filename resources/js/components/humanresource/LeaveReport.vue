@@ -1,5 +1,6 @@
 <script setup>
     import { ref,reactive, onMounted, watch } from "vue"
+    import { useRouter } from "vue-router"
     import { Modal } from "bootstrap";
 
     const modalposition = ref(null)
@@ -13,6 +14,8 @@
     let leaves = ref([])
     let offices = ref([])
     let searchData = ref('')
+
+    const router = useRouter();
     
     const format = (d) => {
         const day =("0" + d.getDate()).slice(-2);
@@ -104,6 +107,9 @@
         });
     }
 
+    const viewLeave = (data)=>{
+        router.push({name:"viewleave", params:{id:data.id}})
+    }
 
 </script>
 
@@ -139,6 +145,7 @@
                                         <th>UNTIL</th>
                                         <th>NO. OF DAY/S</th>
                                         <th>STATUS</th>
+                                        <th>ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -155,7 +162,11 @@
                                         </td>
                                         <td class="text-success fw-bold">{{ list.number_of_day }}</td>
                                         <td>{{ setStatus(list.status) }}</td>
-                                        
+                                        <td>
+                                            <button type="button" @click="viewLeave(list)" class="btn btn-sm btn-outline-success">
+                                                <i class="bi bi-arrow-right-circle fs-5"></i>
+                                            </button>
+                                        </td>   
                                     </tr>
                                     <tr>
                                         <td colspan="7" v-show="!noData(listData)">
@@ -272,7 +283,7 @@
                                 </td>
                                 <td class="text-success fw-bold">{{ list.number_of_day }}</td>
                                 <td>{{ setStatus(list.status) }}</td>
-                                
+                               
                             </tr>
                         </tbody>
                     </table>

@@ -208,7 +208,7 @@
                 </div>
                 <div class="modal-body text-start mb-3 row">
                     <div class="form-group mb-2">
-                        <label>LEAVE DESCRIPTION</label>
+                        <label>LEAVE TYPE</label>
                         <select class="form-select" v-model="form.leave" :disabled="disabletxtLeave">
                             <option v-for="(lst, idx) in leaves" :key="idx" :value="lst.id">{{ lst.description }}</option>
                         </select>
