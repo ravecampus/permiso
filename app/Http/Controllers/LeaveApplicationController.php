@@ -99,10 +99,10 @@ class LeaveApplicationController extends Controller
             "leave_credit_id" =>$lev->id,
             "status" => $request->emp_class_id == 1 ? 1 : 0,
             "school_year_id" => SchoolYear::where('is_active', 1)->first()->id ,
-            "sick_attach" => $request->leave == 4 ? $image : null,
-            "sa_size" => $request->leave == 4 ? $size : null,
-            "sa_type" =>$request->leave == 4 ?  $mimeType : null,
-            "sa_orig_name" => $request->leave == 4 ? $name :null,
+            "sick_attach" => $request->leave == 4  && $request->number_of_day > 1 ? $image : null,
+            "sa_size" => $request->leave == 4  && $request->number_of_day > 1 ? $size : null,
+            "sa_type" =>$request->leave == 4  && $request->number_of_day > 1 ?  $mimeType : null,
+            "sa_orig_name" => $request->leave == 4  && $request->number_of_day > 1 ? $name :null,
 
         ]);
         if($request->emp_class_id == 1){
