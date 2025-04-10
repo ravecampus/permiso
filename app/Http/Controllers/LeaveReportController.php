@@ -36,7 +36,7 @@ class LeaveReportController extends Controller
            
         }
         if($request->office > 0){
-            $data = $data->where("users.position_id", $request->office);
+            $data = $data->where("users.office_id", $request->office);
         }
         $data_ = $data->get();
         $data__ = $data->latest()->paginate(10);
