@@ -89,7 +89,7 @@ class OfficeController extends Controller
     }
     
     public function officeList(){
-        $data = Office::all();
+        $data = Office::orderBy("description", "asc")->get();
         return response()->json($data, 200);
     }
 }

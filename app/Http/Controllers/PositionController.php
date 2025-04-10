@@ -90,7 +90,7 @@ class PositionController extends Controller
     }
 
     public function positionList(){
-        $data = Position::all();
+        $data = Position::orderBy("description", "asc")->get();
         return response()->json($data, 200);
     }
 }
